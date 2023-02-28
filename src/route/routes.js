@@ -1,20 +1,47 @@
 const express = require("express")
 const userController = require("../controller/userController")
+const cricketController = require("../controller/cricketController")
+const hockyController = require("../controller/hockyController");
+const snakeLadderController = require("../controller/snakeLadderController");
+const ticTacToe = require("../controller/ticTacToeController")
 
 const Router = express.Router()
 
 
 
-/*-----------------------------User Register----------------------------*/
+//_____________________________________User ______________
+
 Router.post("/register", userController.createUsers)
 
-/*------------------------Get User Api's---------------------------------*/
+
 Router.get("/profile", userController.getUser)
 
-/*------------------------Update User Api's---------------------------------*/
-// Router.put("/updateUser", userController.updateUser)
+
+Router.put("/updateUser", userController.updateUser)
 
 // Router.delete("/deleteUser", userController.deleteUser)
+
+
+
+//_____________________ Cricket________________________
+
+Router.post("/createCricket", userController.createCric)
+
+Router.get("/cricketData", cricketController.getCric)
+
+Router.put("/updateCricket", cricketController.updateCric)
+
+Router.delete("/deleteCricket", cricketController.deleteCric)
+
+
+
+
+
+
+
+
+
+
 
 
 

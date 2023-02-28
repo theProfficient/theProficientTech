@@ -12,7 +12,7 @@ app.use("/", route);
 mongoose.set("strictQuery", false);
 mongoose
   .connect(
-    "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/nikita",
+    "mongodb+srv://theProficienttech:m3FdDLbfQpoZbLUT@cluster0.ysyccir.mongodb.net/proficient",
     {
       useNewUrlParser: true,
     }
