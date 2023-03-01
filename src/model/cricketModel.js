@@ -1,21 +1,31 @@
-const mongoose = require("mongoose")
-const userSchema = new mongoose.Schema({
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
-cricMatch: {
-    type : Number,
-    trim:true,
-},
+const userSchema = new mongoose.Schema(
+  {
+    UserId: {
+      type: ObjectId,
+      ref: "GammingUser",
+      required: true,
+      unique: true,
+    },
+    cricMatch: {
+      type: Number,
+      trim: true,
+      default: 0,
+    },
+    cricRuns: {
+      type: Number,
+      trim: true,
+      default: 0,
+    },
+    cricWins: {
+      type: Number,
+      trim: true,
+      default: 0,
+    },
+  },
+  { timestamps: true }
+);
 
-cricRuns : {
-    type : Number,
-    trim:true
-},
-
-cricWins : {
-    type : Number,
-    trim:true
-},
-
-}, { timestamps: true });
-
-module.exports = mongoose.model("cricket", userSchema)
+module.exports = mongoose.model("cricket", userSchema);

@@ -1,3 +1,5 @@
+/** @format */
+
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 // const validator = require("../validations/validation");
@@ -10,7 +12,7 @@ const createUsers = async function (req, res) {
 
     let bodyData = req.body;
 
-    let { UserId, email, phone } = bodyData;
+      let { UserId, email, phone,balance,status} = bodyData;
 
     if (Object.keys(bodyData).length == 0) {
       return res.status(400).send({
@@ -28,39 +30,46 @@ const createUsers = async function (req, res) {
       });
     }
 
-    let checkPhone = await userModel.findOne({ phone: phone });
+    // let checkPhone = await userModel.findOne({ phone: phone });
 
-    if (checkPhone) {
-      return res.status(400).send({
-        status: false,
-        message: "phone is already exist ",
-      });
-    }
+    // if (checkPhone) {
+    //   return res.status(400).send({
+    //     status: false,
+    //     message: "phone is already exist ",
+    //   });
+    // }
 
     
-    let checkEmail = await userModel.findOne({ email: email });
+    // let checkEmail = await userModel.findOne({ email: email });
 
-      if (checkEmail) {
-        return res.status(400).send({
-          status: false,
-          message: "this email is already registerd",
-        });
-      }
+    //   if (checkEmail) {
+    //     return res.status(400).send({
+    //       status: false,
+    //       message: "this email is already registerd",
+    //     });
+    //   }
 
       //  let data = {}
       //  data.UserId = UserId
       //  data.email = email
       //  data.phone = phone
+      // data.phone = phone
+      //  data.phone = phone
+      
+
 
       // const userCreated = await userModel.create(data);
-      const userCreated = await userModel.create(bodyData);
+
+      // if(email || phone){
+     const userCreated = await userModel.create(bodyData);
 
       return res.status(201).send({
         status: true,
         message: "User created successfully",
         data: userCreated,
       });
-    } catch (error) {
+    // }
+   } catch (error) {
     return res.status(500).send({
       status: false,
       message: error.message,
@@ -103,6 +112,7 @@ const updateUser = async function (req, res) {
   try {
     let updateData = req.body;
     let UserId = req.query.UserId;
+
     const user = await userModel.findOneAndUpdate(
       { UserId: UserId },
       updateData,

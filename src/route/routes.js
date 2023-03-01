@@ -25,13 +25,13 @@ Router.put("/updateUser", userController.updateUser)
 
 //_____________________ Cricket________________________
 
-Router.post("/createCricket", userController.createCric)
+Router.post("/createCricket", cricketController.createCric)
 
 Router.get("/cricketData", cricketController.getCric)
 
 Router.put("/updateCricket", cricketController.updateCric)
 
-Router.delete("/deleteCricket", cricketController.deleteCric)
+// Router.delete("/deleteCricket", cricketController.deleteCric)
 
 
 
