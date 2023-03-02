@@ -2,6 +2,7 @@
 // // https://github.com/SeyCompLk/PitchEka-Backend
 
 const mongoose = require("mongoose");
+const userModel = require("../model/userModel")
 const cricketModel = require("../model/cricketModel");
 
 const createCric = async function (req, res) {
@@ -11,7 +12,8 @@ const createCric = async function (req, res) {
     // let cricWins = req.query.hasOwnProperty("cricWins") ? req.query.cricWins : ""
 
     let body = req.body;
-
+    let UserId = await userModel.findById({UserId:UserId})
+    let UserIdForCricket = UserId._id
     let { cricMatch, cricRuns, cricWins } = body;
 
     if (Object.keys(body).length == 0) {
@@ -42,34 +44,26 @@ const createCric = async function (req, res) {
 //_____________get cricket data
 
 const getCric = async function (req, res) {
-
 try{
- 
-  let data = req.query.UserId;
+  let UserId1 = req.query.UserId1;
 
-  let cricket = await cricketModel.findOne({ UserId : data})
+  let cricket = await cricketModel.findOne({ UserId : UserId1})  // find by useerId not A new created mongodb id
 
    if(!cricket){
-    return res.status(404).send({ status: false, message: "this userId not found" })
+    return res.status(404).send({ status: false, message: "this UserId not found" })
    }
-
-   if(cricket.UserId != UserId) {
-    return res.status(400).send({ status: false, message: "with this userId cricket does not exist" })
-  }
-   
 
   return res.status(200).send({
     status:true,
     message:'success',
     data:cricket
   })
-
-}catch (error) {
-    return res.status(500).send({
-      status: false,
-      message: error.message,
-    });
-  }
+} catch (err) {
+  return res.status(500).send({
+    status: false,
+    error: err.message,
+  });
+}
 }
 
 //__________update table
@@ -80,7 +74,7 @@ const  updateCric = async function (req,res){
     let UserId = req.query.UserId;
 
     const matchData = await cricketModel.findOneAndUpdate(
-      {cricMatch:cricMatch}, {cricRuns:cricRuns}, {cricWins:cricWins} , updateData , {new:true}
+      {UserId:UserId} , updateData , {new:true}
     );
 
     if (matchData .length == 0 ){
@@ -93,7 +87,7 @@ const  updateCric = async function (req,res){
    return res.status(200).send({
     status: true,
     message: "Success",
-    data: user,
+    data: matchData,
   });
 } catch (err) {
   return res.status(500).send({
