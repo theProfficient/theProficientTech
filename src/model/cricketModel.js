@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const userSchema = new mongoose.Schema(
+const cricketSchema = new mongoose.Schema(
   {
     UserId: {
       type: ObjectId,
@@ -28,4 +28,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("cricket", userSchema);
+module.exports = mongoose.model("cricket", cricketSchema);

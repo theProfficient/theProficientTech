@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const userSchema = new mongoose.Schema(
+const HockySchema = new mongoose.Schema(
   {
     UserId: {
       type: ObjectId,
@@ -25,4 +25,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("hocky", userSchema);
+module.exports = mongoose.model("hocky", HockySchema);
