@@ -5,9 +5,9 @@ const hockyModel = require("../model/hockyModel");
 const createHoc = async function (req, res) {
   try {
 
-      // let hocMatch = req.query.hasOwnProperty("cricMatch") ? req.query.cricMatch : ""
-    // let hocRuns = req.query.hasOwnProperty("cricRuns") ? req.query.cricRuns : ""
-    // let hocWins = req.query.hasOwnProperty("cricWins") ? req.query.cricWins : ""
+      // let hocMatch = req.query.hasOwnProperty("hocMatch") ? req.query.hocMatch : ""
+    // let hocRuns = req.query.hasOwnProperty("hocRuns") ? req.query.hocRuns : ""
+    // let hocWins = req.query.hasOwnProperty("hocWins") ? req.query.hocWins : ""
    
     let body = req.body;
     let UserIdForHoc = UserId.UserId_id;

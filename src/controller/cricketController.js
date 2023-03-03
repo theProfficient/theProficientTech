@@ -11,9 +11,9 @@ const createCric = async function (req, res) {
     // let cricRuns = req.query.hasOwnProperty("cricRuns") ? req.query.cricRuns : ""
     // let cricWins = req.query.hasOwnProperty("cricWins") ? req.query.cricWins : ""
 
-    let body = req.body;
-    let UserIdForCricket = UserId._id;
-    let UserId = await userModel.findById({ UserId: UserIdForCricket });
+    let data = req.body;
+    let UserId = req.query
+    let {cricMatch,cricRuns,cricWins} = data
 
     if (Object.keys(body).length == 0) {
       return res.status(400).send({
@@ -30,6 +30,7 @@ const createCric = async function (req, res) {
       message: " cricket table created successfully",
       data: createCricTable,
     });
+
   } catch (error) {
     return res.status(500).send({
       status: false,
@@ -90,6 +91,7 @@ const updateCric = async function (req, res) {
       message: "Success",
       data: matchData,
     });
+
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -106,7 +108,7 @@ const getAllCric = async function (req, res) {
 
     const cricketData = await cricketModel
       .find(data)
-      .sort({ cricMatch: -1, hocRuns: -1, hocWins: -1 });
+      .sort({ cricMatch: -1, cricRuns: -1, cricWins: -1 });
 
     if (data.length == 0) {
       return res

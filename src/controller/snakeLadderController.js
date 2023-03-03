@@ -4,9 +4,9 @@ const snakeLadderModel = require("../model/snakeLadderModel");
 
 const createSnak = async function (req, res) {
   try {
-    // let snakMatch = req.query.hasOwnProperty("snakMatch") ? req.query.cricMatch : ""
-    // let snakRuns = req.query.hasOwnProperty("snakRuns") ? req.query.cricRuns : ""
-    // let snakWins = req.query.hasOwnProperty("snakWins") ? req.query.cricWins : ""
+    // let snakMatch = req.query.hasOwnProperty("snakMatch") ? req.query.snakMatch : ""
+    // let snakRuns = req.query.hasOwnProperty("snakRuns") ? req.query.snakRuns : ""
+    // let snakWins = req.query.hasOwnProperty("snakWins") ? req.query.snakWins : ""
 
     let body = req.body;
     let UserIdForSnakeL = UserId._id;
