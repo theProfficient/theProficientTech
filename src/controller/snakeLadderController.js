@@ -8,11 +8,15 @@ const createSnak = async function (req, res) {
     // let snakRuns = req.query.hasOwnProperty("snakRuns") ? req.query.snakRuns : ""
     // let snakWins = req.query.hasOwnProperty("snakWins") ? req.query.snakWins : ""
 
-    let body = req.body;
-    let UserIdForSnakeL = UserId._id;
-    let UserId = await userModel.findById({ UserId: UserIdForSnakeL });
+    let data = req.body;
+    let UserId = req.query.UserId
+    let {snakMatch,snakRuns,snakWins} = data
+    // console.log(body,UserId);
 
-    if (Object.keys(body).length == 0) {
+    let getUserId = await userModel.findById({_id:UserId})
+    console.log(getUserId);
+
+    if (Object.keys(data).length == 0) {
       return res.status(400).send({
         status: false,
         message:
@@ -20,7 +24,7 @@ const createSnak = async function (req, res) {
       });
     }
 
-    const createSnakeTable = await snakeLadderModel.create(body);
+    const createSnakeTable = await snakeLadderModel.create(data);
 
     return res.status(201).send({
       status: true,
@@ -69,13 +73,13 @@ const updateSnak = async function (req, res) {
     let updateData = req.body;
     let UserId = req.query.UserId;
 
-    const matchData = await snakeLadderModel.findOneAndUpdate(
+    const matchData1 = await snakeLadderModel.findOneAndUpdate(
       { UserId: UserId },
       updateData,
       { new: true }
     );
 
-    if (matchData.length == 0) {
+    if (matchData1.length == 0) {
       return res.status(404).send({
         status: false,
         message: "user not found",
@@ -85,7 +89,7 @@ const updateSnak = async function (req, res) {
     return res.status(200).send({
       status: true,
       message: "Success",
-      data: matchData,
+      data: matchData1,
     });
   } catch (err) {
     return res.status(500).send({

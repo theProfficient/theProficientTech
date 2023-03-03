@@ -11,11 +11,15 @@ const createCric = async function (req, res) {
     // let cricRuns = req.query.hasOwnProperty("cricRuns") ? req.query.cricRuns : ""
     // let cricWins = req.query.hasOwnProperty("cricWins") ? req.query.cricWins : ""
 
-    let data = req.body;
-    let UserId = req.query
+    let data = req.query
+    let UserId = req.query.UserId
     let {cricMatch,cricRuns,cricWins} = data
+    // console.log(body,UserId);
 
-    if (Object.keys(body).length == 0) {
+    let getUserId = await userModel.findById({_id:UserId})
+    console.log(getUserId);
+
+    if (Object.keys(data).length == 0) {
       return res.status(400).send({
         status: false,
         message:
@@ -23,7 +27,7 @@ const createCric = async function (req, res) {
       });
     }
 
-    const createCricTable = await cricketModel.create(body);
+    const createCricTable = await cricketModel.create(data);
 
     return res.status(201).send({
       status: true,
@@ -44,7 +48,6 @@ const createCric = async function (req, res) {
 const getCric = async function (req, res) {
   try {
     let UserId1 = req.query.UserId1;
-
     let cricket = await cricketModel.findOne({ UserId: UserId1 }); // find by useerId not A new created mongodb id
 
     if (!cricket) {
@@ -70,7 +73,7 @@ const getCric = async function (req, res) {
 
 const updateCric = async function (req, res) {
   try {
-    let updateData = req.body;
+    let updateData = req.query
     let UserId = req.query.UserId;
 
     const matchData = await cricketModel.findOneAndUpdate(
@@ -108,7 +111,7 @@ const getAllCric = async function (req, res) {
 
     const cricketData = await cricketModel
       .find(data)
-      .sort({ cricMatch: -1, cricRuns: -1, cricWins: -1 });
+      .sort({ cricWins: -1 });
 
     if (data.length == 0) {
       return res

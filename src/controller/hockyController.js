@@ -9,11 +9,14 @@ const createHoc = async function (req, res) {
     // let hocRuns = req.query.hasOwnProperty("hocRuns") ? req.query.hocRuns : ""
     // let hocWins = req.query.hasOwnProperty("hocWins") ? req.query.hocWins : ""
    
-    let body = req.body;
-    let UserIdForHoc = UserId.UserId_id;
-    UserId = await userModel.findById({ UserId: UserIdForHoc });
+    let data = req.body;
+    let UserId = req.query.UserId
+   let {hocMatch,hocRuns,HocWins} = data
 
-if (Object.keys(body).length == 0) {
+    let getUserId = await userModel.findById({_id:UserId});
+    console.log(getUserId);
+
+if (Object.keys(data).length == 0) {
       return res.status(400).send({
         status: false,
         message:
@@ -21,13 +24,14 @@ if (Object.keys(body).length == 0) {
       });
     }
 
-    const createHocTable = await hockyModel.create(body);
+    const createHocTable = await hockyModel.create(data);
 
     return res.status(201).send({
       status: true,
       message: " Hocky table created successfully",
       data: createHocTable,
     });
+
   } catch (error) {
     return res.status(500).send({
       status: false,
@@ -41,18 +45,19 @@ if (Object.keys(body).length == 0) {
 const getHoc = async function (req, res) {
   try {
     let UserId1 = req.query.UserId1;
-    let Hocky = await hockyModel.findOne({ UserId: UserId1 }); // find by useerId not A new created mongodb id
-
-    if (!Hocky) {
-      return res
-        .status(404)
-        .send({ status: false, message: "this UserId not found" });
-    }
+    let hocky = await hockyModel.findOne({ UserId: UserId1 }); // find by useerId not A new created mongodb id
+     console.log(hocky);
+     
+    // if (!Hocky) {
+    //   return res
+    //     .status(404)
+    //     .send({ status: false, message: "this UserId not found" });
+    // }
 
     return res.status(200).send({
       status: true,
       message: "success",
-      data: Hocky,
+      data: hocky,
     });
   } catch (err) {
     return res.status(500).send({

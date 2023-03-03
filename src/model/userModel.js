@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
     balance:{
         type: Number,
         required :true,
-        default:0
+        default:100
     },
     status:{
       type:Number,
@@ -31,4 +31,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("GammingUser", userSchema);
+module.exports = mongoose.model("User", userSchema);

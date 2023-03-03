@@ -8,15 +8,15 @@ const createTic = async function (req, res) {
     // let ticRuns = req.query.hasOwnProperty("ticRuns") ? req.query.ticRuns : ""
     // let ticWins = req.query.hasOwnProperty("ticWins") ? req.query.ticWins : ""
 
-    let body = req.body;
-    let UserId = req.query;
+    let data = req.body;
+    let UserId = req.query.UserId
     let { ticMatch, ticRuns, ticWins } = data;
-    console.log(body,UserId);
+    console.log(data,UserId);
 
      let getUserId = await userModel.findById({_id:UserId})
      console.log(getUserId);
 
-    if (Object.keys(body).length == 0) {
+    if (Object.keys(data).length == 0) {
       return res.status(400).send({
         status: false,
         message:
@@ -24,7 +24,7 @@ const createTic = async function (req, res) {
       });
     }
 
-    const createTicTable = await ticTacToeModel.create(body);
+    const createTicTable = await ticTacToeModel.create(data);
 
     return res.status(201).send({
       status: true,

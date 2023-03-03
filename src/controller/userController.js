@@ -10,7 +10,7 @@ const createUsers = async function (req, res) {
     // let email = req.query.hasOwnProperty("email") ? req.query.email : ""
     // let phone = req.query.hasOwnProperty("phone") ? req.query.phone : ""
 
-    let bodyData = req.body;
+    let bodyData = req.query
 
       let { UserId, email, phone,balance,status} = bodyData;
 
@@ -110,7 +110,7 @@ const getUser = async function (req, res) {
 
 const updateUser = async function (req, res) {
   try {
-    let updateData = req.body;
+    let updateData = req.query
     let UserId = req.query.UserId;
 
     const user = await userModel.findOneAndUpdate(
