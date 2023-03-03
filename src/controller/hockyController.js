@@ -9,7 +9,7 @@ const createHoc = async function (req, res) {
     // let hocRuns = req.query.hasOwnProperty("hocRuns") ? req.query.hocRuns : ""
     // let hocWins = req.query.hasOwnProperty("hocWins") ? req.query.hocWins : ""
    
-    let data = req.body;
+    let data = req.query
     let UserId = req.query.UserId
    let {hocMatch,hocRuns,HocWins} = data
 
@@ -24,6 +24,14 @@ if (Object.keys(data).length == 0) {
       });
     }
 
+    let UserId1 = await hockyModel.findOne({ UserId: UserId });
+
+      if (UserId1) {
+        return res.status(400).send({
+          status: false,
+          message: "this userId is already registerd",
+        });
+      }
     const createHocTable = await hockyModel.create(data);
 
     return res.status(201).send({
@@ -44,15 +52,15 @@ if (Object.keys(data).length == 0) {
 
 const getHoc = async function (req, res) {
   try {
-    let UserId1 = req.query.UserId1;
-    let hocky = await hockyModel.findOne({ UserId: UserId1 }); // find by useerId not A new created mongodb id
+    let UserId = req.query.UserId;
+    let hocky = await hockyModel.findOne({ UserId: UserId}); // find by useerId not A new created mongodb id
      console.log(hocky);
      
-    // if (!Hocky) {
-    //   return res
-    //     .status(404)
-    //     .send({ status: false, message: "this UserId not found" });
-    // }
+    if (!hocky) {
+      return res
+        .status(404)
+        .send({ status: false, message: "this UserId not found" });
+    }
 
     return res.status(200).send({
       status: true,
@@ -71,7 +79,7 @@ const getHoc = async function (req, res) {
 
 const updateHoc = async function (req, res) {
   try {
-    let updateData = req.body;
+    let updateData = req.query
     let UserId = req.query.UserId;
 
     const matchData = await hockyModel.findOneAndUpdate(
@@ -109,7 +117,7 @@ const getAllHoc = async function (req, res) {
 
     const HockyData = await hockyModel
       .find(data)
-      .sort({ hocMatch: -1, hocRuns: -1, HocWins: -1 });
+      .sort({ HocWins: -1 });
 
     if (data.length == 0) {
       return res

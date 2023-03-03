@@ -10,10 +10,12 @@ const snakeSchema = new mongoose.Schema(
     },
     snakMatch: {
       type: Number,
+      default:0,
       trim: true,
     },
     snakWins: {
       type: Number,
+      default:0,
       trim: true,
     },
   },

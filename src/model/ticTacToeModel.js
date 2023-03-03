@@ -10,10 +10,12 @@ const userSchema = new mongoose.Schema(
     },
     ticMatch: {
       type: Number,
+      default:0,
       trim: true,
     },
     ticWins: {
       type: Number,
+      default:0,
       trim: true,
     },
   },

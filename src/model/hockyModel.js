@@ -10,14 +10,17 @@ const HockySchema = new mongoose.Schema(
     },
     hocMatch: {
       type: Number,
+      default:0,
       trim: true,
     },
     hocRuns: {
       type: Number,
+      default:0,
       trim: true,
     },
     hocWins: {
       type: Number,
+      default:0,
       trim: true,
     },
   },

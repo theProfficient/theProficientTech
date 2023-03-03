@@ -27,8 +27,16 @@ const createCric = async function (req, res) {
       });
     }
 
-    const createCricTable = await cricketModel.create(data);
+     let UserId1 = await cricketModel.findOne({ UserId: UserId });
 
+      if (UserId1) {
+        return res.status(400).send({
+          status: false,
+          message: "this userId is already registerd",
+        });
+      }
+
+    const createCricTable = await cricketModel.create(data);
     return res.status(201).send({
       status: true,
       message: " cricket table created successfully",
@@ -47,8 +55,8 @@ const createCric = async function (req, res) {
 
 const getCric = async function (req, res) {
   try {
-    let UserId1 = req.query.UserId1;
-    let cricket = await cricketModel.findOne({ UserId: UserId1 }); // find by useerId not A new created mongodb id
+    let UserId = req.query.UserId
+    let cricket = await cricketModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
 
     if (!cricket) {
       return res
