@@ -10,9 +10,9 @@ const createUsers = async function (req, res) {
     // let email = req.query.hasOwnProperty("email") ? req.query.email : ""
     // let phone = req.query.hasOwnProperty("phone") ? req.query.phone : ""
 
-    let bodyData = req.query
+    let bodyData = req.query;
 
-      let { UserId, email, phone,balance,status} = bodyData;
+    let { UserId, email, phone, balance, status } = bodyData;
 
     if (Object.keys(bodyData).length == 0) {
       return res.status(400).send({
@@ -39,7 +39,6 @@ const createUsers = async function (req, res) {
     //   });
     // }
 
-    
     // let checkEmail = await userModel.findOne({ email: email });
 
     //   if (checkEmail) {
@@ -49,34 +48,31 @@ const createUsers = async function (req, res) {
     //     });
     //   }
 
-      //  let data = {}
-      //  data.UserId = UserId
-      //  data.email = email
-      //  data.phone = phone
-      // data.phone = phone
-      //  data.phone = phone
-      
+    //  let data = {}
+    //  data.UserId = UserId
+    //  data.email = email
+    //  data.phone = phone
+    // data.phone = phone
+    //  data.phone = phone
 
+    // const userCreated = await userModel.create(data);
 
-      // const userCreated = await userModel.create(data);
+    // if(email || phone){
+    const userCreated = await userModel.create(bodyData);
 
-      // if(email || phone){
-     const userCreated = await userModel.create(bodyData);
-
-      return res.status(201).send({
-        status: true,
-        message: "User created successfully",
-        data: userCreated,
-      });
+    return res.status(201).send({
+      status: true,
+      message: "User created successfully",
+      data: userCreated,
+    });
     // }
-   } catch (error) {
+  } catch (error) {
     return res.status(500).send({
       status: false,
       message: error.message,
     });
   }
-}
-
+};
 
 // _______find by query params
 
@@ -110,7 +106,7 @@ const getUser = async function (req, res) {
 
 const updateUser = async function (req, res) {
   try {
-    let updateData = req.query
+    let updateData = req.query;
     let UserId = req.query.UserId;
 
     const user = await userModel.findOneAndUpdate(

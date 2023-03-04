@@ -58,7 +58,6 @@ Router.get("/getAllTicTacToeData", ticTacToe.getAllTic);
 
 //************ checking your end point valid or not */
 
-
 Router.all("/**", function (req, res) {
   res.status(404).send({
     status: false,

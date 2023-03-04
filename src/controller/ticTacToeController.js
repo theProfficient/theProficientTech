@@ -8,13 +8,13 @@ const createTic = async function (req, res) {
     // let ticRuns = req.query.hasOwnProperty("ticRuns") ? req.query.ticRuns : ""
     // let ticWins = req.query.hasOwnProperty("ticWins") ? req.query.ticWins : ""
 
-    let data = req.body;
-    let UserId = req.query.UserId
+    let data = req.query;
+    let UserId = req.query.UserId;
     let { ticMatch, ticRuns, ticWins } = data;
-    console.log(data,UserId);
+    console.log(data, UserId);
 
-     let getUserId = await userModel.findById({_id:UserId})
-     console.log(getUserId);
+    let getUserId = await userModel.findById({ _id: UserId });
+    console.log(getUserId);
 
     if (Object.keys(data).length == 0) {
       return res.status(400).send({
@@ -24,8 +24,16 @@ const createTic = async function (req, res) {
       });
     }
 
-    const createTicTable = await ticTacToeModel.create(data);
+    let UserId1 = await ticTacToeModel.findOne({ UserId: UserId });
 
+    if (UserId1) {
+      return res.status(400).send({
+        status: false,
+        message: "this userId is already registerd",
+      });
+    }
+
+    const createTicTable = await ticTacToeModel.create(data);
     return res.status(201).send({
       status: true,
       message: " ticTacToe table created successfully",
@@ -43,9 +51,8 @@ const createTic = async function (req, res) {
 
 const getTic = async function (req, res) {
   try {
-    let UserId1 = req.query.UserId1;
-
-    let ticTacToe = await ticTacToeModel.findOne({ UserId: UserId1 });
+    let UserId = req.query.UserId;
+    let ticTacToe = await ticTacToeModel.findOne({ UserId: UserId });
 
     if (!ticTacToe) {
       return res
@@ -70,7 +77,7 @@ const getTic = async function (req, res) {
 
 const updateTic = async function (req, res) {
   try {
-    let updateData = req.body;
+    let updateData = req.query;
     let UserId = req.query.UserId;
 
     const matchData = await ticTacToeModel.findOneAndUpdate(
@@ -105,9 +112,7 @@ const getAllTic = async function (req, res) {
   try {
     let data = req.query;
 
-    const ticTacToeData = await ticTacToeModel
-      .find(data)
-      .sort({ ticMatch: -1, ticRuns: -1, ticRuns: -1 });
+    const ticTacToeData = await ticTacToeModel.find(data).sort({ ticWins: -1 });
 
     if (data.length == 0) {
       return res

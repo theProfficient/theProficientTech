@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-   
+
     email: {
       type: String,
       unique: true,
@@ -17,16 +17,16 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    balance:{
-        type: Number,
-        required :true,
-        default:100
+    balance: {
+      type: Number,
+      required: true,
+      default: 100,
     },
-    status:{
-      type:Number,
-      required:true,
-      default:0
-    }
+    status: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

@@ -12,7 +12,7 @@ app.use("/", route);
 mongoose.set("strictQuery", false);
 mongoose
   .connect(
-    "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/nikita",
+    "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/proficientTech",
     {
       useNewUrlParser: true,
     }
@@ -24,7 +24,6 @@ mongoose
     console.log("no connected");
   });
 
-
-app.listen(process.env.PORT || 3000, function(){
-    console.log('Express app running on port' + (process.env.port || 3000))
+app.listen(process.env.PORT || 3000, function () {
+  console.log("Express app running on port" + (process.env.port || 3000));
 });
