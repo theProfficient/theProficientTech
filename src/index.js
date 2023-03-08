@@ -4,10 +4,14 @@ const app = express();
 const mongoose = require("mongoose");
 const route = require("./route/routes");
 
+//middleware
+app.use(express.json())
+// app.use(bodyParser.json()) // for parsing application/json
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use("/", route);
-//middleware
-app.use(express.json());
+
+
 app.use(cors());
 app.options('*', cors())
 
@@ -30,6 +34,6 @@ mongoose
 //   console.log("Express app running on port" + (process.env.port || 5000));
 // });
 
-app.listen(5000, '0.0.0.0', function() {
-  console.log('Listening to port:  ' + 5000);
+app.listen(3000, '0.0.0.0', function() {
+  console.log('Listening to port:  ' + 3000);
 });

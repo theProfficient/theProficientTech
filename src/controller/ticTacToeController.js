@@ -2,50 +2,50 @@ const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const ticTacToeModel = require("../model/ticTacToeModel");
 
-const createTic = async function (req, res) {
-  try {
-    // let ticMatch = req.query.hasOwnProperty("ticMatch") ? req.query.ticMatch : ""
-    // let ticRuns = req.query.hasOwnProperty("ticRuns") ? req.query.ticRuns : ""
-    // let ticWins = req.query.hasOwnProperty("ticWins") ? req.query.ticWins : ""
+// const createTic = async function (req, res) {
+//   try {
+//     // let ticMatch = req.query.hasOwnProperty("ticMatch") ? req.query.ticMatch : ""
+//     // let ticRuns = req.query.hasOwnProperty("ticRuns") ? req.query.ticRuns : ""
+//     // let ticWins = req.query.hasOwnProperty("ticWins") ? req.query.ticWins : ""
 
-    let data = req.query;
-    let UserId = req.query.UserId;
-    let { ticMatch, ticRuns, ticWins } = data;
-    console.log(data, UserId);
+//     let data = req.query;
+//     let UserId = req.query.UserId;
+//     let { ticMatch, ticRuns, ticWins } = data;
+//     console.log(data, UserId);
 
-    let getUserId = await userModel.findById({ _id: UserId });
-    console.log(getUserId);
+//     let getUserId = await userModel.findById({ _id: UserId });
+//     console.log(getUserId);
 
-    if (Object.keys(data).length == 0) {
-      return res.status(400).send({
-        status: false,
-        message:
-          "Body should  be not Empty please enter some data to create ticTacToeUser",
-      });
-    }
+//     if (Object.keys(data).length == 0) {
+//       return res.status(400).send({
+//         status: false,
+//         message:
+//           "Body should  be not Empty please enter some data to create ticTacToeUser",
+//       });
+//     }
 
-    let UserId1 = await ticTacToeModel.findOne({ UserId: UserId });
+//     let UserId1 = await ticTacToeModel.findOne({ UserId: UserId });
 
-    if (UserId1) {
-      return res.status(400).send({
-        status: false,
-        message: "this userId is already registerd",
-      });
-    }
+//     if (UserId1) {
+//       return res.status(400).send({
+//         status: false,
+//         message: "this userId is already registerd",
+//       });
+//     }
 
-    const createTicTable = await ticTacToeModel.create(data);
-    return res.status(201).send({
-      status: true,
-      message: " ticTacToe table created successfully",
-      data: createTicTable,
-    });
-  } catch (error) {
-    return res.status(500).send({
-      status: false,
-      message: error.message,
-    });
-  }
-};
+//     const createTicTable = await ticTacToeModel.create(data);
+//     return res.status(201).send({
+//       status: true,
+//       message: " ticTacToe table created successfully",
+//       data: createTicTable,
+//     });
+//   } catch (error) {
+//     return res.status(500).send({
+//       status: false,
+//       message: error.message,
+//     });
+//   }
+// };
 
 //__________get ticTacToe Table
 
@@ -133,4 +133,4 @@ const getAllTic = async function (req, res) {
   }
 };
 
-module.exports = { createTic, getTic, updateTic, getAllTic };
+module.exports = { getTic, updateTic, getAllTic };

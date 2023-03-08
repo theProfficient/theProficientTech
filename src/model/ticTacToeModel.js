@@ -4,9 +4,9 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const userSchema = new mongoose.Schema(
   {
     UserId: {
-      type: ObjectId,
-      ref: "User",
-      unique: true,
+      type: String,
+      // ref: "User",
+      // unique: true,
     },
     ticMatch: {
       type: Number,

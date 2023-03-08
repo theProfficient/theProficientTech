@@ -1,54 +1,51 @@
-// // https://github.com/SeyCompLk/PitchEka-Backend/blob/main/models/match.js
-// // https://github.com/SeyCompLk/PitchEka-Backend
-
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const cricketModel = require("../model/cricketModel");
 
-const createCric = async function (req, res) {
-  try {
-    // let cricMatch = req.query.hasOwnProperty("cricMatch") ? req.query.cricMatch : ""
-    // let cricRuns = req.query.hasOwnProperty("cricRuns") ? req.query.cricRuns : ""
-    // let cricWins = req.query.hasOwnProperty("cricWins") ? req.query.cricWins : ""
+// const createCric = async function (req, res) {
+//   try {
+//     // let cricMatch = req.query.hasOwnProperty("cricMatch") ? req.query.cricMatch : ""
+//     // let cricRuns = req.query.hasOwnProperty("cricRuns") ? req.query.cricRuns : ""
+//     // let cricWins = req.query.hasOwnProperty("cricWins") ? req.query.cricWins : ""
 
-    let data = req.query;
-    let UserId = req.query.UserId;
-    let { cricMatch, cricRuns, cricWins } = data;
-    // console.log(body,UserId);
+//     let data = req.query;
+//     let UserId = req.query.UserId;
+//     let { cricMatch, cricRuns, cricWins } = data;
+//     // console.log(body,UserId);
 
-    let getUserId = await userModel.findById({ _id: UserId });
-    console.log(getUserId);
+//     let getUserId = await userModel.findById({ _id: UserId });
+//     console.log(getUserId);
 
-    if (Object.keys(data).length == 0) {
-      return res.status(400).send({
-        status: false,
-        message:
-          "Body should  be not Empty please enter some data to create cricketUser",
-      });
-    }
+//     if (Object.keys(data).length == 0) {
+//       return res.status(400).send({
+//         status: false,
+//         message:
+//           "Body should  be not Empty please enter some data to create cricketUser",
+//       });
+//     }
 
-    let UserId1 = await cricketModel.findOne({ UserId: UserId });
+//     let UserId1 = await cricketModel.findOne({ UserId: UserId });
 
-    if (UserId1) {
-      return res.status(400).send({
-        status: false,
-        message: "this userId is already registerd",
-      });
-    }
+//     if (UserId1) {
+//       return res.status(400).send({
+//         status: false,
+//         message: "this userId is already registerd",
+//       });
+//     }
 
-    const createCricTable = await cricketModel.create(data);
-    return res.status(201).send({
-      status: true,
-      message: " cricket table created successfully",
-      data: createCricTable,
-    });
-  } catch (error) {
-    return res.status(500).send({
-      status: false,
-      message: error.message,
-    });
-  }
-};
+//     const createCricTable = await cricketModel.create(data);
+//     return res.status(201).send({
+//       status: true,
+//       message: " cricket table created successfully",
+//       data: createCricTable,
+//     });
+//   } catch (error) {
+//     return res.status(500).send({
+//       status: false,
+//       message: error.message,
+//     });
+//   }
+// };
 
 //_____________get cricket data
 
@@ -135,4 +132,4 @@ const getAllCric = async function (req, res) {
   }
 };
 
-module.exports = { createCric, getCric, updateCric, getAllCric };
+module.exports = {  getCric, updateCric, getAllCric };

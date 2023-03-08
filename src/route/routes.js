@@ -18,7 +18,7 @@ Router.put("/updateUser", userController.updateUser);
 
 //_____________________ Cricket________________________
 
-Router.post("/createCricket", cricketController.createCric);
+// Router.post("/createCricket", cricketController.createCric);
 
 Router.get("/cricketData", cricketController.getCric);
 
@@ -28,7 +28,7 @@ Router.get("/getAllCricketData", cricketController.getAllCric);
 
 //__________________Hocky___________________
 
-Router.post("/createHocky", hockyController.createHoc);
+// Router.post("/createHocky", hockyController.createHoc);
 
 Router.get("/HockyData", hockyController.getHoc);
 
@@ -38,7 +38,7 @@ Router.get("/getAllHockyData", hockyController.getAllHoc);
 
 //__________________snakeLadder___________________
 
-Router.post("/createSnakeLadder", snakeLadderController.createSnak);
+// Router.post("/createSnakeLadder", snakeLadderController.createSnak);
 
 Router.get("/snakeLadderData", snakeLadderController.getSnak);
 
@@ -48,7 +48,7 @@ Router.get("/getAllSnakeLadderData", snakeLadderController.getAllSnak);
 
 //__________________ticTacToe___________________
 
-Router.post("/createTicTacToe", ticTacToe.createTic);
+// Router.post("/createTicTacToe", ticTacToe.createTic);
 
 Router.get("/ticTacToeData", ticTacToe.getTic);
 
