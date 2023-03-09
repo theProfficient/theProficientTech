@@ -8,12 +8,12 @@ const snakeSchema = new mongoose.Schema(
       // ref: "User",
       // unique: true,
     },
-    snakMatch: {
+    snakeMatch: {
       type: Number,
       default: 0,
       trim: true,
     },
-    snakWins: {
+    snakeWins: {
       type: Number,
       default: 0,
       trim: true,

@@ -49,29 +49,29 @@ const cricketModel = require("../model/cricketModel");
 
 //_____________get cricket data
 
-const getCric = async function (req, res) {
-  try {
-    let UserId = req.query.UserId;
-    let cricket = await cricketModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
+// const getCric = async function (req, res) {
+//   try {
+//     let UserId = req.query.UserId;
+//     let cricket = await cricketModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
 
-    if (!cricket) {
-      return res
-        .status(404)
-        .send({ status: false, message: "this UserId not found" });
-    }
+//     if (!cricket) {
+//       return res
+//         .status(404)
+//         .send({ status: false, message: "this UserId not found" });
+//     }
 
-    return res.status(200).send({
-      status: true,
-      message: "success",
-      data: cricket,
-    });
-  } catch (err) {
-    return res.status(500).send({
-      status: false,
-      error: err.message,
-    });
-  }
-};
+//     return res.status(200).send({
+//       status: true,
+//       message: "success",
+//       data: cricket,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({
+//       status: false,
+//       error: err.message,
+//     });
+//   }
+// };
 
 //__________update table
 
@@ -132,4 +132,4 @@ const getAllCric = async function (req, res) {
   }
 };
 
-module.exports = {  getCric, updateCric, getAllCric };
+module.exports = { updateCric, getAllCric };

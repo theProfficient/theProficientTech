@@ -49,30 +49,30 @@ const snakeLadderModel = require("../model/snakeLadderModel");
 
 //__________get snakeLadder Data
 
-const getSnak = async function (req, res) {
-  try {
-    let UserId = req.query.UserId;
+// const getSnak = async function (req, res) {
+//   try {
+//     let UserId = req.query.UserId;
 
-    let snakeLadder = await snakeLadderModel.findOne({ UserId: UserId }); 
+//     let snakeLadder = await snakeLadderModel.findOne({ UserId: UserId });
 
-    if (!snakeLadder) {
-      return res
-        .status(404)
-        .send({ status: false, message: "this UserId not found" });
-    }
+//     if (!snakeLadder) {
+//       return res
+//         .status(404)
+//         .send({ status: false, message: "this UserId not found" });
+//     }
 
-    return res.status(200).send({
-      status: true,
-      message: "success",
-      data: snakeLadder,
-    });
-  } catch (err) {
-    return res.status(500).send({
-      status: false,
-      error: err.message,
-    });
-  }
-};
+//     return res.status(200).send({
+//       status: true,
+//       message: "success",
+//       data: snakeLadder,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({
+//       status: false,
+//       error: err.message,
+//     });
+//   }
+// };
 
 //___________update table
 
@@ -136,4 +136,4 @@ const getAllSnak = async function (req, res) {
   }
 };
 
-module.exports = { getSnak, updateSnak, getAllSnak };
+module.exports = { updateSnak, getAllSnak };

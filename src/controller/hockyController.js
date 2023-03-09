@@ -48,30 +48,30 @@ const hockyModel = require("../model/hockyModel");
 
 //________________get Hocky Data
 
-const getHoc = async function (req, res) {
-  try {
-    let UserId = req.query.UserId;
-    let hocky = await hockyModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
-    console.log(hocky);
+// const getHoc = async function (req, res) {
+//   try {
+//     let UserId = req.query.UserId;
+//     let hocky = await hockyModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
+//     console.log(hocky);
 
-    if (!hocky) {
-      return res
-        .status(404)
-        .send({ status: false, message: "this UserId not found" });
-    }
+//     if (!hocky) {
+//       return res
+//         .status(404)
+//         .send({ status: false, message: "this UserId not found" });
+//     }
 
-    return res.status(200).send({
-      status: true,
-      message: "success",
-      data: hocky,
-    });
-  } catch (err) {
-    return res.status(500).send({
-      status: false,
-      error: err.message,
-    });
-  }
-};
+//     return res.status(200).send({
+//       status: true,
+//       message: "success",
+//       data: hocky,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({
+//       status: false,
+//       error: err.message,
+//     });
+//   }
+// };
 
 //_________update Table
 
@@ -133,4 +133,4 @@ const getAllHoc = async function (req, res) {
   }
 };
 
-module.exports = { getHoc, updateHoc, getAllHoc };
+module.exports = {  updateHoc, getAllHoc };

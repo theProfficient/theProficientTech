@@ -49,29 +49,29 @@ const ticTacToeModel = require("../model/ticTacToeModel");
 
 //__________get ticTacToe Table
 
-const getTic = async function (req, res) {
-  try {
-    let UserId = req.query.UserId;
-    let ticTacToe = await ticTacToeModel.findOne({ UserId: UserId });
+// const getTic = async function (req, res) {
+//   try {
+//     let UserId = req.query.UserId;
+//     let ticTacToe = await ticTacToeModel.findOne({ UserId: UserId });
 
-    if (!ticTacToe) {
-      return res
-        .status(404)
-        .send({ status: false, message: "this UserId not found" });
-    }
+//     if (!ticTacToe) {
+//       return res
+//         .status(404)
+//         .send({ status: false, message: "this UserId not found" });
+//     }
 
-    return res.status(200).send({
-      status: true,
-      message: "success",
-      data: ticTacToe,
-    });
-  } catch (err) {
-    return res.status(500).send({
-      status: false,
-      error: err.message,
-    });
-  }
-};
+//     return res.status(200).send({
+//       status: true,
+//       message: "success",
+//       data: ticTacToe,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({
+//       status: false,
+//       error: err.message,
+//     });
+//   }
+// };
 
 //__________update Table
 
@@ -133,4 +133,4 @@ const getAllTic = async function (req, res) {
   }
 };
 
-module.exports = { getTic, updateTic, getAllTic };
+module.exports = { updateTic, getAllTic };

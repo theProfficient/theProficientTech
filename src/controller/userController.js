@@ -7,16 +7,11 @@ const hockyModel = require("../model/hockyModel");
 const snakeLadderModel = require("../model/snakeLadderModel");
 const ticTacToeModel = require("../model/ticTacToeModel");
 
-
 const createUsers = async function (req, res) {
   try {
-    // let UserId = req.query.hasOwnProperty("UserId") ? req.query.UserId : ""
-    // let email = req.query.hasOwnProperty("email") ? req.query.email : ""
-    // let phone = req.query.hasOwnProperty("phone") ? req.query.phone : ""
-
-    let bodyData = req.body
-
-    let { UserId, userName , email, phone, balance, status } = bodyData;
+    let bodyData = req.body;
+    
+    let { UserId, userName, email, phone, balance, status } = bodyData;
 
     if (Object.keys(bodyData).length == 0) {
       return res.status(400).send({
@@ -34,7 +29,6 @@ const createUsers = async function (req, res) {
       });
     }
 
-   
     // let checkEmail = await userModel.findOne({ email: email });
 
     //   if (checkEmail) {
@@ -56,18 +50,21 @@ const createUsers = async function (req, res) {
     // if(email || phone){
 
     const userCreated = await userModel.create(bodyData);
-    const createCricTable = await cricketModel.create(bodyData);
-    const createHocTable = await hockyModel.create(bodyData);
-    const createSnakeTable = await snakeLadderModel.create(bodyData);
-    const createTicTable = await ticTacToeModel.create(bodyData);
+    const CricTable = await cricketModel.create(bodyData);
+    const HocTable = await hockyModel.create(bodyData);
+    const SnakeTable = await snakeLadderModel.create(bodyData);
+    const TicTable = await ticTacToeModel.create(bodyData);
 
     return res.status(201).send({
       status: true,
-      message: "User created successfully",
-      data: userCreated,createCricTable,createHocTable,createSnakeTable,createTicTable
+      message: "success",
+      data: userCreated,
+      CricTable,
+      HocTable,
+      SnakeTable,
+      TicTable,
     });
     // }
-
   } catch (error) {
     return res.status(500).send({
       status: false,
@@ -80,10 +77,16 @@ const createUsers = async function (req, res) {
 
 const getUser = async function (req, res) {
   try {
-    let data1 = req.query.UserId;
+    let UserId = req.query.UserId;
     // console.log(data1)
 
-    const getNewUser = await userModel.findOne({ UserId: data1 });
+    const getNewUser = await userModel.findOne({ UserId: UserId });
+    let cricket = await cricketModel.findOne({ UserId: UserId });
+    let hocky = await hockyModel.findOne({ UserId: UserId });
+    let snakeLadder = await snakeLadderModel.findOne({ UserId: UserId });
+    let ticTacToe = await ticTacToeModel.findOne({ UserId: UserId })
+
+
 
     if (getNewUser.length == 0) {
       return res.status(404).send({
@@ -94,7 +97,7 @@ const getUser = async function (req, res) {
     return res.status(200).send({
       status: true,
       message: "Success",
-      data: getNewUser,
+      data: getNewUser,cricket,hocky,snakeLadder,ticTacToe
     });
   } catch (err) {
     return res.status(500).send({
@@ -108,46 +111,39 @@ const getUser = async function (req, res) {
 
 const updateUser = async function (req, res) {
   try {
-
-    
     let UserId = req.query.UserId;
-    let updateData = req.body
+    let updateData = req.query
 
-   let {userName,email,phone,balance,status} = updateData
+    let { userName, email, phone, balance, status } = updateData;
 
+    if (Object.keys(updateData).length == 0) {
+      return res.status(400).send({
+        status: false,
+        message: "For updating please enter atleast one key",
+      });
+    }
 
-   if (Object.keys(updateData).length == 0) {
-    return res.status(400).send({
-      status: false,
-      message:
-        "For updating please enter atleast one key",
-    });
-  }
-
-
-      let data = {}
-     data.userName = userName
-     data.email = email
-     data.phone = phone
-    data.balance = balance
-     data.status = status
-
+    let data = {};
+    data.userName = userName;
+    data.email = email;
+    data.phone = phone;
+    data.balance = balance;
+    data.status = status;
 
     const userUpdate = await userModel.findOneAndUpdate(
       { UserId: UserId },
-      {$set: data},
+      { $set: data },
       { new: true }
     );
 
-  
-    if (userUpdate.length == 0 ) {
+    if (userUpdate.length == 0) {
       return res.status(404).send({
         status: false,
         message: "user not found",
       });
     }
 
-    if (userUpdate.length == UserId ) {
+    if (userUpdate.length == UserId) {
       return res.status(404).send({
         status: false,
         message: "you can't update UserId",
@@ -159,7 +155,6 @@ const updateUser = async function (req, res) {
       message: "Success",
       data: userUpdate,
     });
-
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -167,6 +162,5 @@ const updateUser = async function (req, res) {
     });
   }
 };
-
 
 module.exports = { createUsers, getUser, updateUser };

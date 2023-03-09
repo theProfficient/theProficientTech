@@ -20,7 +20,7 @@ Router.put("/updateUser", userController.updateUser);
 
 // Router.post("/createCricket", cricketController.createCric);
 
-Router.get("/cricketData", cricketController.getCric);
+// Router.get("/cricketData", cricketController.getCric);
 
 Router.put("/updateCricket", cricketController.updateCric);
 
@@ -30,7 +30,7 @@ Router.get("/getAllCricketData", cricketController.getAllCric);
 
 // Router.post("/createHocky", hockyController.createHoc);
 
-Router.get("/HockyData", hockyController.getHoc);
+// Router.get("/HockyData", hockyController.getHoc);
 
 Router.put("/updateHocky", hockyController.updateHoc);
 
@@ -40,7 +40,7 @@ Router.get("/getAllHockyData", hockyController.getAllHoc);
 
 // Router.post("/createSnakeLadder", snakeLadderController.createSnak);
 
-Router.get("/snakeLadderData", snakeLadderController.getSnak);
+// Router.get("/snakeLadderData", snakeLadderController.getSnak);
 
 Router.put("/updateSnakeLadder", snakeLadderController.updateSnak);
 
@@ -50,13 +50,14 @@ Router.get("/getAllSnakeLadderData", snakeLadderController.getAllSnak);
 
 // Router.post("/createTicTacToe", ticTacToe.createTic);
 
-Router.get("/ticTacToeData", ticTacToe.getTic);
+// Router.get("/ticTacToeData", ticTacToe.getTic);
 
 Router.put("/updateTicTacToe", ticTacToe.updateTic);
 
 Router.get("/getAllTicTacToeData", ticTacToe.getAllTic);
 
 //************ checking your end point valid or not */
+
 
 Router.all("/**", function (req, res) {
   res.status(404).send({
