@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const userSchema = new mongoose.Schema(
+const ticTacSchema = new mongoose.Schema(
   {
     UserId: {
       type: String,
@@ -22,4 +22,4 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("ticTacToe", userSchema);
+module.exports = mongoose.model("ticTacToe", ticTacSchema);

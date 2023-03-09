@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
+const balanceModel = require("../model/balanceModel")
 const cricketModel = require("../model/cricketModel");
 
 // const createCric = async function (req, res) {
@@ -86,7 +87,7 @@ const updateCric = async function (req, res) {
       { new: true }
     );
 
-    if (matchData.length == 0) {
+ if (matchData.length == 0) {
       return res.status(404).send({
         status: false,
         message: "user not found",
@@ -98,6 +99,7 @@ const updateCric = async function (req, res) {
       message: "Success",
       data: matchData,
     });
+    
   } catch (err) {
     return res.status(500).send({
       status: false,

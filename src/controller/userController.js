@@ -6,11 +6,12 @@ const cricketModel = require("../model/cricketModel");
 const hockyModel = require("../model/hockyModel");
 const snakeLadderModel = require("../model/snakeLadderModel");
 const ticTacToeModel = require("../model/ticTacToeModel");
+const balanceModel = require("../model/balanceModel");
 
 const createUsers = async function (req, res) {
   try {
     let bodyData = req.body;
-    
+
     let { UserId, userName, email, phone, balance, status } = bodyData;
 
     if (Object.keys(bodyData).length == 0) {
@@ -54,6 +55,7 @@ const createUsers = async function (req, res) {
     const HocTable = await hockyModel.create(bodyData);
     const SnakeTable = await snakeLadderModel.create(bodyData);
     const TicTable = await ticTacToeModel.create(bodyData);
+    const balanceRecord = await balanceModel.create(bodyData)
 
     return res.status(201).send({
       status: true,
@@ -63,6 +65,7 @@ const createUsers = async function (req, res) {
       HocTable,
       SnakeTable,
       TicTable,
+      balanceRecord
     });
     // }
   } catch (error) {
@@ -78,15 +81,13 @@ const createUsers = async function (req, res) {
 const getUser = async function (req, res) {
   try {
     let UserId = req.query.UserId;
-    // console.log(data1)
+    
 
     const getNewUser = await userModel.findOne({ UserId: UserId });
     let cricket = await cricketModel.findOne({ UserId: UserId });
     let hocky = await hockyModel.findOne({ UserId: UserId });
     let snakeLadder = await snakeLadderModel.findOne({ UserId: UserId });
-    let ticTacToe = await ticTacToeModel.findOne({ UserId: UserId })
-
-
+    let ticTacToe = await ticTacToeModel.findOne({ UserId: UserId });
 
     if (getNewUser.length == 0) {
       return res.status(404).send({
@@ -94,11 +95,17 @@ const getUser = async function (req, res) {
         message: "user not found",
       });
     }
+
     return res.status(200).send({
       status: true,
       message: "Success",
-      data: getNewUser,cricket,hocky,snakeLadder,ticTacToe
+      data: getNewUser,
+      cricket,
+      hocky,
+      snakeLadder,
+      ticTacToe,
     });
+
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -112,7 +119,7 @@ const getUser = async function (req, res) {
 const updateUser = async function (req, res) {
   try {
     let UserId = req.query.UserId;
-    let updateData = req.query
+    let updateData = req.query;
 
     let { userName, email, phone, balance, status } = updateData;
 

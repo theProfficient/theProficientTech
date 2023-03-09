@@ -1,25 +1,29 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
-const cricketSchema = new mongoose.Schema(
+const balanceSchema = new mongoose.Schema(
   {
     UserId: {
       type: String,
       // ref: "User",
-      // unique: true,
     },
-    cricMatch: {
-      type: Number,
+     cricketId:{
+      type:ObjectId,
+      ref:"cricket",
+      require:true
+    },
+    objective: {
+      type: Boolean,
       trim: true,
       default: 0,
     },
-    cricRuns: {
-      type: Number,
+    chase: {
+      type: Boolean,
       trim: true,
       default: 0,
     },
-    cricWins: {  
-      type: Number,
+    multiplayer: {  
+      type: Boolean,
       trim: true,
       default: 0,
     },
@@ -27,4 +31,4 @@ const cricketSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("cricket", cricketSchema);
+module.exports = mongoose.model("balance", balanceSchema);

@@ -4,7 +4,8 @@ const userController = require("../controller/userController");
 const cricketController = require("../controller/cricketController");
 const hockyController = require("../controller/hockyController");
 const snakeLadderController = require("../controller/snakeLadderController");
-const ticTacToe = require("../controller/ticTacToeController");
+const ticTacToeController = require("../controller/ticTacToeController");
+const balanceController = require("../controller/balanceController")
 
 const Router = express.Router();
 
@@ -52,11 +53,18 @@ Router.get("/getAllSnakeLadderData", snakeLadderController.getAllSnak);
 
 // Router.get("/ticTacToeData", ticTacToe.getTic);
 
-Router.put("/updateTicTacToe", ticTacToe.updateTic);
+Router.put("/updateTicTacToe", ticTacToeController.updateTic);
 
-Router.get("/getAllTicTacToeData", ticTacToe.getAllTic);
+Router.get("/getAllTicTacToeData", ticTacToeController.getAllTic);
 
 //************ checking your end point valid or not */
+
+
+//_________________balance_____________________
+
+Router.put("/updateBalance", balanceController.updateBalance);
+
+
 
 
 Router.all("/**", function (req, res) {
