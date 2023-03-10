@@ -1,78 +1,88 @@
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const balanceModel = require("../model/balanceModel");
+const cricketModel = require("../model/cricketModel");
 
 const updateBalance = async function(req,res){
     try{
-        let updateData = req.query;
-        // let UserId = req.query.UserId;
-        // let cricketId = req.query.cricketId
+        let data= req.query;
+        let UserId = req.query.UserId
+        let cricketId = req.query._id
+        let balanceId= req.query._id
 
-        let { UserId,cricketId,objective,chase,multiplayer } = updateData
+     
 
-        let balanceData = await cricketModel.findOne({ $or: [{ _id:cricketId }, { UserId: UserId }] })
+    //     let { objective,chase,multiplayer,balance,types } = updateData
+    //     let balanceData = await balanceModel.findOne({ $or: [{ balanceId:balanceId}, { UserId: UserId }] })
+    //     let cricketData = await cricketModel.findOne({cricketId:cricketId})
 
-        let items = balanceData.items
+    //      types = balanceData.types
+    //      let arr = []
 
-        let sum = 0;
-        let arr = []
-        for(let i=0; i<items.length;i++){
+    //  for (let i=0 ; i< types.length;i++){
+    //   if(types[i].objective === true){
+    //     arr.push(userModel.balance += 50)
+    //   }
+    //  }
+
+    //     let items = balanceData.types
+    //     let sum = 0;
+    //     let arr = []
+    //     for(let i=0; i<items.length;i++){
           
+      
+        const user = await userModel.findOne({UserId:UserId})
+        const cricket = await cricketModel.findOne({cricketId:cricketId})
+        const balance = await balanceModel.findOne({balanceId:balanceId})
 
-        const balance = await userModel.findOne({UserId})
+
+        let {objective,chase,multiplayer} = data
+        
+        let balancedata = await balanceModel.findOne({balanceId:balanceId , UserId:UserId})
 
          if(objective === true){
-           
-
-
-
-
-            } else {
-              console.log('User input was not true, cricket wins remain at 0');
-            }
+           await userModel.findOne({UserId:UserId})
+           balance += 50;
+          }   await userModel.findOneAndUpdate({UserId:UserId}, {balance:balance},{new:true})
+          let cricketData = await cricketModel.findOne({cricketId:cricketId}, {new:true})
+         let  balanceData = await balanceModel.findOneAndUpdate({balanceId:balanceId},{objective:false})
+         return res.status(200).send({ status: true, message: "Success", data:cricketData,balanceData })
          
     
-//         for(const balance of user){
-//             if(balance.objective === true){
-//               cricketModel.wins +=50
-//             }
-//         }
-
-//            await cricket.save()
 
 
-
-        const matchData = await balanceModel.findOneAndUpdate(
-            { UserId: UserId },
-            updateData,
-            { new: true }
-          );
+    //     const matchData = await userModel.findOneAndUpdate(
+    //         { UserId: UserId },
+    //         updateData,
+    //         { new: true }
+    //       );
       
+    //       await balanceModel.findOneAndUpdate({ UserId: UserId }, { types: [], objective: true })
+    //     if (matchData.length == 0) {
+    //         return res.status(404).send({
+    //           status: false,
+    //           message: "user not found",
+    //         });
+    //       }
 
-        if (matchData.length == 0) {
-            return res.status(404).send({
-              status: false,
-              message: "user not found",
-            });
-          }
+    //       balanceData.save()
+    //       cricketData.save()
+    // return res.status(200).send({
+    //         status: true,
+    //         message: "Success",
+    //         data: matchData,balanceData,cricketData
+    //       });
 
-
-    return res.status(200).send({
-            status: true,
-            message: "Success",
-            data: matchData,
-          });
-
-
-    } catch (err) {
+        }
+     catch (err) {
         return res.status(500).send({
           status: false,
           error: err.message,
         });
       }
-}
 
 
+    }
 
 
 module.exports = { updateBalance };

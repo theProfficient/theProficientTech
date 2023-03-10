@@ -8,6 +8,10 @@ const cricketSchema = new mongoose.Schema(
       // ref: "User",
       // unique: true,
     },
+    balanceId:{
+      type:ObjectId,
+      ref:"balance"
+    },
     cricMatch: {
       type: Number,
       trim: true,

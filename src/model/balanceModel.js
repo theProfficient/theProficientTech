@@ -26,8 +26,8 @@ const balanceSchema = new mongoose.Schema(
       type: Boolean,
       trim: true,
       default: 0,
-    },
-  },
+    }
+   },
   { timestamps: true }
 );
 
