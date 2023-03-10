@@ -30,11 +30,11 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: 100,
    },
-    // status: {
-    //   type: Number,
-    //   required: true,
-    //   default: 0,
-    // },
+    status: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   { timestamps: true }
 );

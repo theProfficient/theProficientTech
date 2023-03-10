@@ -34,6 +34,6 @@ mongoose
 //   console.log("Express app running on port" + (process.env.port || 5000));
 // });
 
-app.listen(3000, '0.0.0.0', function() {
-  console.log('Listening to port:  ' + 3000);
+app.listen(8000, '0.0.0.0', function() {
+  console.log('Listening to port:  ' + 8000);
 });
