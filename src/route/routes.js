@@ -6,7 +6,7 @@ const hockyController = require("../controller/hockyController");
 const snakeLadderController = require("../controller/snakeLadderController");
 const ticTacToeController = require("../controller/ticTacToeController");
 const balanceController = require("../controller/balanceController")
-
+const tournamentController = require("../controller/tournamentController")
 const Router = express.Router();
 
 //_____________________________________User ______________
@@ -65,6 +65,9 @@ Router.get("/getAllTicTacToeData", ticTacToeController.getAllTic);
 Router.put("/updateBalance", balanceController.updateBalance);
 
 
+//___________tournaments_________
+
+Router.post("/tournament", tournamentController.createTournament);
 
 
 Router.all("/**", function (req, res) {

@@ -18,7 +18,7 @@ app.options('*', cors())
 mongoose.set("strictQuery", false);
 mongoose
   .connect(
-    "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/proficientTech",
+    "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/gammingWebBased",
     {
       useNewUrlParser: true,
     }
