@@ -19,6 +19,9 @@ const createTournament1 = async function (req, res) {
     }
 
     const tournamentTable1 = await tournamentModel.create(req.query);
+    let createdTime = tournamentTable1.createdAt
+    let endTime = createdTime + 1
+    console.log(createdTime)
 
     return res.status(201).send({
       status: true,
@@ -152,6 +155,25 @@ const createTournament5 = async function (req, res) {
   }
 };
 
+//_____________________________________getAll Table_____________________________
+
+const getTables = async function(req, res){
+  try{
+    const data = await tournamentModel.find();
+    return res.status(201).send({
+      status: true,
+      message: "Success",
+      data,
+    });
+
+  }catch (error) {
+    return res.status(500).send({
+      status: false,
+      message: error.message,
+    });
+  }
+}
+
 //_______________________________________________________update tournament____________________
 
 
@@ -200,5 +222,7 @@ module.exports = {
   createTournament2,
   createTournament3,
   createTournament4,
-  createTournament5,updateTournament1
+  createTournament5,
+  updateTournament1,
+  getTables
 };

@@ -73,6 +73,9 @@ Router.post("/tournament3", tournamentController.createTournament3);
 Router.post("/tournament4", tournamentController.createTournament4);
 Router.post("/tournament5", tournamentController.createTournament5);
 
+//___________CreatetournamentsCricket_________
+
+Router.get("/tables", tournamentController.getTables);
 //___updatetournamentsCricket__________
 
 Router.put("/tournament1", tournamentController.updateTournament1);

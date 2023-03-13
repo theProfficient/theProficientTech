@@ -30,10 +30,10 @@ mongoose
     console.log("no connected");
   });
 
-// app.listen(process.env.PORT || 5000, function () {
-//   console.log("Express app running on port" + (process.env.port || 5000));
-// });
-
-app.listen(8000, '0.0.0.0', function() {
-  console.log('Listening to port:  ' + 8000);
+app.listen(process.env.PORT || 8000, function () {
+  console.log("Express app running on port" + (process.env.port || 8000));
 });
+
+// app.listen(3005, '0.0.0.0', function() {
+//   console.log('Listening to port:  ' + 3005);
+// });
