@@ -9,7 +9,7 @@ const balanceController = require("../controller/balanceController")
 const tournamentController = require("../controller/tournamentController")
 const Router = express.Router();
 
-//_____________________________________User ______________
+//_____________________________________User______________
 
 Router.post("/register", userController.createUsers);
 
@@ -65,10 +65,21 @@ Router.get("/getAllTicTacToeData", ticTacToeController.getAllTic);
 Router.put("/updateBalance", balanceController.updateBalance);
 
 
-//___________tournaments_________
+//___________CreatetournamentsCricket_________
 
-Router.post("/tournament", tournamentController.createTournament);
+Router.post("/tournament1", tournamentController.createTournament1);
+Router.post("/tournament2", tournamentController.createTournament2);
+Router.post("/tournament3", tournamentController.createTournament3);
+Router.post("/tournament4", tournamentController.createTournament4);
+Router.post("/tournament5", tournamentController.createTournament5);
 
+//___updatetournamentsCricket__________
+
+Router.put("/tournament1", tournamentController.updateTournament1);
+// Router.put("/tournament2", tournamentController.updateTournament2);
+// Router.put("/tournament3", tournamentController.updateTournament3);
+// Router.put("/tournament4", tournamentController.updateTournament4);
+// Router.put("/tournament5", tournamentController.updateTournament5);
 
 Router.all("/**", function (req, res) {
   res.status(404).send({

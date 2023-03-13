@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 const tournamentSchema = new mongoose.Schema(
   {
   entryFee: {
-      type: String,
+      type: Number,
       unique: true,
       trim: true,
     },
 
     prizeAmount: {
-      type: String,
+      type: Number,
       unique: true,
       trim: true,
     },
@@ -16,7 +16,7 @@ const tournamentSchema = new mongoose.Schema(
     players: {
      type: Number,
       required: true,
-      default: 100,
+      default:0,
    },
     status: {
       type: String,
