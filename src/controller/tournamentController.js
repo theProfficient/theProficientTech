@@ -7,8 +7,9 @@ const cricketModel = require("../model/cricketModel");
 
 const createTournament1 = async function (req, res) {
   try {
-    let { entryFee, prizeAmount, players, status } = req.query;
-
+    //let queryData = req.query
+    let { entryFee, prizeAmount, players, status,maxTime } = req.query;
+  
 
     if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
@@ -18,15 +19,19 @@ const createTournament1 = async function (req, res) {
       });
     }
 
-    const tournamentTable1 = await tournamentModel.create(req.query);
-    let createdTime = tournamentTable1.createdAt
-    let endTime = createdTime + 1
-    console.log(createdTime)
+    let tournamentTable1;
+    async function createTournament() {
+      tournamentTable1 = await tournamentModel.create(req.query)
+      console.log(tournamentTable1);
+    }
+
+    setInterval(createTournament, 6000);
+    createTournament();
 
     return res.status(201).send({
       status: true,
       message: "Success",
-      tournamentTable1,
+      data: tournamentTable1,
     });
   } catch (error) {
     return res.status(500).send({
@@ -35,8 +40,6 @@ const createTournament1 = async function (req, res) {
     });
   }
 };
-
-
 
 //_______Tournament2
 
@@ -66,7 +69,6 @@ const createTournament2 = async function (req, res) {
     });
   }
 };
-
 
 //_______Tournament3
 
@@ -157,25 +159,25 @@ const createTournament5 = async function (req, res) {
 
 //_____________________________________getAll Table_____________________________
 
-const getTables = async function(req, res){
-  try{
-    const data = await tournamentModel.find();
+const getTables = async function (req, res) {
+  try {
+    const data = await tournamentModel.find().select({_id:0, createdAt:0, updatedAt: 0, __v: 0 });
+    let currentTime = new Date()
     return res.status(201).send({
       status: true,
       message: "Success",
-      data,
+      currentTime :currentTime,
+       data,
     });
-
-  }catch (error) {
+  } catch (error) {
     return res.status(500).send({
       status: false,
       message: error.message,
     });
   }
-}
+};
 
 //_______________________________________________________update tournament____________________
-
 
 const updateTournament1 = async function (req, res) {
   try {
@@ -203,7 +205,6 @@ const updateTournament1 = async function (req, res) {
       { new: true }
     );
 
-
     return res.status(200).send({
       status: true,
       message: "Success",
@@ -224,5 +225,5 @@ module.exports = {
   createTournament4,
   createTournament5,
   updateTournament1,
-  getTables
+  getTables,
 };

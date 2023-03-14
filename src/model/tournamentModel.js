@@ -3,13 +3,13 @@ const tournamentSchema = new mongoose.Schema(
   {
   entryFee: {
       type: Number,
-      unique: true,
+      // unique: true,
       trim: true,
     },
 
     prizeAmount: {
       type: Number,
-      unique: true,
+      // unique: true,
       trim: true,
     },
 
@@ -22,6 +22,9 @@ const tournamentSchema = new mongoose.Schema(
       type: String,
       enum: ['upcoming', 'in progress' , 'full'],
       default: 'upcoming',
+    },
+    maxTime : {
+      type:String
     },
   },
   { timestamps: true }
