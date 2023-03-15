@@ -7,9 +7,7 @@ const cricketModel = require("../model/cricketModel");
 
 const createTournament1 = async function (req, res) {
   try {
-    //let queryData = req.query
-    let { entryFee, prizeAmount, players, status,maxTime } = req.query;
-  
+    let { entryFee, prizeAmount, players, status, maxTime } = req.query;
 
     if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
@@ -20,8 +18,10 @@ const createTournament1 = async function (req, res) {
     }
 
     let tournamentTable1;
+
     async function createTournament() {
-      tournamentTable1 = await tournamentModel.create(req.query)
+      tournamentTable1 = await tournamentModel.create(req.query);
+
       console.log(tournamentTable1);
     }
 
@@ -55,7 +55,14 @@ const createTournament2 = async function (req, res) {
       });
     }
 
-    const tournamentTable2 = await tournamentModel.create(req.query);
+    let tournamentTable2;
+    async function createTournament() {
+      tournamentTable2 = await tournamentModel.create(req.query);
+      console.log(tournamentTable2);
+    }
+
+    setInterval(createTournament, 6000);
+    createTournament();
 
     return res.status(201).send({
       status: true,
@@ -159,15 +166,18 @@ const createTournament5 = async function (req, res) {
 
 //_____________________________________getAll Table_____________________________
 
-const getTables = async function (req, res) {
+const getAllTables = async function (req, res) {
   try {
-    const data = await tournamentModel.find().select({_id:0, createdAt:0, updatedAt: 0, __v: 0 });
-    let currentTime = new Date()
+    const data = await tournamentModel
+      .find()
+      .select({ display: 0, updatedAt: 0, __v: 0 });
+    let currentTime = new Date();
+    //currentTime = currentTime.getHours()
     return res.status(201).send({
       status: true,
       message: "Success",
-      currentTime :currentTime,
-       data,
+      currentTime: currentTime,
+      data,
     });
   } catch (error) {
     return res.status(500).send({
@@ -179,13 +189,12 @@ const getTables = async function (req, res) {
 
 //_______________________________________________________update tournament____________________
 
-const updateTournament1 = async function (req, res) {
+const updateTournament = async function (req, res) {
   try {
     let tableId = req.query.tableId;
+    let UserId = req.query.UserId;
     let updateData = req.query;
-
-    let { entryFee, prizeAmount, players, status } = updateData;
-
+    let { status } = updateData;
     if (Object.keys(updateData).length == 0) {
       return res.status(400).send({
         status: false,
@@ -193,15 +202,44 @@ const updateTournament1 = async function (req, res) {
       });
     }
 
-    let data = {};
-    data.entryFee = entryFee;
-    data.prizeAmount = prizeAmount;
-    data.players = players;
-    data.status = status;
+    //unique user
 
-    const tableUpdate = await tournamentModel.findOneAndUpdate(
-      { tableId: tableId },
-      { $set: data },
+    let existUser = await tournamentModel.findById({ _id: tableId });
+
+    let users = existUser.Users;
+    let ExistPlayers = existUser.players;
+
+    let maxPlayes = 10;
+
+    if (ExistPlayers === 0) {
+      status = "upcoming";
+    }
+    if (ExistPlayers < maxPlayes) {
+      status = "in_progress";
+    }
+    if (ExistPlayers === maxPlayes - 1) {
+      status = "full";
+    }
+    if (ExistPlayers > maxPlayes - 1) {
+      return res.status(400).send({ status: false, message: " Full " });
+    }
+
+    let uniqueUser = users.find((userIds) => userIds == UserId);
+    if (uniqueUser) {
+      return res.status(409).send({
+        status: false,
+        message: " one user can play in one match only at a time",
+      });
+    }
+
+    const tableUpdate = await tournamentModel.findByIdAndUpdate(
+      { _id: tableId },
+      {
+        $inc: { players: 1 },
+        $push: { Users: UserId },
+        $set: { status: status },
+      },
+
       { new: true }
     );
 
@@ -224,6 +262,6 @@ module.exports = {
   createTournament3,
   createTournament4,
   createTournament5,
-  updateTournament1,
-  getTables,
+  updateTournament,
+  getAllTables,
 };

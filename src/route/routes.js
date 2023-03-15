@@ -73,12 +73,12 @@ Router.post("/tournament3", tournamentController.createTournament3);
 Router.post("/tournament4", tournamentController.createTournament4);
 Router.post("/tournament5", tournamentController.createTournament5);
 
-//___________CreatetournamentsCricket_________
+//___________ get All tournamentsCricket_________
 
-Router.get("/tables", tournamentController.getTables);
+Router.get("/tables", tournamentController.getAllTables);
 //___updatetournamentsCricket__________
 
-Router.put("/tournament1", tournamentController.updateTournament1);
+Router.put("/tournament", tournamentController.updateTournament);
 // Router.put("/tournament2", tournamentController.updateTournament2);
 // Router.put("/tournament3", tournamentController.updateTournament3);
 // Router.put("/tournament4", tournamentController.updateTournament4);
