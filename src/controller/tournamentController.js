@@ -3,7 +3,7 @@ const userModel = require("../model/userModel");
 const tournamentModel = require("../model/tournamentModel");
 const cricketModel = require("../model/cricketModel");
 
-//_______Tournament1
+//__________________________________________________Tournament1
 
 const createTournament1 = async function (req, res) {
   try {
@@ -41,7 +41,7 @@ const createTournament1 = async function (req, res) {
   }
 };
 
-//_______Tournament2
+//_______________________________________________________________Tournament2
 
 const createTournament2 = async function (req, res) {
   try {
@@ -77,7 +77,7 @@ const createTournament2 = async function (req, res) {
   }
 };
 
-//_______Tournament3
+//_________________________________________________________Tournament3
 
 const createTournament3 = async function (req, res) {
   try {
@@ -106,7 +106,7 @@ const createTournament3 = async function (req, res) {
   }
 };
 
-//_______Tournament4
+//______________________________________________________Tournament4
 
 const createTournament4 = async function (req, res) {
   try {
@@ -135,7 +135,7 @@ const createTournament4 = async function (req, res) {
   }
 };
 
-//_______Tournament5
+//______________________________________________________Tournament5
 
 const createTournament5 = async function (req, res) {
   try {
@@ -168,16 +168,45 @@ const createTournament5 = async function (req, res) {
 
 const getAllTables = async function (req, res) {
   try {
+    let UserId = req.query.UserId;
+    let currentTime = new Date();
+
     const data = await tournamentModel
       .find()
-      .select({ display: 0, updatedAt: 0, __v: 0 });
-    let currentTime = new Date();
-    //currentTime = currentTime.getHours()
-    return res.status(201).send({
+      .select({ display: 0, updatedAt: 0, __v: 0 })
+      .select({ Users: 0 });
+
+    let userData = await tournamentModel.aggregate([
+      {
+        $match: {
+          Users: {
+            $elemMatch: {
+              UserId: UserId,
+            },
+          },
+        },
+      },
+    ]);
+
+    if (userData.length > 0) {
+      let tableId = userData[0]._id;
+
+      return res.status(200).send({
+        status: true,
+        message: "Success",
+
+        tableId: tableId,
+        joined: true,
+        currentTime: currentTime,
+        data: data,
+      });
+    }
+  
+    return res.status(200).send({
       status: true,
       message: "Success",
       currentTime: currentTime,
-      data,
+      data: data,
     });
   } catch (error) {
     return res.status(500).send({
@@ -201,8 +230,6 @@ const updateTournament = async function (req, res) {
         message: "For updating please enter atleast one key",
       });
     }
-
-    //unique user
 
     let existUser = await tournamentModel.findById({ _id: tableId });
 
@@ -232,16 +259,18 @@ const updateTournament = async function (req, res) {
       });
     }
 
-    const tableUpdate = await tournamentModel.findByIdAndUpdate(
-      { _id: tableId },
-      {
-        $inc: { players: 1 },
-        $push: { Users: UserId },
-        $set: { status: status },
-      },
+    const tableUpdate = await tournamentModel
+      .findByIdAndUpdate(
+        { _id: tableId },
+        {
+          $inc: { players: 1 },
+          $push: { Users: { UserId: UserId, joined: true } },
+          $set: { status: status },
+        },
 
-      { new: true }
-    );
+        { new: true }
+      )
+      .select({ players: 1, _id: 0 });
 
     return res.status(200).send({
       status: true,
