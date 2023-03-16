@@ -1,21 +1,17 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Schema.Types.ObjectId;
 const tournamentSchema = new mongoose.Schema(
   {
     UserId:{
       type:String,
-      unique : true,
       trim : true
     },
   entryFee: {
       type: Number,
-      // unique: true,
       trim: true,
     },
 
     prizeAmount: {
       type: Number,
-      // unique: true,
       trim: true,
     },
 
@@ -27,7 +23,7 @@ const tournamentSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ['upcoming', 'in_progress' , 'full'],
-      default: 'upcoming',
+      default: 'in_progress',
     },
     maxTime : {
       type:Number

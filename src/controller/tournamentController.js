@@ -224,6 +224,7 @@ const updateTournament = async function (req, res) {
     let UserId = req.query.UserId;
     let updateData = req.query;
     let { status } = updateData;
+
     if (Object.keys(updateData).length == 0) {
       return res.status(400).send({
         status: false,
@@ -238,9 +239,6 @@ const updateTournament = async function (req, res) {
 
     let maxPlayes = 10;
 
-    if (ExistPlayers === 0) {
-      status = "upcoming";
-    }
     if (ExistPlayers < maxPlayes) {
       status = "in_progress";
     }
@@ -251,7 +249,7 @@ const updateTournament = async function (req, res) {
       return res.status(400).send({ status: false, message: " Full " });
     }
 
-    let uniqueUser = users.find((userIds) => userIds == UserId);
+    let uniqueUser = users.find((userIds) => userIds.UserId == UserId);
     if (uniqueUser) {
       return res.status(409).send({
         status: false,
