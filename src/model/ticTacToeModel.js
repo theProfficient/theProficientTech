@@ -5,8 +5,6 @@ const ticTacSchema = new mongoose.Schema(
   {
     UserId: {
       type: String,
-      // ref: "User",
-      // unique: true,
     },
     ticMatch: {
       type: Number,

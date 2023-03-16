@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const tournamentModel = require("../model/tournamentModel");
 const cricketModel = require("../model/cricketModel");
+const { time } = require("console");
 
 //__________________________________________________Tournament1
 
@@ -28,17 +29,32 @@ const createTournament1 = async function (req, res) {
       });
     }
 
+    //_____________setinterval for create document
+
     let tournamentTable1;
+    let createdAt;
 
     async function createTournament() {
       tournamentTable1 = await tournamentModel.create(req.query);
+      createdAt = tournamentTable1.createdAt;
+      console.log(tournamentTable1);
+    }
+    setInterval(createTournament, 60000);
+    createTournament();
+
+    //____________setinterval for delete documents
+
+    let deleteTournament1;
+
+    async function deleteTournament() {
+      deleteTournament1 = await tournamentModel.findOneAndDelete({
+        createdAt: createdAt,
+      });
 
       console.log(tournamentTable1);
     }
-    setInterval(createTournament, 6000);
-    createTournament();
-
-    // deleteTable = await tournamentModel.createIndex({"expireAt":1)
+    setInterval(deleteTournament, 300000);
+    deleteTournament();
 
     return res.status(201).send({
       status: true,
@@ -282,7 +298,7 @@ const getAllTables = async function (req, res) {
         data: data,
       });
     }
-  
+
     return res.status(200).send({
       status: true,
       message: "Success",
@@ -351,6 +367,16 @@ const updateTournament = async function (req, res) {
       )
       .select({ players: 1, _id: 0 });
 
+    //_______store user's tournament history
+
+    let time = existUser.createdAt;
+    let userHistory = await userModel.findOneAndUpdate(
+      { UserId: UserId },
+      { $push: { history: { tableId: tableId, time: time } } },
+      { new: true }
+    );
+
+    console.log(userHistory);
     return res.status(200).send({
       status: true,
       message: "Success",

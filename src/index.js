@@ -1,19 +1,14 @@
-const cors = require('cors');
+const cors = require("cors");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const route = require("./route/routes");
 
-//middleware
-app.use(express.json())
-// app.use(bodyParser.json()) // for parsing application/json
-// app.use(bodyParser.urlencoded({ extended: true }))
-
+app.use(express.json());
 app.use("/", route);
 
-
 app.use(cors());
-app.options('*', cors())
+app.options("*", cors());
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -27,7 +22,7 @@ mongoose
     console.log("MongoDB is connected");
   })
   .catch((error) => {
-    console.log("no connected");
+    console.log("Not connected");
   });
 
 app.listen(process.env.PORT || 8000, function () {

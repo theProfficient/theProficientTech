@@ -5,8 +5,6 @@ const HockySchema = new mongoose.Schema(
   {
     UserId: {
       type: String,
-      // ref: "User",
-      // unique: true,
     },
     hocMatch: {
       type: Number,

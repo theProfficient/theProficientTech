@@ -33,8 +33,10 @@ const tournamentSchema = new mongoose.Schema(
       type:Boolean,
       default : true
     },
+    expireAt:{
+      type:String
+    }
   },
   { timestamps: true }
 );
-
 module.exports = mongoose.model("tournament", tournamentSchema);

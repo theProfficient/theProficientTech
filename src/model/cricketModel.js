@@ -5,8 +5,6 @@ const cricketSchema = new mongoose.Schema(
   {
     UserId: {
       type:String
-      // ref: "User"
-      // unique: true,
     },
     cricMatch: {
       type: Number,

@@ -5,8 +5,6 @@ const snakeSchema = new mongoose.Schema(
   {
     UserId: {
       type: String,
-      // ref: "User",
-      // unique: true,
     },
     snakeMatch: {
       type: Number,

@@ -6,7 +6,6 @@ const cricketModel = require("../model/cricketModel");
 const hockyModel = require("../model/hockyModel");
 const snakeLadderModel = require("../model/snakeLadderModel");
 const ticTacToeModel = require("../model/ticTacToeModel");
-// const balanceModel = require("../model/balanceModel");
 
 const createUsers = async function (req, res) {
   try {
@@ -39,23 +38,11 @@ const createUsers = async function (req, res) {
     //     });
     //   }
 
-    //  let data = {}
-    //  data.UserId = UserId
-    //  data.email = email
-    //  data.phone = phone
-    // data.phone = phone
-    //  data.phone = phone
-
-    // const userCreated = await userModel.create(data);
-
-    // if(email || phone){
-
     const userCreated = await userModel.create(bodyData);
     const CricTable = await cricketModel.create(bodyData);
     const HocTable = await hockyModel.create(bodyData);
     const SnakeTable = await snakeLadderModel.create(bodyData);
     const TicTable = await ticTacToeModel.create(bodyData);
-    const balanceRecord = await balanceModel.create(bodyData)
 
     return res.status(201).send({
       status: true,
@@ -65,9 +52,7 @@ const createUsers = async function (req, res) {
       HocTable,
       SnakeTable,
       TicTable,
-      balanceRecord
     });
-    // }
   } catch (error) {
     return res.status(500).send({
       status: false,
@@ -81,7 +66,6 @@ const createUsers = async function (req, res) {
 const getUser = async function (req, res) {
   try {
     let UserId = req.query.UserId;
-    
 
     const getNewUser = await userModel.findOne({ UserId: UserId });
     let cricket = await cricketModel.findOne({ UserId: UserId });
@@ -105,7 +89,6 @@ const getUser = async function (req, res) {
       snakeLadder,
       ticTacToe,
     });
-
   } catch (err) {
     return res.status(500).send({
       status: false,
