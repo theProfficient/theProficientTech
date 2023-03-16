@@ -7,7 +7,18 @@ const cricketModel = require("../model/cricketModel");
 
 const createTournament1 = async function (req, res) {
   try {
-    let { entryFee, prizeAmount, players, status, maxTime } = req.query;
+    let {
+      entryFee,
+      prizeAmount,
+      players,
+      status,
+      maxTime,
+      rank,
+      rank1,
+      rank2,
+      rank3,
+      rank4,
+    } = req.query;
 
     if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
@@ -24,9 +35,10 @@ const createTournament1 = async function (req, res) {
 
       console.log(tournamentTable1);
     }
-
     setInterval(createTournament, 6000);
     createTournament();
+
+    // deleteTable = await tournamentModel.createIndex({"expireAt":1)
 
     return res.status(201).send({
       status: true,
@@ -45,7 +57,18 @@ const createTournament1 = async function (req, res) {
 
 const createTournament2 = async function (req, res) {
   try {
-    let { entryFee, prizeAmount, players, status } = req.query;
+    let {
+      entryFee,
+      prizeAmount,
+      players,
+      status,
+      maxTime,
+      rank,
+      rank1,
+      rank2,
+      rank3,
+      rank4,
+    } = req.query;
 
     if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
@@ -56,6 +79,7 @@ const createTournament2 = async function (req, res) {
     }
 
     let tournamentTable2;
+
     async function createTournament() {
       tournamentTable2 = await tournamentModel.create(req.query);
       console.log(tournamentTable2);
@@ -81,7 +105,18 @@ const createTournament2 = async function (req, res) {
 
 const createTournament3 = async function (req, res) {
   try {
-    let { entryFee, prizeAmount, players, status } = req.query;
+    let {
+      entryFee,
+      prizeAmount,
+      players,
+      status,
+      maxTime,
+      rank,
+      rank1,
+      rank2,
+      rank3,
+      rank4,
+    } = req.query;
 
     if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
@@ -91,7 +126,15 @@ const createTournament3 = async function (req, res) {
       });
     }
 
-    const tournamentTable3 = await tournamentModel.create(req.query);
+    let tournamentTable3;
+
+    async function createTournament() {
+      const tournamentTable3 = await tournamentModel.create(req.query);
+      console.log(tournamentTable3);
+    }
+
+    setInterval(createTournament, 6000);
+    createTournament();
 
     return res.status(201).send({
       status: true,
@@ -110,7 +153,18 @@ const createTournament3 = async function (req, res) {
 
 const createTournament4 = async function (req, res) {
   try {
-    let { entryFee, prizeAmount, players, status } = req.query;
+    let {
+      entryFee,
+      prizeAmount,
+      players,
+      status,
+      maxTime,
+      rank,
+      rank1,
+      rank2,
+      rank3,
+      rank4,
+    } = req.query;
 
     if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
@@ -120,7 +174,15 @@ const createTournament4 = async function (req, res) {
       });
     }
 
-    const tournamentTable4 = await tournamentModel.create(req.query);
+    let tournamentTable4;
+
+    async function createTournament() {
+      const tournamentTable4 = await tournamentModel.create(req.query);
+      console.log(tournamentTable4);
+    }
+
+    setInterval(createTournament, 6000);
+    createTournament();
 
     return res.status(201).send({
       status: true,
@@ -139,7 +201,18 @@ const createTournament4 = async function (req, res) {
 
 const createTournament5 = async function (req, res) {
   try {
-    let { entryFee, prizeAmount, players, status } = req.query;
+    let {
+      entryFee,
+      prizeAmount,
+      players,
+      status,
+      maxTime,
+      rank,
+      rank1,
+      rank2,
+      rank3,
+      rank4,
+    } = req.query;
 
     if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
@@ -149,7 +222,15 @@ const createTournament5 = async function (req, res) {
       });
     }
 
-    const tournamentTable5 = await tournamentModel.create(req.query);
+    let tournamentTable5;
+
+    async function createTournament() {
+      const tournamentTable4 = await tournamentModel.create(req.query);
+      console.log(tournamentTable5);
+    }
+
+    setInterval(createTournament, 6000);
+    createTournament();
 
     return res.status(201).send({
       status: true,
