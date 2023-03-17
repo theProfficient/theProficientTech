@@ -39,22 +39,8 @@ const createTournament1 = async function (req, res) {
       createdAt = tournamentTable1.createdAt;
       console.log(tournamentTable1);
     }
-    setInterval(createTournament, 60000);
+    setInterval(createTournament, 6000);
     createTournament();
-
-    //____________setinterval for delete documents
-
-    let deleteTournament1;
-
-    async function deleteTournament() {
-      deleteTournament1 = await tournamentModel.findOneAndDelete({
-        createdAt: createdAt,
-      });
-
-      console.log(tournamentTable1);
-    }
-    setInterval(deleteTournament, 300000);
-    deleteTournament();
 
     return res.status(201).send({
       status: true,
@@ -149,7 +135,7 @@ const createTournament3 = async function (req, res) {
       console.log(tournamentTable3);
     }
 
-    setInterval(createTournament, 6000);
+    setInterval(createTournament, 60000);
     createTournament();
 
     return res.status(201).send({
@@ -269,9 +255,8 @@ const getAllTables = async function (req, res) {
     let currentTime = new Date();
 
     const data = await tournamentModel
-      .find()
-      .select({ display: 0, updatedAt: 0, __v: 0 })
-      .select({ Users: 0 });
+      .find({ endTime: { $gte: new Date() } })
+      .select({ display: 0, updatedAt: 0, __v: 0, Users: 0 });
 
     let userData = await tournamentModel.aggregate([
       {
@@ -376,7 +361,7 @@ const updateTournament = async function (req, res) {
       { new: true }
     );
 
-    console.log(userHistory);
+    //console.log(userHistory);
     return res.status(200).send({
       status: true,
       message: "Success",

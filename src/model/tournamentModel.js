@@ -33,8 +33,16 @@ const tournamentSchema = new mongoose.Schema(
       type:Boolean,
       default : true
     },
-    expireAt:{
-      type:String
+    createdTime:{
+      type:Date,
+      default:Date.now,
+      expires: '5m'
+    },
+    endTime:{
+      type:Date,
+      default: function(){
+        return new Date(Date.now()+1*60*1000)
+      }
     }
   },
   { timestamps: true }
