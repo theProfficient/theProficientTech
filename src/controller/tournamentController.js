@@ -256,7 +256,7 @@ const getAllTables = async function (req, res) {
 
     const data = await tournamentModel
       .find({ endTime: { $gte: new Date() } })
-      .select({ display: 0, updatedAt: 0, __v: 0, Users: 0 });
+      .select({ display: 0, updatedAt: 0, __v: 0, Users: 0 ,createdTime:0, endTime:0});
 
     let userData = await tournamentModel.aggregate([
       {
