@@ -32,7 +32,6 @@ const createTournament1 = async function (req, res) {
     //_____________setinterval for create document
 
     let tournamentTable1;
-    let createdAt;
 
     async function createTournament() {
       tournamentTable1 = await tournamentModel.create(req.query);
