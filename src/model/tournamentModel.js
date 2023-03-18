@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const tournamentSchema = new mongoose.Schema(
   {
-    UserId:{
-      type:String,
-      trim : true
+    UserId: {
+      type: String,
+      trim: true,
     },
-  entryFee: {
+    entryFee: {
       type: Number,
       trim: true,
     },
@@ -16,34 +16,31 @@ const tournamentSchema = new mongoose.Schema(
     },
 
     players: {
-     type: Number,
+      type: Number,
       required: true,
-      default:0,
-   },
+      default: 0,
+    },
     status: {
       type: String,
-      enum: ['upcoming', 'in_progress' , 'full'],
-      default: 'in_progress',
+      enum: ["upcoming", "in_progress", "full"],
+      default: "in_progress",
     },
-    maxTime : {
-      type:Number
+    maxTime: {
+      type: Number,
     },
-    Users : [],
-    display:{
-      type:Boolean,
-      default : true
+    Users: [],
+    display: {
+      type: Boolean,
+      default: true,
     },
-    createdTime:{
-      type:Date,
-      default:Date.now,
-      expires: '5m'
+    createdTime: {
+      type: Date,
+      default: Date.now,
+      expires: "30m",
     },
-    endTime:{
-      type:Date,
-      default: function(){
-        return new Date(Date.now()+1*60*1000)
-      }
-    }
+    endTime: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

@@ -48,10 +48,6 @@ Router.put("/updateBalance", balanceController.updateBalance);
 //___________CreatetournamentsCricket_________
 
 Router.post("/tournament1", tournamentController.createTournament1);
-Router.post("/tournament2", tournamentController.createTournament2);
-Router.post("/tournament3", tournamentController.createTournament3);
-Router.post("/tournament4", tournamentController.createTournament4);
-Router.post("/tournament5", tournamentController.createTournament5);
 
 //___________ get All tournamentsCricket_________
 
