@@ -29,10 +29,6 @@ const tournamentSchema = new mongoose.Schema(
       type: Number,
     },
     Users: [],
-    display: {
-      type: Boolean,
-      default: true,
-    },
     createdTime: {
       type: Date,
       default: Date.now,

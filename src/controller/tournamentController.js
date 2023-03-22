@@ -8,45 +8,33 @@ const { time } = require("console");
 
 const createTournament1 = async function (req, res) {
   try {
-    let {
-      entryFee,
-      prizeAmount,
-      players,
-      status,
-      maxTime,
-      endTime,
-      rank,
-      rank1,
-      rank2,
-      rank3,
-      rank4,
-    } = req.query;
+    let { entryFee,prizeAmount, players, status, maxTime, endTime, rank, rank1, rank2, rank3, rank4} = req.query;
 
     //___enter all tournaments data dynamically
-
+   // in every group there are 5 players
     let data1 = {};
     data1.entryFee = req.query.entryFee = 1;
-    data1.prizeAmount = req.query.prizeAmount = 4;
+    data1.prizeAmount = req.query.prizeAmount = 1 * 5;
     data1.maxTime = req.query.maxTime = 1;
 
     let data2 = {};
     data2.entryFee = req.query.entryFee = 5;
-    data2.prizeAmount = req.query.prizeAmount = 20;
+    data2.prizeAmount = req.query.prizeAmount = 5 * 5;
     data2.maxTime = req.query.maxTime = 2;
 
     let data3 = {};
     data3.entryFee = req.query.entryFee = 10;
-    data3.prizeAmount = req.query.prizeAmount = 40;
+    data3.prizeAmount = req.query.prizeAmount = 10 * 5;
     data3.maxTime = req.query.maxTime = 4;
 
     let data4 = {};
     data4.entryFee = req.query.entryFee = 20;
-    data4.prizeAmount = req.query.prizeAmount = 80;
+    data4.prizeAmount = req.query.prizeAmount = 20 * 5;
     data4.maxTime = req.query.maxTime = 5;
 
     let data5 = {};
     data5.entryFee = req.query.entryFee = 50;
-    data5.prizeAmount = req.query.prizeAmount = 100;
+    data5.prizeAmount = req.query.prizeAmount = 50 * 5;
     data5.maxTime = req.query.maxTime = 10;
 
     let tournamentTable1;
@@ -58,7 +46,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table1 with setinterval an end time___________
 
     async function createTournament1() {
-      data1.endTime = req.query.endTime = new Date(Date.now() + 1 * 60 * 1000);
+      endTime = new Date(Date.now()+ 1 * 60 * 1000);
+      data1.endTime = req.query.endTime = endTime.setSeconds(0, 0);
       tournamentTable1 = await tournamentModel.create(data1);
       console.log(tournamentTable1);
     }
@@ -68,7 +57,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table2 with setinterval an end time________________
 
     async function createTournament2() {
-      data2.endTime = req.query.endTime = new Date(Date.now() + 2 * 60 * 1000);
+      endTime = new Date(Date.now()+ 2 * 60 * 1000);
+      data2.endTime = req.query.endTime = endTime.setSeconds(0, 0);
       tournamentTable2 = await tournamentModel.create(data2);
       console.log(tournamentTable2);
     }
@@ -78,7 +68,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table3 with setinterval an end time________________
 
     async function createTournament3() {
-      data3.endTime = req.query.endTime = new Date(Date.now() + 4 * 60 * 1000);
+      endTime = new Date(Date.now()+ 4 * 60 * 1000);
+      data3.endTime = req.query.endTime = endTime.setSeconds(0, 0);
       tournamentTable3 = await tournamentModel.create(data3);
       console.log(tournamentTable3);
     }
@@ -88,7 +79,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table4 with setinterval an end time________________
 
     async function createTournament4() {
-      data4.endTime = req.query.endTime = new Date(Date.now() + 5 * 60 * 1000);
+      endTime = new Date(Date.now()+ 5 * 60 * 1000);
+      data4.endTime = req.query.endTime = endTime.setSeconds(0, 0);
       tournamentTable4 = await tournamentModel.create(data4);
       console.log(tournamentTable4);
     }
@@ -98,7 +90,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table5 with setinterval an end time________________
 
     async function createTournament5() {
-      data5.endTime = req.query.endTime = new Date(Date.now() + 10 * 60 * 1000);
+      endTime = new Date(Date.now()+ 10 * 60 * 1000);
+      data5.endTime = req.query.endTime = endTime.setSeconds(0, 0);
       tournamentTable5 = await tournamentModel.create(data5);
 
       console.log(tournamentTable5);
@@ -125,11 +118,11 @@ const getAllTables = async function (req, res) {
   try {
     let UserId = req.query.UserId;
     let currentTime = new Date();
-
+    
     //______only fetch that table which timing is running
 
     const data = await tournamentModel
-      .find({ endTime: { $gte: new Date() } })
+      .find({ endTime: { $gte: new Date().setSeconds(0, 0) } })
       .select({
         display: 0,
         createdAt: 0,
@@ -165,13 +158,18 @@ const getAllTables = async function (req, res) {
         data: data,
       });
     }
-
+  //  const now = new Date();
+  //   now.setSeconds(0, 0); // set seconds to 0
+     
+  //   console.log(now); // output: Mon Mar 22 2023 15:30:00 GMT-0400 (Eastern Daylight Time)
+    
     return res.status(200).send({
       status: true,
       message: "Success",
       currentTime: currentTime,
       data: data,
     });
+    
   } catch (error) {
     return res.status(500).send({
       status: false,
@@ -198,7 +196,6 @@ const updateTournament = async function (req, res) {
 
     let existUser = await tournamentModel.findById({ _id: tableId });
 
-    let users = existUser.Users;
     let ExistPlayers = existUser.players;
 
     let maxPlayes = 10;
@@ -212,7 +209,8 @@ const updateTournament = async function (req, res) {
     if (ExistPlayers > maxPlayes - 1) {
       return res.status(400).send({ status: false, message: " Full " });
     }
-
+    
+    let users = existUser.Users;
     let uniqueUser = users.find((userIds) => userIds.UserId == UserId);
     if (uniqueUser) {
       return res.status(409).send({
