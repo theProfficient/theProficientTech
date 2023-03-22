@@ -46,8 +46,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table1 with setinterval an end time___________
 
     async function createTournament1() {
-      endTime = new Date(Date.now()+ 1 * 60 * 1000);
-      data1.endTime = req.query.endTime = endTime.setSeconds(0, 0);
+      endTime = Date.now()+ 1 * 60 * 1000;
+      data1.endTime = req.query.endTime = endTime;
       tournamentTable1 = await tournamentModel.create(data1);
       console.log(tournamentTable1);
     }
@@ -57,8 +57,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table2 with setinterval an end time________________
 
     async function createTournament2() {
-      endTime = new Date(Date.now()+ 2 * 60 * 1000);
-      data2.endTime = req.query.endTime = endTime.setSeconds(0, 0);
+      endTime = Date.now()+ 2 * 60 * 1000;
+      data2.endTime = req.query.endTime = endTime;
       tournamentTable2 = await tournamentModel.create(data2);
       console.log(tournamentTable2);
     }
@@ -68,8 +68,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table3 with setinterval an end time________________
 
     async function createTournament3() {
-      endTime = new Date(Date.now()+ 4 * 60 * 1000);
-      data3.endTime = req.query.endTime = endTime.setSeconds(0, 0);
+      endTime = Date.now()+ 4 * 60 * 1000;
+      data3.endTime = req.query.endTime = endTime;
       tournamentTable3 = await tournamentModel.create(data3);
       console.log(tournamentTable3);
     }
@@ -79,8 +79,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table4 with setinterval an end time________________
 
     async function createTournament4() {
-      endTime = new Date(Date.now()+ 5 * 60 * 1000);
-      data4.endTime = req.query.endTime = endTime.setSeconds(0, 0);
+      endTime = Date.now()+ 5 * 60 * 1000;
+      data4.endTime = req.query.endTime = endTime;
       tournamentTable4 = await tournamentModel.create(data4);
       console.log(tournamentTable4);
     }
@@ -90,8 +90,8 @@ const createTournament1 = async function (req, res) {
     //_______________________create table5 with setinterval an end time________________
 
     async function createTournament5() {
-      endTime = new Date(Date.now()+ 10 * 60 * 1000);
-      data5.endTime = req.query.endTime = endTime.setSeconds(0, 0);
+      endTime = Date.now()+ 10 * 60 * 1000;
+      data5.endTime = req.query.endTime = endTime;
       tournamentTable5 = await tournamentModel.create(data5);
 
       console.log(tournamentTable5);
@@ -122,7 +122,7 @@ const getAllTables = async function (req, res) {
     //______only fetch that table which timing is running
 
     const data = await tournamentModel
-      .find({ endTime: { $gte: new Date().setSeconds(0, 0) } })
+      .find({ endTime: { $gte: new Date() } })
       .select({
         display: 0,
         createdAt: 0,
