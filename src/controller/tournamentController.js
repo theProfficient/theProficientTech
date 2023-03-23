@@ -147,6 +147,7 @@ const getAllTables = async function (req, res) {
 
     if (userData.length > 0) {
       let tableId = userData[0]._id;
+      let endTime = userData[0].endTime;
 
       return res.status(200).send({
         status: true,
@@ -155,13 +156,10 @@ const getAllTables = async function (req, res) {
         tableId: tableId,
         joined: true,
         currentTime: currentTime,
+        endTime : endTime,
         data: data,
       });
     }
-  //  const now = new Date();
-  //   now.setSeconds(0, 0); // set seconds to 0
-     
-  //   console.log(now); // output: Mon Mar 22 2023 15:30:00 GMT-0400 (Eastern Daylight Time)
     
     return res.status(200).send({
       status: true,
@@ -194,9 +192,14 @@ const updateTournament = async function (req, res) {
       });
     }
 
-    let existUser = await tournamentModel.findById({ _id: tableId });
-
-    let ExistPlayers = existUser.players;
+    let existTable = await tournamentModel.findById({ _id: tableId });
+    if(!existTable){
+      return res.status(404).send({
+            status: false,
+             message: " This table is not present ",
+           });
+    }
+    let ExistPlayers = existTable.players;
 
     let maxPlayes = 10;
 
@@ -210,14 +213,14 @@ const updateTournament = async function (req, res) {
       return res.status(400).send({ status: false, message: " Full " });
     }
     
-    let users = existUser.Users;
-    let uniqueUser = users.find((userIds) => userIds.UserId == UserId);
-    if (uniqueUser) {
-      return res.status(409).send({
-        status: false,
-        message: " one user can play in one match only at a time",
-      });
-    }
+    //let users = existTable.Users;
+    // let uniqueUser = users.find((userIds) => userIds.UserId == UserId);
+    // if (uniqueUser) {
+    //   return res.status(409).send({
+    //     status: false,
+    //     message: " one user can play in one match only at a time",
+    //   });
+    // }
 
     //_______update table with userId and tableId (if user joined perticular table players incereses by 1 automatically)
 
@@ -236,7 +239,7 @@ const updateTournament = async function (req, res) {
 
     //_______store user's tournament history in user profile
 
-    let time = existUser.createdAt;
+    let time = existTable.createdAt;
     let userHistory = await userModel.findOneAndUpdate(
       { UserId: UserId },
       { $push: { history: { tableId: tableId, time: time } } },
