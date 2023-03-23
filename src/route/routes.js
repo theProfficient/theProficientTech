@@ -47,7 +47,7 @@ Router.put("/updateBalance", balanceController.updateBalance);
 
 //___________CreatetournamentsCricket_________
 
-Router.post("/tournament1", tournamentController.createTournament1);
+Router.post("/tournaments", tournamentController.createTournaments);
 
 //___________ get All tournamentsCricket_________
 
