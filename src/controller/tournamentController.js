@@ -5,6 +5,7 @@ const cricketModel = require("../model/cricketModel");
 const { time } = require("console");
 const _ = require("lodash");
 const fakeUsers = require("./dummyUsers");
+const { find } = require("lodash");
 //__________________________________________________create all Tournaments
 
 const createTournaments = async function (req, res) {
@@ -67,9 +68,11 @@ const createTournaments = async function (req, res) {
         data1,
         data1,
       ]);
+      console.log(endTime);
 
       console.log(tournamentTable1);
     }
+
     setInterval(createTournament1, 60000);
     createTournament1();
 
@@ -277,11 +280,11 @@ const updateTournament = async function (req, res) {
   }
 };
 
-//___group creating as per players 
+//__________________________________group creating as per players ____________________________________________
 
 const createGroups = async function (req, res) {
   try {
-    let tableId = req.query.tableId;
+    let tableId = req.body.tableId;
     let existTable = await tournamentModel.findById({ _id: tableId });
 
     if (!existTable) {
@@ -293,8 +296,8 @@ const createGroups = async function (req, res) {
     let players = existTable.players;
     let users = existTable.Users;
     users = users.map((items) => items.UserId);
-    
-   // import dummyusers and add as per need to complete groups
+
+    // import dummyusers and add as per need to complete groups
     let dummyUsers = fakeUsers.fakeUsers;
     dummyUsers = dummyUsers.map((items) => items._id);
 
@@ -306,6 +309,11 @@ const createGroups = async function (req, res) {
     ];
 
     let completeGroups = _.chunk(completePlayers, 5);
+
+    completeGroups = completeGroups.map(([...completeGroups]) => ({
+      ...completeGroups,
+    }));
+
     return res.status(200).send({
       status: true,
       message: "Success",
