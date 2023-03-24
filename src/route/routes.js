@@ -57,6 +57,10 @@ Router.get("/tables", tournamentController.getAllTables);
 
 Router.put("/tournament", tournamentController.updateTournament);
 
+//__________________________createGroups________________________
+
+Router.post("/groups", tournamentController.createGroups)
+
 //************ checking your end point valid or not */
 
 Router.all("/**", function (req, res) {

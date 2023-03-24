@@ -1,7 +1,5 @@
-[{
-    "_id": {
-      "$oid": "641593333e73fba1048129c1"
-    },
+let fakeUsers = [{
+    "_id":  "641593333e73fba1048129c1",
     "UserId": "Nik1117",
     "userName": "Nik",
     "email": "nik1@gmail.com",
@@ -10,9 +8,8 @@
     "status": false,
     "history": [],
   },{
-    "_id": {
-      "$oid": "641593673e73fba1048129cc"
-    },
+    "_id": "641593673e73fba1048129cc",
+    
     "UserId": "Rocky111",
     "userName": "Rocky",
     "email": "rocky1@gmail.com",
@@ -21,9 +18,7 @@
     "status": false,
     "history": [],
   },{
-    "_id": {
-      "$oid": "6415942e3e73fba1048129e5"
-    },
+    "_id":  "6415942e3e73fba1048129e5",
     "UserId": "Micky111",
     "userName": "Micky",
     "email": "micky1@gmail.com",
@@ -32,9 +27,7 @@
     "status": false,
     "history": []
   },{
-    "_id": {
-      "$oid": "6415945a3e73fba1048129fa"
-    },
+    "_id": "6415945a3e73fba1048129fa",
     "UserId": "Tom111",
     "userName": "Tom",
     "email": "tom1@gmail.com",
@@ -43,3 +36,5 @@
     "status": false,
     "history": []
   }]
+
+  module.exports = { fakeUsers }
