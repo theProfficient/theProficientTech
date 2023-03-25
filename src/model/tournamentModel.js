@@ -5,6 +5,10 @@ const tournamentSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    userName: {
+      type: String,
+      trim: true,
+    },
     entryFee: {
       type: Number,
       trim: true,

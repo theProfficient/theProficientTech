@@ -12,6 +12,7 @@ const createTournaments = async function (req, res) {
   try {
     let {
       entryFee,
+      userName,
       prizeAmount,
       players,
       status,
@@ -203,6 +204,7 @@ const updateTournament = async function (req, res) {
   try {
     let tableId = req.query.tableId;
     let UserId = req.query.UserId;
+    let userName = req.query.userName;
     let updateData = req.query;
     let { status } = updateData;
 
@@ -213,7 +215,7 @@ const updateTournament = async function (req, res) {
       });
     }
 
-    let existTable = await tournamentModel.findById({ _id: tableId });
+    let existTable = await tournamentModel.findById({ _id: tableId  });
     if (!existTable) {
       return res.status(404).send({
         status: false,
@@ -250,7 +252,7 @@ const updateTournament = async function (req, res) {
         { _id: tableId },
         {
           $inc: { players: 1 },
-          $push: { Users: { UserId: UserId, joined: true } },
+          $push: { Users: { userName: userName, joined: true } },
           $set: { status: status },
         },
 
@@ -285,7 +287,7 @@ const updateTournament = async function (req, res) {
 const createGroups = async function (req, res) {
   try {
     let tableId = req.body.tableId;
-    let UserId = req.body.UserId;
+    let userName = req.body.userName;
 
     let existTable = await tournamentModel.findById({ _id: tableId });
 
@@ -297,7 +299,7 @@ const createGroups = async function (req, res) {
 
     let players = existTable.players;
     let users = existTable.Users;
-    users = users.map((items) => items.UserId);
+    users = users.map((items) => items.userName);
 
     // import dummyusers and add as per need to complete groups
     let dummyUsers = fakeUsers.fakeUsers;
@@ -313,8 +315,8 @@ const createGroups = async function (req, res) {
     let completeGroups = _.chunk(completePlayers, 5);
 
     //_find userid in grp return only that grp and remove array of that grp
-    
-    const user = completeGroups.find((user) => user.includes(UserId));
+
+    const user = completeGroups.find((user) => user.includes(userName));
     let myString = user.join(" ");
     console.log(user);
 
