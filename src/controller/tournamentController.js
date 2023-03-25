@@ -285,6 +285,8 @@ const updateTournament = async function (req, res) {
 const createGroups = async function (req, res) {
   try {
     let tableId = req.body.tableId;
+    let UserId = req.body.UserId;
+
     let existTable = await tournamentModel.findById({ _id: tableId });
 
     if (!existTable) {
@@ -310,14 +312,16 @@ const createGroups = async function (req, res) {
 
     let completeGroups = _.chunk(completePlayers, 5);
 
-    completeGroups = completeGroups.map(([...completeGroups]) => ({
-      ...completeGroups,
-    }));
+    //_find userid in grp return only that grp and remove array of that grp
+    
+    const user = completeGroups.find((user) => user.includes(UserId));
+    let myString = user.join(" ");
+    console.log(user);
 
     return res.status(200).send({
       status: true,
       message: "Success",
-      data: completeGroups,
+      data: myString,
     });
   } catch (err) {
     return res.status(500).send({
