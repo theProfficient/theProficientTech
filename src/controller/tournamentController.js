@@ -243,6 +243,16 @@ const updateTournament = async function (req, res) {
     //   });
     // }
 
+    //________________________________find user,s Name _____________________________________
+
+    let userExist = await userModel.findOne({ UserId: UserId });
+    let userName = userExist.userName;
+    if (!userExist) {
+      return res.status(404).send({
+        status: false,
+        message: " user not found",
+      });
+    }
     //_______update table with userId and tableId (if user joined perticular table players incereses by 1 automatically)
 
     const tableUpdate = await tournamentModel
@@ -250,7 +260,9 @@ const updateTournament = async function (req, res) {
         { _id: tableId },
         {
           $inc: { players: 1 },
-          $push: { Users: { UserId: UserId, joined: true } },
+          $push: {
+            Users: { UserId: UserId, userName: userName, joined: true },
+          },
           $set: { status: status },
         },
 
@@ -287,6 +299,16 @@ const createGroups = async function (req, res) {
     let tableId = req.body.tableId;
     let UserId = req.body.UserId;
 
+    let userExist = await userModel.findOne({ UserId: UserId });
+    let userName = userExist.userName;
+
+    if (!userExist) {
+      return res.status(404).send({
+        status: false,
+        message: " user not found",
+      });
+    }
+
     let existTable = await tournamentModel.findById({ _id: tableId });
 
     if (!existTable) {
@@ -297,12 +319,12 @@ const createGroups = async function (req, res) {
 
     let players = existTable.players;
     let users = existTable.Users;
-    users = users.map((items) => items.UserId);
+    users = users.map((items) => items.userName);
 
     // import dummyusers and add as per need to complete groups
     let dummyUsers = fakeUsers.fakeUsers;
-    dummyUsers = dummyUsers.map((items) => items._id);
-
+    dummyUsers = dummyUsers.map((items) => items.userName);
+    
     const groups = _.chunk(players, 5);
 
     let completePlayers = [
@@ -313,10 +335,9 @@ const createGroups = async function (req, res) {
     let completeGroups = _.chunk(completePlayers, 5);
 
     //_find userid in grp return only that grp and remove array of grp
-    
-    const user = completeGroups.find((user) => user.includes(UserId));
+
+    const user = completeGroups.find((user) => user.includes(userName));
     let myString = user.join(" ");
-    console.log(user);
 
     return res.status(200).send({
       status: true,
