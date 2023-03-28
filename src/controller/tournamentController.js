@@ -6,6 +6,8 @@ const { time } = require("console");
 const _ = require("lodash");
 const fakeUsers = require("./dummyUsers");
 const { find } = require("lodash");
+const {createGroups} = require("../validation/validation");
+const groupModel = require("../model/groupModel");
 //__________________________________________________create all Tournaments
 
 const createTournaments = async function (req, res) {
@@ -84,7 +86,8 @@ const createTournaments = async function (req, res) {
             ];
   
             let completeGroups = _.chunk(completePlayers, 5);
-            console.log(completeGroups);
+            let createGrp = await groupModel.create(completeGroups)
+            console.log(createGrp);
           }
         }
       }
@@ -97,10 +100,9 @@ const createTournaments = async function (req, res) {
         data1,
         data1,
       ]);
-      // console.log(endTime);
-      tableId1 = tournamentTable1.map((items)=>items._id)
-      console.log(tableId1)
 
+      tableId1 = tournamentTable1.map((items)=>items._id)
+      
        console.log(tournamentTable1);
     }
 
@@ -110,7 +112,7 @@ const createTournaments = async function (req, res) {
     //_______________________create table2 with setinterval an end time________________
     let tableId2;
     async function createTournament2() {
-      if(tableId2 != undefined){
+      if(tableId2!= undefined){
       let table = await tournamentModel.findOne({ _id: tableId2 });
 
       if (table != undefined || table != null) {
@@ -132,11 +134,14 @@ const createTournaments = async function (req, res) {
           ];
 
           let completeGroups = _.chunk(completePlayers, 5);
-          console.log(completeGroups);
+
+
+          let createGrp = await groupModel.create({group:completeGroups, tableId:tableId2})
+          console.log(createGrp);
         }
       }
     }
-      endTime = Date.now() + 4 * 60 * 1000;
+      endTime = Date.now() + 2* 60 * 1000;
       data2.endTime = req.query.endTime = endTime;
 
       tournamentTable2 = await tournamentModel.create(data2);
@@ -144,11 +149,11 @@ const createTournaments = async function (req, res) {
       console.log(tournamentTable2);
     }
 
-    setInterval(createTournament2, 240000);
+    setInterval(createTournament2, 120000);
     createTournament2();
 
     //_______________________create table3 with setinterval an end time________________
-let tableId3 ;
+ let tableId3 ;
     async function createTournament3() {
       if(tableId3 != undefined){
         let table = await tournamentModel.findOne({ _id: tableId3 });
@@ -172,7 +177,9 @@ let tableId3 ;
             ];
   
             let completeGroups = _.chunk(completePlayers, 5);
-            console.log(completeGroups);
+
+            let createGrp = await groupModel.create(completeGroups)
+            console.log(createGrp);
           }
         }
       }
@@ -180,7 +187,7 @@ let tableId3 ;
       data3.endTime = req.query.endTime = endTime;
       tournamentTable3 = await tournamentModel.create(data3);
       tableId3 = tournamentTable3._id
-      //console.log(tournamentTable3);
+      console.log(tournamentTable3);
     }
     setInterval(createTournament3, 300000);
     createTournament3();
@@ -210,7 +217,9 @@ let tableId4 ;
             ];
   
             let completeGroups = _.chunk(completePlayers, 5);
-            console.log(completeGroups);
+
+            let createGrp = await groupModel.create(completeGroups)
+            console.log(createGrp);
           }
         }
       }
@@ -248,7 +257,9 @@ let tableId4 ;
             ];
   
             let completeGroups = _.chunk(completePlayers, 5);
-            console.log(completeGroups);
+
+            let createGrp = await groupModel.create(completeGroups)
+            console.log(createGrp);
           }
         }
       }
@@ -434,12 +445,12 @@ const updateTournament = async function (req, res) {
   }
 };
 
-//__________________________________group creating as per players ____________________________________________
+//__________________________________get groups per players and tableId ____________________________________________
 
-const createGroups = async function (req, res) {
+const getGroups = async function (req, res) {
   try {
-    let tableId = req.body.tableId;
-    let UserId = req.body.UserId;
+     let tableId = req.query.tableId;
+     let UserId = req.query.UserId;
 
     let userExist = await userModel.findOne({ UserId: UserId });
     let userName = userExist.userName;
@@ -451,37 +462,12 @@ const createGroups = async function (req, res) {
       });
     }
 
-    let existTable = await tournamentModel.findById({ _id: tableId });
-
-    if (!existTable) {
-      return res
-        .status(404)
-        .send({ status: false, message: "Table is not found" });
-    }
-
-    let players = existTable.players;
-    let users = existTable.Users;
-    users = users.map((items) => items.userName);
-
-    // import dummyusers and add as per need to complete groups
-    let dummyUsers = fakeUsers.fakeUsers;
-    dummyUsers = dummyUsers.map((items) => items.userName);
-
-    const groups = _.chunk(players, 5);
-
-    let completePlayers = [
-      ...users,
-      ...dummyUsers.slice(0, 5 - (users.length % 5)),
-    ];
-
-    let completeGroups = _.chunk(completePlayers, 5);
-
-    //_find userid in grp return only that grp and remove array of grp
-
-    const user = completeGroups.find((user) => user.includes(userName));
-
+    const table = await groupModel.findOne({tableId:tableId})
+    let groups = table.group
+    console.log(groups)
+    const user =  groups.find((user)=>user.includes(userName));
     console.log(user);
-    let myString = user.join(" ");
+     let myString = user.join(" ");
 
     return res.status(200).send({
       status: true,
@@ -500,5 +486,5 @@ module.exports = {
   createTournaments,
   updateTournament,
   getAllTables,
-  createGroups,
+  getGroups,
 };

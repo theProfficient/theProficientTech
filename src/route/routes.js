@@ -59,7 +59,7 @@ Router.put("/tournament", tournamentController.updateTournament);
 
 //__________________________createGroups________________________
 
-Router.post("/groups", tournamentController.createGroups)
+Router.get("/groups", tournamentController.getGroups)
 
 //************ checking your end point valid or not */
 
