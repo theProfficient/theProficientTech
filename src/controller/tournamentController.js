@@ -6,7 +6,6 @@ const { time } = require("console");
 const _ = require("lodash");
 const fakeUsers = require("./dummyUsers");
 const { find } = require("lodash");
-const {createGroups} = require("../validation/validation");
 const groupModel = require("../model/groupModel");
 //__________________________________________________create all Tournaments
 
@@ -141,7 +140,7 @@ const createTournaments = async function (req, res) {
         }
       }
     }
-      endTime = Date.now() + 2* 60 * 1000;
+      endTime = Date.now() + 4 * 60 * 1000;
       data2.endTime = req.query.endTime = endTime;
 
       tournamentTable2 = await tournamentModel.create(data2);
@@ -149,7 +148,7 @@ const createTournaments = async function (req, res) {
       console.log(tournamentTable2);
     }
 
-    setInterval(createTournament2, 120000);
+    setInterval(createTournament2, 240000);
     createTournament2();
 
     //_______________________create table3 with setinterval an end time________________
