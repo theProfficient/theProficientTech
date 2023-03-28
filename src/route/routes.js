@@ -41,25 +41,19 @@ Router.put("/updateTicTacToe", ticTacToeController.updateTic);
 
 Router.get("/getAllTicTacToeData", ticTacToeController.getAllTic);
 
-//_________________balance_____________________
+//_________________credits_____________________
 
-Router.put("/updateBalance", balanceController.updateBalance);
+Router.put("/updateBalance", balanceController.updatecredits);
 
-//___________CreatetournamentsCricket_________
+//___________tournaments_________
 
 Router.post("/tournaments", tournamentController.createTournaments);
 
-//___________ get All tournamentsCricket_________
-
 Router.get("/tables", tournamentController.getAllTables);
-
-//_____________updatetournamentsCricket__________
 
 Router.put("/tournament", tournamentController.updateTournament);
 
-//__________________________createGroups________________________
-
-Router.get("/groups", tournamentController.getGroups)
+Router.get("/groups", tournamentController.getGroups);
 
 //************ checking your end point valid or not */
 

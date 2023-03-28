@@ -85,7 +85,11 @@ const createTournaments = async function (req, res) {
             ];
   
             let completeGroups = _.chunk(completePlayers, 5);
-            let createGrp = await groupModel.create(completeGroups)
+            console.log(completeGroups);
+            
+
+            let createGrp = await groupModel.create({group:completeGroups, tableId:tableIdForT })
+            
             console.log(createGrp);
           }
         }
@@ -101,6 +105,7 @@ const createTournaments = async function (req, res) {
       ]);
 
       tableId1 = tournamentTable1.map((items)=>items._id)
+      console.log (tableId1)
       
        console.log(tournamentTable1);
     }
@@ -177,7 +182,7 @@ const createTournaments = async function (req, res) {
   
             let completeGroups = _.chunk(completePlayers, 5);
 
-            let createGrp = await groupModel.create(completeGroups)
+            let createGrp = await groupModel.create({group:completeGroups, tableId:tableId3})
             console.log(createGrp);
           }
         }
@@ -217,7 +222,7 @@ let tableId4 ;
   
             let completeGroups = _.chunk(completePlayers, 5);
 
-            let createGrp = await groupModel.create(completeGroups)
+            let createGrp = await groupModel.create({group:completeGroups, tableId:tableId4})
             console.log(createGrp);
           }
         }
@@ -257,7 +262,7 @@ let tableId4 ;
   
             let completeGroups = _.chunk(completePlayers, 5);
 
-            let createGrp = await groupModel.create(completeGroups)
+            let createGrp = await groupModel.create({group:completeGroups, tableId:tableId5})
             console.log(createGrp);
           }
         }
@@ -450,16 +455,15 @@ const getGroups = async function (req, res) {
   try {
      let tableId = req.query.tableId;
      let UserId = req.query.UserId;
-
     let userExist = await userModel.findOne({ UserId: UserId });
-    let userName = userExist.userName;
 
-    if (!userExist) {
+    if (userExist == null) {
       return res.status(404).send({
         status: false,
         message: " user not found",
       });
     }
+    let userName = userExist.userName;
 
     const table = await groupModel.findOne({tableId:tableId})
     let groups = table.group

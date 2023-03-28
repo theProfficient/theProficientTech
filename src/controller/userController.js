@@ -11,7 +11,7 @@ const createUsers = async function (req, res) {
   try {
     let bodyData = req.body;
 
-    let { UserId, userName, email, phone, balance, status } = bodyData;
+    let { UserId, userName, email, phone, credits, status, balance, refferalCode } = bodyData;
 
     if (Object.keys(bodyData).length == 0) {
       return res.status(400).send({
@@ -20,6 +20,10 @@ const createUsers = async function (req, res) {
           "Body should  be not Empty please enter some data to create user",
       });
     }
+
+    // Generate a unique referral code for the new user
+    const referral_Code = Math.random().toString(36).substring(7);
+    
 
     let checkUserId = await userModel.findOne({ UserId: UserId });
     if (checkUserId) {
@@ -104,7 +108,7 @@ const updateUser = async function (req, res) {
     let UserId = req.query.UserId;
     let updateData = req.query;
 
-    let { userName, email, phone, balance, status } = updateData;
+    let { userName, email, phone, credits, status } = updateData;
 
     if (Object.keys(updateData).length == 0) {
       return res.status(400).send({
@@ -117,7 +121,7 @@ const updateUser = async function (req, res) {
     data.userName = userName;
     data.email = email;
     data.phone = phone;
-    data.balance = balance;
+    data.credits = credits;
     data.status = status;
 
     const userUpdate = await userModel.findOneAndUpdate(

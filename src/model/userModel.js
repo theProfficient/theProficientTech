@@ -4,11 +4,11 @@ const userSchema = new mongoose.Schema(
     UserId: {
       type: String,
       required: true,
-      unique:true,
+      unique: true,
       trim: true,
     },
 
-    userName:{
+    userName: {
       type: String,
       trim: true,
     },
@@ -24,18 +24,26 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-
-    balance: {
-     type: Number,
+    refferalCode: {
+      type: String,
+      unique: true,
+    },
+    credits: {
+      type: Number,
       required: true,
       default: 100,
-   },
+    },
+    balance:{
+      type: Number,
+      required: true,
+      default:0,
+    },
     status: {
       type: Boolean,
       required: true,
       default: false,
     },
-    history:[]
+    history: [],
   },
   { timestamps: true }
 );

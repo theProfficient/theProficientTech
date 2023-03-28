@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const cricketModel = require("../model/cricketModel");
 
-const updateBalance = async function (req, res) {
+const updatecredits = async function (req, res) {
   try {
     let { UserId, cricMatch, cricWins, cricRuns, type } = req.query;
 
@@ -15,21 +15,21 @@ const updateBalance = async function (req, res) {
       cricketData.types.objective = true;
       cricketData.types.chase = false;
       cricketData.types.multiplayer = false;
-      user.balance += 50;
+      user.credits += 50;
     }
 
     if (type === "chase") {
       cricketData.types.objective = false;
       cricketData.types.chase = true;
       cricketData.types.multiplayer = false;
-      user.balance += 60;
+      user.credits += 60;
     }
 
     if (type === "multiplayer") {
       cricketData.types.objective = false;
       cricketData.types.chase = false;
       cricketData.types.multiplayer = true;
-      user.balance += 100;
+      user.credits += 100;
     }
 
     cricketData.cricWins = cricWins;
@@ -62,4 +62,4 @@ const updateBalance = async function (req, res) {
   }
 };
 
-module.exports = { updateBalance };
+module.exports = { updatecredits };
