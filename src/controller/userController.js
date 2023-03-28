@@ -11,7 +11,16 @@ const createUsers = async function (req, res) {
   try {
     let bodyData = req.body;
 
-    let { UserId, userName, email, phone, credits, status, balance, refferalCode } = bodyData;
+    let {
+      UserId,
+      userName,
+      email,
+      phone,
+      credits,
+      status,
+      balance,
+      referralCode,
+    } = bodyData;
 
     if (Object.keys(bodyData).length == 0) {
       return res.status(400).send({
@@ -21,10 +30,6 @@ const createUsers = async function (req, res) {
       });
     }
 
-    // Generate a unique referral code for the new user
-    const referral_Code = Math.random().toString(36).substring(7);
-    
-
     let checkUserId = await userModel.findOne({ UserId: UserId });
     if (checkUserId) {
       return res.status(400).send({
@@ -33,14 +38,21 @@ const createUsers = async function (req, res) {
       });
     }
 
-    // let checkEmail = await userModel.findOne({ email: email });
+    // Generate a unique referral code for the new user
+    const referral_Code = Math.random().toString(36).substring(2);
+    bodyData.referralCode = referral_Code;
+    if (referralCode) {
+      // Find the referrer by their referral code
+      const referrer = await userModel.findOne({ referralCode: referralCode });
 
-    //   if (checkEmail) {
-    //     return res.status(400).send({
-    //       status: false,
-    //       message: "this email is already registerd",
-    //     });
-    //   }
+      // If the referrer is found, add credits to the referrer's accounts
+      if (referrer) {
+        referrer.credits += 10;
+        await referrer.save();
+      } else {
+        res.status(400).json({ error: "Invalid referral code" });
+      }
+    }
 
     const userCreated = await userModel.create(bodyData);
     const CricTable = await cricketModel.create(bodyData);

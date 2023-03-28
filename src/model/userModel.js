@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
       trim: true,
     },
-    refferalCode: {
+    referralCode: {
       type: String,
       unique: true,
     },
@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: 100,
     },
-    balance:{
+    realMoney:{
       type: Number,
       required: true,
       default:0,
