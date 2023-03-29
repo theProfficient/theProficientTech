@@ -485,9 +485,36 @@ const getGroups = async function (req, res) {
   }
 };
 
+const getPlayers = async function (req, res) {
+  try {
+
+    let players = await tournamentModel.find({ endTime: { $gt: new Date() } }).sort({maxTime:1}).select({_id:1, players:1});
+
+    if (players.length === 0) {
+      return res.status(404).send({
+        status: false,
+        message: " Data not present",
+      });
+    }
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: players,
+    });
+
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   createTournaments,
   updateTournament,
   getAllTables,
   getGroups,
+  getPlayers
 };
