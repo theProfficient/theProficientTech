@@ -29,6 +29,3 @@ app.listen(process.env.PORT || 8000, function () {
   console.log("Express app running on port" + (process.env.port || 8000));
 });
 
-// app.listen(3005, '0.0.0.0', function() {
-//   console.log('Listening to port:  ' + 3005);
-// });

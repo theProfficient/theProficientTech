@@ -11,6 +11,10 @@ const groupSchema = new mongoose.Schema(
   tableId:{
     type:String
   },
+  start:{
+    type:Boolean,
+    default:false
+  }
 
 },{strict:false});
 

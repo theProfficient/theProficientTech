@@ -1,78 +1,63 @@
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
-// const balanceModel = require("../model/balanceModel")
 const cricketModel = require("../model/cricketModel");
+const groupModel = require("../model/groupModel")
 
-// const createCric = async function (req, res) {
-//   try {
-//     // let cricMatch = req.query.hasOwnProperty("cricMatch") ? req.query.cricMatch : ""
-//     // let cricRuns = req.query.hasOwnProperty("cricRuns") ? req.query.cricRuns : ""
-//     // let cricWins = req.query.hasOwnProperty("cricWins") ? req.query.cricWins : ""
 
-//     let data = req.query;
-//     let UserId = req.query.UserId;
-//     let { cricMatch, cricRuns, cricWins } = data;
-//     // console.log(body,UserId);
+const createCric = async function (req, res) {
+  try {
+ 
+    let data = req.query;
+ 
+    let { cricMatch, cricRuns, cricWins, groupId, UserId} = data;
+  
+    // if (Object.keys(data).length == 0) {
+    //   return res.status(400).send({
+    //     status: false,
+    //     message:
+    //       "Body should  be not Empty please enter some data to create cricketUser",
+    //   });
+    // }
 
-//     let getUserId = await userModel.findById({ _id: UserId });
-//     console.log(getUserId);
+    // let groups = await groupModel.find()
+    return res.status(201).send({
+      status: true,
+      message: " cricket table created successfully",
+      data: groups,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      status: false,
+      message: error.message,
+    });
+  }
+};
 
-//     if (Object.keys(data).length == 0) {
-//       return res.status(400).send({
-//         status: false,
-//         message:
-//           "Body should  be not Empty please enter some data to create cricketUser",
-//       });
-//     }
+// _____________get cricket data
 
-//     let UserId1 = await cricketModel.findOne({ UserId: UserId });
+const getCric = async function (req, res) {
+  try {
+    let UserId = req.query.UserId;
+    let cricket = await cricketModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
 
-//     if (UserId1) {
-//       return res.status(400).send({
-//         status: false,
-//         message: "this userId is already registerd",
-//       });
-//     }
+    if (!cricket) {
+      return res
+        .status(404)
+        .send({ status: false, message: "this UserId not found" });
+    }
 
-//     const createCricTable = await cricketModel.create(data);
-//     return res.status(201).send({
-//       status: true,
-//       message: " cricket table created successfully",
-//       data: createCricTable,
-//     });
-//   } catch (error) {
-//     return res.status(500).send({
-//       status: false,
-//       message: error.message,
-//     });
-//   }
-// };
-
-//_____________get cricket data
-
-// const getCric = async function (req, res) {
-//   try {
-//     let UserId = req.query.UserId;
-//     let cricket = await cricketModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
-
-//     if (!cricket) {
-//       return res
-//         .status(404)
-//         .send({ status: false, message: "this UserId not found" });
-//     }
-
-//     return res.status(200).send({
-//       status: true,
-//       message: "success",
-//       data: cricket,
-//     });
-//   } catch (err) {
-//     return res.status(500).send({
-//       status: false,
-//       error: err.message,
-//     });
-//   }
-// };
+    return res.status(200).send({
+      status: true,
+      message: "success",
+      data: cricket,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      error: err.message,
+    });
+  }
+};
 
 //__________update table
 
@@ -133,4 +118,4 @@ const getAllCric = async function (req, res) {
   }
 };
 
-module.exports = { updateCric, getAllCric };
+module.exports = { createCric,updateCric, getAllCric };

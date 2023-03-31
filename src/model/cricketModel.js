@@ -3,8 +3,13 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const cricketSchema = new mongoose.Schema(
   {
-    UserId: {
-      type:String
+    userId: {
+      type: ObjectId,
+      ref: "User",
+    },
+    groupId: {
+      type: ObjectId,
+      ref: "Group",
     },
     cricMatch: {
       type: Number,
@@ -16,12 +21,25 @@ const cricketSchema = new mongoose.Schema(
       trim: true,
       default: 0,
     },
-    cricWins: {  
+    cricWins: {
       type: Number,
       trim: true,
       default: 0,
     },
-    types:{
+    balls: {
+      type: Number,
+      trim: true,
+      default: 0,
+    },
+    over: {
+      type: Number,
+      trim: true,
+      default: 1,
+    },
+    nextBallTime: {
+      type: Date,
+    },
+    types: {
       objective: {
         type: Boolean,
         trim: true,
@@ -32,12 +50,12 @@ const cricketSchema = new mongoose.Schema(
         trim: true,
         default: false,
       },
-      multiplayer: {  
+      multiplayer: {
         type: Boolean,
         trim: true,
         default: false,
       },
-    }
+    },
   },
   { timestamps: true }
 );
