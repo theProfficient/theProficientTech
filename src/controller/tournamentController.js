@@ -91,10 +91,10 @@ const createTournaments = async function (req, res) {
                 group: completeGroups,
                 tableId: tableIdForT,
               });
-              let grpId = createGrp._id
+              let grpId = createGrp._id;
               console.log(createGrp);
-  
-              startMatch1(grpId)
+
+              startMatch1(grpId);
             }
           }
         }
@@ -117,15 +117,18 @@ const createTournaments = async function (req, res) {
     setInterval(createTournament1, 60000);
     createTournament1();
 
-
-    async function startMatch1(grpId){
-      console.log("grpid>>>>>>>>>>>", grpId)
-      if(grpId != undefined){
-     let data = await groupModel.findByIdAndUpdate({_id:grpId}, { $set: { start: true } }, {new:true})
-     console.log("this is updated data >>>>>>",data)
+    async function startMatch1(grpId) {
+      console.log("grpid>>>>>>>>>>>", grpId);
+      if (grpId != undefined) {
+        let data = await groupModel.findByIdAndUpdate(
+          { _id: grpId },
+          { $set: { start: true } },
+          { new: true }
+        );
+        console.log("this is updated data >>>>>>", data);
       }
     }
-   setTimeout(startMatch1,10000)
+    setTimeout(startMatch1, 10000);
     //_______________________create table2 with setinterval an end time________________
     let tableId2;
     //let grpId ;
@@ -157,11 +160,10 @@ const createTournaments = async function (req, res) {
               group: completeGroups,
               tableId: tableId2,
             });
-           let grpId = createGrp._id
+            let grpId = createGrp._id;
             console.log(createGrp);
 
-            startMatch2(grpId)
-          
+            startMatch2(grpId);
           }
         }
       }
@@ -176,19 +178,21 @@ const createTournaments = async function (req, res) {
     setInterval(createTournament2, 240000);
     createTournament2();
 
-    async function startMatch2(grpId){
-      console.log("grpid>>>>>>>>>>>", grpId)
-      if(grpId != undefined){
-     let data = await groupModel.findByIdAndUpdate({_id:grpId}, { $set: { start: true } }, {new:true})
-     console.log("this is updated data >>>>>>>>>>", data)
+    async function startMatch2(grpId) {
+      console.log("grpid>>>>>>>>>>>", grpId);
+      if (grpId != undefined) {
+        let data = await groupModel.findByIdAndUpdate(
+          { _id: grpId },
+          { $set: { start: true } },
+          { new: true }
+        );
+        console.log("this is updated data >>>>>>>>>>", data);
       }
     }
-   setTimeout(startMatch2,10000)
-    
-  
+    setTimeout(startMatch2, 10000);
+
     const updateOperation = { $set: { start: true } };
 
-  
     //_______________________create table3 with setinterval an end time________________
     let tableId3;
     async function createTournament3() {
@@ -219,10 +223,10 @@ const createTournaments = async function (req, res) {
               group: completeGroups,
               tableId: tableId3,
             });
-            let grpId = createGrp._id
+            let grpId = createGrp._id;
             console.log(createGrp);
 
-            startMatch3(grpId)
+            startMatch3(grpId);
           }
         }
       }
@@ -234,15 +238,19 @@ const createTournaments = async function (req, res) {
     }
     setInterval(createTournament3, 300000);
     createTournament3();
-    async function startMatch3(grpId){
-      console.log("grpid>>>>>>>>>>>", grpId)
-      if(grpId != undefined){
-     let data = await groupModel.findByIdAndUpdate({_id:grpId}, { $set: { start: true } }, {new:true})
-     console.log("this is updated data >>>>>>>>>>", data)
+    async function startMatch3(grpId) {
+      console.log("grpid>>>>>>>>>>>", grpId);
+      if (grpId != undefined) {
+        let data = await groupModel.findByIdAndUpdate(
+          { _id: grpId },
+          { $set: { start: true } },
+          { new: true }
+        );
+        console.log("this is updated data >>>>>>>>>>", data);
       }
     }
-   setTimeout(startMatch3,10000)
-    
+    setTimeout(startMatch3, 10000);
+
     //_______________________create table4 with setinterval an end time________________
     let tableId4;
     async function createTournament4() {
@@ -273,10 +281,10 @@ const createTournaments = async function (req, res) {
               group: completeGroups,
               tableId: tableId4,
             });
-            let grpId = createGrp._id
+            let grpId = createGrp._id;
             console.log(createGrp);
 
-            startMatch4(grpId)
+            startMatch4(grpId);
           }
         }
       }
@@ -289,15 +297,18 @@ const createTournaments = async function (req, res) {
     setInterval(createTournament4, 600000);
     createTournament4();
 
-    async function startMatch4(grpId){
-    console.log("grpid>>>>>>>>>>>", grpId)
-      if(grpId != undefined){
-     let data = await groupModel.findByIdAndUpdate({_id:grpId}, { $set: { start: true } }, {new:true})
-     console.log("this is updated data >>>>>>>>>>", data)
+    async function startMatch4(grpId) {
+      console.log("grpid>>>>>>>>>>>", grpId);
+      if (grpId != undefined) {
+        let data = await groupModel.findByIdAndUpdate(
+          { _id: grpId },
+          { $set: { start: true } },
+          { new: true }
+        );
+        console.log("this is updated data >>>>>>>>>>", data);
       }
     }
-   setTimeout(startMatch4,10000)
-    
+    setTimeout(startMatch4, 10000);
 
     //_______________________create table5 with setinterval an end time________________
     let tableId5;
@@ -329,10 +340,10 @@ const createTournaments = async function (req, res) {
               group: completeGroups,
               tableId: tableId5,
             });
-            let grpId = createGrp._id
+            let grpId = createGrp._id;
             console.log(createGrp);
 
-            startMatch5(grpId)
+            startMatch5(grpId);
           }
         }
       }
@@ -346,63 +357,18 @@ const createTournaments = async function (req, res) {
     setInterval(createTournament5, 900000);
     createTournament5();
 
-
-    async function startMatch5(grpId){
-      console.log("grpid>>>>>>>>>>>", grpId)
-        if(grpId != undefined){
-       let data = await groupModel.findByIdAndUpdate({_id:grpId}, { $set: { start: true } }, {new:true})
-       console.log("this is updated data >>>>>>>>>>", data)
-        }
+    async function startMatch5(grpId) {
+      console.log("grpid>>>>>>>>>>>", grpId);
+      if (grpId != undefined) {
+        let data = await groupModel.findByIdAndUpdate(
+          { _id: grpId },
+          { $set: { start: true } },
+          { new: true }
+        );
+        console.log("this is updated data >>>>>>>>>>", data);
       }
-     setTimeout(startMatch5,10000)
-      
-    // async function startMatch() {
-    //   const currentTime = new Date();
-    //   const startTime = new Date(currentTime.getTime() - 12000); // 12 seconds ago
-    //   const endTime = new Date(currentTime.getTime() - 10000); // 10 seconds ago
-
-    //   // Define the update operation
-    //   const updateOperation = { $set: { start: true } };
-
-    //   // Find and update the documents in the time range
-    //   await groupModel.updateMany(
-    //     {
-    //       createdTime: {
-    //         $gte: startTime,
-    //         $lt: endTime,
-    //       },
-    //     },
-    //     updateOperation,
-    //     { new: true }
-    //   );
-    // }
-   
-
-
-//     let update = await groupModel.aggregate([
-//       // Match documents with a start time before the given time
-//       {
-//         $match: {
-//           createdTime: { 
-//                        $gte: new Date(Date.now() - 12000),  // Match documents created between 10 and 12 seconds ago
-//                        $lte: new Date(Date.now() - 10000)
-//                      }
-//         }
-//       },
-//     ])
-//     const updateOperation = { $set: { start: true } };
-
-//   let ids = update._id
-//  if(ids.length !== 0){
-//   for(let id=0; id<ids.length; id++){
-
-//   groupModel.findOneAndUpdate({_id:id}, updateOperation, { new: true })
-
-//  }
-// }
-
-//     setInterval(startMatch, 10000);
-//     startMatch();
+    }
+    setTimeout(startMatch5, 10000);
 
     return res.status(201).send({
       status: true,
@@ -437,6 +403,7 @@ const getAllTables = async function (req, res) {
         createdTime: 0,
       })
       .sort({ maxTime: 1 });
+
     //__________fetch dataas per user id (it shows user joined in this table now)
 
     let userData = await tournamentModel.aggregate([
@@ -454,12 +421,19 @@ const getAllTables = async function (req, res) {
     if (userData.length > 0) {
       let tableId = userData.map((items) => items._id);
       let endTime = userData[0].endTime;
+      //______________________________check the match is started or not
+
+      let matchStatus = [];
+      for (let id = 0; id < tableId.length; id++) {
+        let status = await groupModel.findOne({ tableId: tableId[id] });
+        matchStatus.push({ tableId: status.tableId, start: status.start });
+      }
 
       return res.status(200).send({
         status: true,
         message: "Success",
-
-        tableId: tableId,
+        matchStatus: matchStatus,
+        //tableId: tableId,
         joined: true,
         currentTime: currentTime,
         endTime: endTime,

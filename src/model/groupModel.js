@@ -11,6 +11,11 @@ const groupSchema = new mongoose.Schema(
   tableId:{
     type:String
   },
+  updatedPlayers:[],
+  ball:{
+    type:Number,
+    default:0
+  },
   start:{
     type:Boolean,
     default:false

@@ -1,49 +1,36 @@
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const cricketModel = require("../model/cricketModel");
-const groupModel = require("../model/groupModel")
+const groupModel = require("../model/groupModel");
 
 
-const createCric = async function (req, res) {
+// _____________get cricket group by id data
+
+const getCricByGroupId = async function (req, res) {
   try {
- 
-    let data = req.query;
- 
-    let { cricMatch, cricRuns, cricWins, groupId, UserId} = data;
-  
-    // if (Object.keys(data).length == 0) {
-    //   return res.status(400).send({
-    //     status: false,
-    //     message:
-    //       "Body should  be not Empty please enter some data to create cricketUser",
-    //   });
-    // }
+    let groupId = req.query.groupId;
 
-    // let groups = await groupModel.find()
-    return res.status(201).send({
-      status: true,
-      message: " cricket table created successfully",
-      data: groups,
-    });
-  } catch (error) {
-    return res.status(500).send({
-      status: false,
-      message: error.message,
-    });
-  }
-};
-
-// _____________get cricket data
-
-const getCric = async function (req, res) {
-  try {
-    let UserId = req.query.UserId;
-    let cricket = await cricketModel.findOne({ UserId: UserId }); // find by useerId not A new created mongodb id
-
+    let cricket = await groupModel.findById({ _id: groupId });
     if (!cricket) {
       return res
         .status(404)
         .send({ status: false, message: "this UserId not found" });
+    }
+
+    if (cricket.updatedPlayers.length !== 0) {
+      let cricket1 = {
+        _id: cricket._id,
+        createdTime: cricket.createdTime,
+        tableId: cricket.tableId,
+        updatedPlayers: cricket.updatedPlayers,
+        ball: cricket.ball,
+        start: cricket.start,
+      };
+      return res.status(200).send({
+        status: true,
+        message: "success",
+        data: cricket1,
+      });
     }
 
     return res.status(200).send({
@@ -59,7 +46,7 @@ const getCric = async function (req, res) {
   }
 };
 
-//__________update table
+//____________________________update table
 
 const updateCric = async function (req, res) {
   try {
@@ -92,7 +79,7 @@ const updateCric = async function (req, res) {
   }
 };
 
-//_____________get All data of cricket
+//_______________________get All data of cricket
 
 const getAllCric = async function (req, res) {
   try {
@@ -117,5 +104,96 @@ const getAllCric = async function (req, res) {
     });
   }
 };
+//__________________________________________update group's players data
 
-module.exports = { createCric,updateCric, getAllCric };
+const updateGroup = async function (req, res) {
+  try {
+    let groupId = req.query.groupId;
+    let mathGroup = await groupModel.findById({ _id: groupId });
+    let group = [...mathGroup.group[0]];
+
+    let matchData;
+    for (let i = 0; i < group.length; i++) {
+      matchData = await groupModel.findOneAndUpdate(
+        { _id: groupId },
+        { $push: { updatedPlayers: { name: group[i], run: 0 } } },
+
+        { new: true }
+      );
+    }
+    if (matchData.length == 0) {
+      return res.status(404).send({
+        status: false,
+        message: "user not found",
+      });
+    }
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: matchData,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      error: err.message,
+    });
+  }
+};
+
+//_______________________________________update balls
+
+const updateBall = async function (req, res) {
+  try {
+    let groupId = req.query.groupId;
+
+    let balls = await groupModel.findById({ _id: groupId });
+    let ballCount = balls.ball;
+    let matchData;
+
+    let max = 6;
+    let continueRunning = true;
+
+    async function updateBalls() {
+      matchData = await groupModel.findByIdAndUpdate(
+        { _id: groupId },
+        { $inc: { ball: 1 } },
+        { new: true }
+      );
+      ballCount = matchData.ball;
+      console.log(ballCount);
+
+      if (ballCount >= max) {
+        console.log("Reached maximum ball count!");
+        continueRunning = false;
+      }
+    }
+
+    function runUpdateBalls() {
+      if (continueRunning) {
+        updateBalls();
+        setTimeout(runUpdateBalls, 4000);
+      }
+    }
+    runUpdateBalls();
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: matchData,
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      error: err.message,
+    });
+  }
+};
+
+module.exports = {
+  updateCric,
+  getAllCric,
+  getCricByGroupId,
+  updateGroup,
+  updateBall,
+};

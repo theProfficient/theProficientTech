@@ -19,11 +19,15 @@ Router.put("/updateUser", userController.updateUser);
 
 //_____________________ Cricket________________________
 
-Router.post("/create", cricketController.createCric);
-
 Router.put("/updateCricket", cricketController.updateCric);
 
 Router.get("/getAllCricketData", cricketController.getAllCric);
+
+Router.get("/getCricGrp", cricketController.getCricByGroupId);
+
+Router.put("/updateGrp", cricketController.updateGroup);
+
+Router.put("/updateBall", cricketController.updateBall);
 
 //__________________Hocky___________________
 
