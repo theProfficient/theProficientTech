@@ -127,40 +127,18 @@ const updateGroup = async function (req, res) {
         message: "user not found",
       });
     }
-
-    return res.status(200).send({
-      status: true,
-      message: "Success",
-      data: matchData,
-    });
-  } catch (err) {
-    return res.status(500).send({
-      status: false,
-      error: err.message,
-    });
-  }
-};
-
-//_______________________________________update balls
-
-const updateBall = async function (req, res) {
-  try {
-    let groupId = req.query.groupId;
-
-    let balls = await groupModel.findById({ _id: groupId });
-    let ballCount = balls.ball;
-    let matchData;
+    let ballCount = matchData.ball;
 
     let max = 6;
     let continueRunning = true;
-
+    let updateBall
     async function updateBalls() {
-      matchData = await groupModel.findByIdAndUpdate(
+       updateBall = await groupModel.findByIdAndUpdate(
         { _id: groupId },
         { $inc: { ball: 1 } },
         { new: true }
       );
-      ballCount = matchData.ball;
+      ballCount = updateBall.ball;
       console.log(ballCount);
 
       if (ballCount >= max) {
@@ -176,7 +154,6 @@ const updateBall = async function (req, res) {
       }
     }
     runUpdateBalls();
-
     return res.status(200).send({
       status: true,
       message: "Success",
@@ -190,10 +167,58 @@ const updateBall = async function (req, res) {
   }
 };
 
+//_______________________________________update balls
+
+// const updateBall = async function (req, res) {
+//   try {
+//     let groupId = req.query.groupId;
+
+//     let balls = await groupModel.findById({ _id: groupId });
+//     let ballCount = balls.ball;
+//     let matchData;
+
+//     let max = 6;
+//     let continueRunning = true;
+
+//     async function updateBalls() {
+//       matchData = await groupModel.findByIdAndUpdate(
+//         { _id: groupId },
+//         { $inc: { ball: 1 } },
+//         { new: true }
+//       );
+//       ballCount = matchData.ball;
+//       console.log(ballCount);
+
+//       if (ballCount >= max) {
+//         console.log("Reached maximum ball count!");
+//         continueRunning = false;
+//       }
+//     }
+
+//     function runUpdateBalls() {
+//       if (continueRunning) {
+//         updateBalls();
+//         setTimeout(runUpdateBalls, 4000);
+//       }
+//     }
+//     runUpdateBalls();
+
+//     return res.status(200).send({
+//       status: true,
+//       message: "Success",
+//       data: matchData,
+//     });
+//   } catch (err) {
+//     return res.status(500).send({
+//       status: false,
+//       error: err.message,
+//     });
+//   }
+// };
+
 module.exports = {
   updateCric,
   getAllCric,
   getCricByGroupId,
   updateGroup,
-  updateBall,
 };

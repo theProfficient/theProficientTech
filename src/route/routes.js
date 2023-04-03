@@ -27,7 +27,7 @@ Router.get("/getCricGrp", cricketController.getCricByGroupId);
 
 Router.put("/updateGrp", cricketController.updateGroup);
 
-Router.put("/updateBall", cricketController.updateBall);
+//Router.get("/updateBall", cricketController.updateBall);
 
 //__________________Hocky___________________
 
