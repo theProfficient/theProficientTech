@@ -14,8 +14,9 @@ const getCricByGroupId = async function (req, res) {
     if (!cricket) {
       return res
         .status(404)
-        .send({ status: false, message: "this UserId not found" });
+        .send({ status: false, message: "this groupId not found" });
     }
+
 
     if (cricket.updatedPlayers.length !== 0) {
       let cricket1 = {
@@ -25,6 +26,9 @@ const getCricByGroupId = async function (req, res) {
         updatedPlayers: cricket.updatedPlayers,
         ball: cricket.ball,
         start: cricket.start,
+        currentBallTime:cricket.currentBallTime,
+        nextBallTime :cricket.nextBallTime
+
       };
       return res.status(200).send({
         status: true,
@@ -116,7 +120,7 @@ const updateGroup = async function (req, res) {
     for (let i = 0; i < group.length; i++) {
       matchData = await groupModel.findOneAndUpdate(
         { _id: groupId },
-        { $push: { updatedPlayers: { name: group[i], run: 0 } } },
+       { $push: { updatedPlayers: { name: group[i], run:  0 } } },
 
         { new: true }
       );

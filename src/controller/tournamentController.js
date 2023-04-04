@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const tournamentModel = require("../model/tournamentModel");
 const cricketModel = require("../model/cricketModel");
-const { time, group } = require("console");
+const { time, group, log } = require("console");
 const _ = require("lodash");
 const fakeUsers = require("./dummyUsers");
 const { find } = require("lodash");
@@ -59,119 +59,128 @@ const createTournaments = async function (req, res) {
     let tournamentTable5;
 
     //_______________________create table1 with setinterval an end time___________
-    let tableId1;
-    let grpId1;
-    let group1;
-    async function createTournament1() {
-      if (tableId1 != undefined) {
-        for (let ids = 0; ids < tableId1.length; ids++) {
-          let tableIdForT = tableId1[ids];
-          let table = await tournamentModel.findOne({ _id: tableIdForT });
 
-          if (table != undefined || table != null) {
-            let players = table.players;
-            let users = table.Users;
+    //pendind_____________________________________
 
-            if (users.length !== 0) {
-              users = users.map((items) => items.userName);
+  //   let tableId1;
+  //   let grpId1 =[];
+  //   let group1 ;
+  //  console.log("before interval", group1); 
+  //   async function createTournament1() {
+  //     if (tableId1 != undefined) {
+  //       for (let ids = 0; ids < tableId1.length; ids++) {
+  //         let tableIdForT = tableId1[ids];
+  //         let table = await tournamentModel.findOne({ _id: tableIdForT });
 
-              // import dummyusers and add as per need to complete groups
-              let dummyUsers = fakeUsers.fakeUsers;
-              dummyUsers = dummyUsers.map((items) => items.userName);
+  //         if (table != undefined || table != null) {
+  //           let players = table.players;
+  //           let users = table.Users;
 
-              const groups = _.chunk(players, 5);
+  //           if (users.length !== 0) {
+  //             users = users.map((items) => items.userName);
 
-              let completePlayers = [
-                ...users,
-                ...dummyUsers.slice(0, 5 - (users.length % 5)),
-              ];
+  //             // import dummyusers and add as per need to complete groups
+  //             let dummyUsers = fakeUsers.fakeUsers;
+  //             dummyUsers = dummyUsers.map((items) => items.userName);
 
-              let completeGroups = _.chunk(completePlayers, 5);
-              console.log(completeGroups);
+  //             const groups = _.chunk(players, 5);
 
-              let createGrp = await groupModel.create({
-                group: completeGroups,
-                tableId: tableIdForT,
-              });
-              grpId1 = createGrp._id;
-              group1 = [...createGrp.group[0]];
-              console.log(createGrp);
+  //             let completePlayers = [
+  //               ...users,
+  //               ...dummyUsers.slice(0, 5 - (users.length % 5)),
+  //             ];
 
-              startMatch1(grpId1);
-              runUpdateBalls1(grpId1, group1);
-            }
-          }
-        }
-      }
-      endTime = Date.now() + 1 * 60 * 1000;
-      data1.endTime = req.query.endTime = endTime;
-      tournamentTable1 = await tournamentModel.insertMany([
-        data1,
-        data1,
-        data1,
-        data1,
-      ]);
+  //             let completeGroups = _.chunk(completePlayers, 5);
+  //             console.log(completeGroups);
 
-      tableId1 = tournamentTable1.map((items) => items._id);
-      console.log(tableId1);
+  //             let createGrp = await groupModel.create({
+  //               group: completeGroups,
+  //               tableId: tableIdForT,
+  //             });
+  //             grpId1 = grpId1.push(createGrp._id);
+  //             group1 =createGrp.group ;
 
-      console.log(tournamentTable1);
-    }
+  //             console.log("grpId----------",grpId1);
+  //             console.log("group----------",group);
+  //             console.log(createGrp);
 
-    setInterval(createTournament1, 60000);
-    createTournament1();
+              
+  //           }
+  //         }
+  //       }
+      
 
-    async function startMatch1(grpId1, group1) {
-      console.log("grpid>>>>>>>>>>>", grpId1);
-      console.log("groups>>>>>>>>>>>>>>>>>", group1);
-      if (grpId1 != undefined) {
-        for (let i = 0; i < group.length; i++) {
-          matchData = await groupModel.findOneAndUpdate(
-            { _id: grpId1 },
-            { $push: { updatedPlayers: { name: group[i], run: 0 } } },
-            // { $set: { start: true } },
-            { new: true, setDefaultsOnInsert: true }
-          );
-        }
-        matchData = await groupModel.findOneAndUpdate(
-          { _id: grpId1 },
-          { $set: { start: true } },
-          { new: true }
-        );
-        console.log("this is updated data >>>>>>>>>>", matchData);
-      }
-    }
 
-    setTimeout(() => {
-      startMatch1(grpId1, group1);
-    }, 10000);
-    async function updateBalls1(grpId1) {
-      let max = 6;
-      if (grpId1 != undefined) {
-        let updateBall = await groupModel.findByIdAndUpdate(
-          { _id: grpId1 },
-          { $inc: { ball: 1 } },
-          { new: true }
-        );
-        let ballCount = updateBall.ball;
-        console.log(ballCount);
+  //     }
+  //     endTime = Date.now() + 1 * 60 * 1000;
+  //     data1.endTime = req.query.endTime = endTime;
+  //     tournamentTable1 = await tournamentModel.insertMany([
+  //       data1,
+  //       data1,
+  //       data1,
+  //       data1,
+  //     ]);
 
-        if (ballCount >= max) {
-          console.log("Reached maximum ball count!");
-          continueRunning = false;
-        }
-      }
-    }
+  //     tableId1 = tournamentTable1.map((items) => items._id);
+  //     console.log(tableId1);
 
-    function runUpdateBalls1(grpId1) {
-      if (continueRunning) {
-        updateBalls1(grpId1);
-        setTimeout(() => {
-          runUpdateBalls1(grpId1);
-        }, 4000);
-      }
-    }
-    //_______________________create table2 with setinterval an end time________________
+  //     console.log(tournamentTable1);
+  //   }
+
+  //   setInterval(createTournament1, 60000);
+  //   createTournament1();
+  //   console.log(" fter interval", group1); 
+  //   async function startMatch1(grpId1, group1) {
+  //     console.log("grpid>>>>>>>>>>>", grpId1);
+  //     console.log("groups>>>>>>>>>>>>>>>>>", group1);
+  //     if (grpId1 != undefined) {
+  //       for (let i = 0; i < group.length; i++) {
+  //         matchData = await groupModel.findOneAndUpdate(
+  //           { _id: grpId1 },
+  //           { $push: { updatedPlayers: { name: group[i], run: 0 } } },
+  //           // { $set: { start: true } },
+  //           { new: true, setDefaultsOnInsert: true }
+  //         );
+  //       }
+  //       matchData = await groupModel.findOneAndUpdate(
+  //         { _id: grpId1 },
+  //         { $set: { start: true } },
+  //         { new: true }
+  //       );
+  //       console.log("this is updated data >>>>>>>>>>", matchData);
+  //     }
+  //   }
+
+    // // setTimeout(() => {
+    // //   startMatch1(grpId1, group1);
+    // // }, 10000);
+    // async function updateBalls1(grpId1) {
+    //   let max = 6;
+    //   if (grpId1 != undefined) {
+    //     let updateBall = await groupModel.findByIdAndUpdate(
+    //       { _id: grpId1 },
+    //       { $inc: { ball: 1 } },
+    //       { new: true }
+    //     );
+    //     let ballCount = updateBall.ball;
+    //     console.log(ballCount);
+
+    //     if (ballCount >= max) {
+    //       console.log("Reached maximum ball count!");
+    //       continueRunning = false;
+    //     }
+    //   }
+    // }
+
+    // function runUpdateBalls1(grpId1) {
+    //   if (continueRunning) {
+    //     updateBalls1(grpId1);
+    //     setTimeout(() => {
+    //       runUpdateBalls1(grpId1);
+    //     }, 4000);
+    //   }
+    // }
+  //   //_______________________create table2 with setinterval an end time________________
     let tableId2;
     let grpId2;
     let group2;
@@ -204,10 +213,10 @@ const createTournaments = async function (req, res) {
               tableId: tableId2,
             });
             grpId2 = createGrp._id;
-            group2 = [...createGrp.group[0]];
+            // group2 = [...createGrp.group[0]];
+            group2 = createGrp.group
             console.log(createGrp);
 
-            startMatch2(grpId2, group2);
             runUpdateBalls2(grpId2);
           }
         }
@@ -226,27 +235,21 @@ const createTournaments = async function (req, res) {
     async function startMatch2(grpId2, group2) {
       console.log("grpid>>>>>>>>>>>", grpId2);
       console.log("groups>>>>>>>>>>>>>>>>>", group2);
-      if (grpId3 != undefined) {
-        for (let i = 0; i < group.length; i++) {
-          matchData = await groupModel.findOneAndUpdate(
+      if (grpId2 !== undefined) {
+        for (let innerArray of group2) {
+          const result = innerArray.map((name) => ({ name, run: 0, wicket: 0 }));
+          console.log("result", result);
+          const matchData = await groupModel.findOneAndUpdate(
             { _id: grpId2 },
-            { $push: { updatedPlayers: { name: group[i], run: 0 } } },
-            // { $set: { start: true } },
+            { $push: { updatedPlayers: result }, $set: { start: true } },
             { new: true, setDefaultsOnInsert: true }
           );
+          console.log("this is updated data >>>>>>>>>>", matchData);
         }
-        matchData = await groupModel.findOneAndUpdate(
-          { _id: grpId2 },
-          { $set: { start: true } },
-          { new: true }
-        );
-        console.log("this is updated data >>>>>>>>>>", matchData);
       }
     }
 
-    setTimeout(() => {
-      startMatch2(grpId2, group2);
-    }, 10000);
+    setTimeout(startMatch2,10000)
 
     async function updateBalls2(grpId2) {
       let max = 6;
@@ -254,10 +257,12 @@ const createTournaments = async function (req, res) {
         let updateBall = await groupModel.findByIdAndUpdate(
           { _id: grpId2 },
           { $inc: { ball: 1 } },
+          {$set:{nextBall : Date.now() + 4000}},
           { new: true }
         );
         let ballCount = updateBall.ball;
         console.log(ballCount);
+        console.log(updateBall.nextBall,"--------------")
 
         if (ballCount >= max) {
           console.log("Reached maximum ball count!");
@@ -274,8 +279,7 @@ const createTournaments = async function (req, res) {
         }, 4000);
       }
     }
-    //_______________________create table3 with setinterval an end time________________
-
+  //   //_______________________create table3 with setinterval an end time________________
     let tableId3;
     let grpId3;
     let group3;
@@ -310,7 +314,8 @@ const createTournaments = async function (req, res) {
             });
 
             grpId3 = createGrp._id;
-            group3 = [...createGrp.group[0]];
+            //group3 = [...createGrp.group[0]];
+           group3 = createGrp.group;
             console.log(createGrp);
             startMatch3(grpId3, group3);
 
@@ -332,34 +337,29 @@ const createTournaments = async function (req, res) {
     async function startMatch3(grpId3, group3) {
       console.log("grpid>>>>>>>>>>>", grpId3);
       console.log("groups>>>>>>>>>>>>>>>>>", group3);
-      if (grpId3 != undefined) {
-        for (let i = 0; i < group.length; i++) {
-          matchData = await groupModel.findOneAndUpdate(
+      if (grpId3 !== undefined) {
+        for (let innerArray of group3) {
+          const result = innerArray.map((name) => ({ name, run: 0, wicket: 0 }));
+          console.log("result", result);
+          const matchData = await groupModel.findOneAndUpdate(
             { _id: grpId3 },
-            { $push: { updatedPlayers: { name: group[i], run: 0 } } },
-            // { $set: { start: true } },
+            { $push: { updatedPlayers: result }, $set: { start: true } },
             { new: true, setDefaultsOnInsert: true }
           );
+          console.log("this is updated data >>>>>>>>>>", matchData);
         }
-        matchData = await groupModel.findOneAndUpdate(
-          { _id: grpId3 },
-          { $set: { start: true } },
-          { new: true }
-        );
-        console.log("this is updated data >>>>>>>>>>", matchData);
       }
     }
 
-    setTimeout(() => {
-      startMatch3(grpId3, group3);
-    }, 10000);
+    setTimeout(startMatch3,10000)
 
     async function updateBalls3(grpId3) {
       let max = 6;
       if (grpId3 != undefined) {
         let updateBall = await groupModel.findByIdAndUpdate(
           { _id: grpId3 },
-          { $inc: { ball: 1 } },
+          { $inc: { ball: 1 } ,
+          nextBallTime:new Date(Date.now() + 1 * 4 * 1000).toISOString(), currentBallTime: Date.now()},
           { new: true }
         );
         let ballCount = updateBall.ball;
@@ -381,7 +381,7 @@ const createTournaments = async function (req, res) {
       }
     }
 
-    //_______________________create table4 with setinterval an end time________________
+  //  // _______________________create table4 with setinterval an end time________________
     let tableId4;
     let grpId4;
     let group4;
@@ -414,7 +414,8 @@ const createTournaments = async function (req, res) {
               tableId: tableId4,
             });
             grpId4 = createGrp._id;
-            group4 = [...createGrp.group[0]];
+            // group4 = [...createGrp.group[0]];
+            group4= createGrp.group
             console.log(createGrp);
 
             startMatch4(grpId4, group4);
@@ -434,28 +435,23 @@ const createTournaments = async function (req, res) {
     async function startMatch4(grpId4, group4) {
       console.log("grpid>>>>>>>>>>>", grpId4);
       console.log("groups>>>>>>>>>>>>>>>>>", group4);
-      if (grpId4 != undefined) {
-        for (let i = 0; i < group.length; i++) {
-          matchData = await groupModel.findOneAndUpdate(
+      if (grpId4 !== undefined) {
+        for (let innerArray of group4) {
+          const result = innerArray.map((name) => ({ name, run: 0, wicket: 0 }));
+          console.log("result", result);
+          const matchData = await groupModel.findOneAndUpdate(
             { _id: grpId4 },
-            { $push: { updatedPlayers: { name: group[i], run: 0 } } },
+            { $push: { updatedPlayers: result }, $set: { start: true } },
             { new: true, setDefaultsOnInsert: true }
           );
+          console.log("this is updated data >>>>>>>>>>", matchData);
         }
-        matchData = await groupModel.findOneAndUpdate(
-          { _id: grpId4 },
-          { $set: { start: true } },
-          { new: true }
-        );
-        console.log("this is updated data >>>>>>>>>>", matchData);
       }
     }
 
-    setTimeout(() => {
-      startMatch4(grpId4, group4);
-    }, 10000);
+    setTimeout(startMatch4,10000)
 
-    async function updateBalls4(grpId3) {
+    async function updateBalls4(grpId4) {
       let max = 6;
       if (grpId4 != undefined) {
         let updateBall = await groupModel.findByIdAndUpdate(
@@ -481,7 +477,7 @@ const createTournaments = async function (req, res) {
         }, 4000);
       }
     }
-    //_______________________create table5 with setinterval an end time________________
+  //   //_______________________create table5 with setinterval an end time________________
     let tableId5;
     let grpId5;
     let group5;
@@ -515,7 +511,8 @@ const createTournaments = async function (req, res) {
               tableId: tableId5,
             });
             grpId5 = createGrp._id;
-            group5 = [...createGrp.group[0]];
+            // group5 = [...createGrp.group[0]];
+            group5= createGrp.group
             console.log(createGrp);
 
             startMatch5(grpId5, group5);
@@ -536,28 +533,21 @@ const createTournaments = async function (req, res) {
     async function startMatch5(grpId5, group5) {
       console.log("grpid>>>>>>>>>>>", grpId5);
       console.log("groups>>>>>>>>>>>>>>>>>", group5);
-      if (grpId5 != undefined) {
-        for (let i = 0; i < group.length; i++) {
-          matchData = await groupModel.findOneAndUpdate(
+      if (grpId5!== undefined) {
+        for (let innerArray of group5) {
+          const result = innerArray.map((name) => ({ name, run: 0, wicket: 0 }));
+          console.log("result", result);
+          const matchData = await groupModel.findOneAndUpdate(
             { _id: grpId5 },
-            { $push: { updatedPlayers: { name: group[i], run: 0 } } },
-            // { $set: { start: true } },
+            { $push: { updatedPlayers: result }, $set: { start: true } },
             { new: true, setDefaultsOnInsert: true }
           );
+          console.log("this is updated data >>>>>>>>>>", matchData);
         }
-        matchData = await groupModel.findOneAndUpdate(
-          { _id: grpId5 },
-          { $set: { start: true } },
-          { new: true }
-        );
-        console.log("this is updated data >>>>>>>>>>", matchData);
       }
     }
 
-    setTimeout(() => {
-      startMatch5(grpId5, group5);
-    }, 10000);
-
+    setTimeout(startMatch5,10000)
     async function updateBalls5(grpId5) {
       let max = 6;
       if (grpId5 != undefined) {
@@ -707,23 +697,25 @@ const updateTournament = async function (req, res) {
     }
 
     let users = existTable.Users;
-    let storedUser = users.filter((userIds) => userIds.UserId == UserId);
+    let storedUser = users.filter((userIds) => userIds.UserId === UserId);
+    console.log(storedUser)
 
     //________________________________find user,s Name _____________________________________
 
     let userExist = await userModel.findOne({ UserId: UserId });
-    let userName = userExist.userName;
     if (!userExist) {
       return res.status(404).send({
         status: false,
         message: " user not found",
       });
     }
+    let userName = userExist.userName;
     //_______update table with userId and tableId (if user joined perticular table players incereses by 1 automatically)
 
     if (storedUser.length !== 0) {
       for (let i = 0; i < storedUser.length; i++) {
         let time = storedUser[i].endTime;
+        console.log(time,"time___________")
         if (Math.abs(time.getMinutes() - existTable.endTime.getMinutes()) < 5) {
           return res.status(400).send({
             status: false,

@@ -19,7 +19,13 @@ const groupSchema = new mongoose.Schema(
   start:{
     type:Boolean,
     default:false
-  }
+  },
+  currentBallTime :{
+    type:Date
+  },
+  nextBallTime :{
+    type:Date
+  },
 
 },{strict:false});
 
