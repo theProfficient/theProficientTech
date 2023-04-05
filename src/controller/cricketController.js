@@ -27,7 +27,8 @@ const getCricByGroupId = async function (req, res) {
         ball: cricket.ball,
         start: cricket.start,
         currentBallTime:cricket.currentBallTime,
-        nextBallTime :cricket.nextBallTime
+        nextBallTime :cricket.nextBallTime,
+        ballSpeed : cricket.ballSpeed
 
       };
       return res.status(200).send({

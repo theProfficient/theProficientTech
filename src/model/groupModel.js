@@ -21,10 +21,16 @@ const groupSchema = new mongoose.Schema(
     default:false
   },
   currentBallTime :{
-    type:Date
+    type:Date,
+    default:Date.now()
   },
   nextBallTime :{
-    type:Date
+    type:Date,
+    default:Date.now()
+  },
+  ballSpeed:{
+    type:Number,
+    default:0
   },
 
 },{strict:false});
