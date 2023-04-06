@@ -25,10 +25,6 @@ Router.get("/getAllCricketData", cricketController.getAllCric);
 
 Router.get("/getCricGrp", cricketController.getCricByGroupId);
 
-Router.put("/updateGrp", cricketController.updateGroup);
-
-//Router.get("/updateBall", cricketController.updateBall);
-
 //__________________Hocky___________________
 
 Router.put("/updateHocky", hockyController.updateHoc);
