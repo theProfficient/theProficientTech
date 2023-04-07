@@ -22,8 +22,8 @@ const groupSchema = new mongoose.Schema(
         },
 
         wicket: {
-          type: Boolean,
-          default: false,
+          type: Number,
+          default: 0,
         },
         hit: {
           type: Boolean,
@@ -45,7 +45,7 @@ const groupSchema = new mongoose.Schema(
     },
     nextBallTime: {
       type: Date,
-      default: Date.now(),
+      default:  new Date( Date.now() + 1 * 4 * 1000 ).toISOString(),
     },
     ballSpeed: {
       type: Number,
