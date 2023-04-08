@@ -51,10 +51,10 @@ const groupSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    // hitted:{
-    //   type:Boolean,
-    //   default:false
-    // }
+    isWicketUpdated:{
+      type:Boolean,
+      default :false
+    },
   },
   { strict: false }
 );

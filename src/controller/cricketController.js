@@ -41,7 +41,25 @@ const getCricByGroupId = async function (req, res) {
         .status(404)
         .send({ status: false, message: "this groupId not found" });
     }
-
+ let ball = cricket.ball
+ let isWicketUpdated = cricket.isWicketUpdated
+ if(ball === 6 && isWicketUpdated === false){
+  let updatedPlayers = cricket.updatedPlayers.map((player) => {
+    if (!player.hit) {
+      // If the player did not hit the ball, set the wicket to true
+      player.wicket += 1;
+    }
+    if (player.hit) {
+      // If the player did not hit the ball, set the wicket to true
+      player.hit = false;
+    }
+    return player;
+  });
+  await groupModel.updateOne(
+    { _id: groupId },
+    { $set: { updatedPlayers, isWicketUpdated: true  } }
+  );
+ }
     if (cricket.updatedPlayers.length !== 0) {
       let cricket1 = {
         _id: cricket._id,
@@ -100,6 +118,8 @@ const updateCric = async function (req, res) {
     const user = group.find((user) => user.UserId.includes(UserId));
     let storedBallTime = groupExist.currentBallTime;
     let ballSpeed = groupExist.ballSpeed;
+    let isWicketUpdated = groupExist.isWicketUpdated;
+    let ball = groupExist.ball;
 
     console.log(storedBallTime, "time of ball");
     if (!user) {
@@ -166,7 +186,25 @@ const updateCric = async function (req, res) {
     groupExist.updatedPlayers[index].run += run;
     groupExist.updatedPlayers[index].hit = true;
 
-    const updatedGroup = await groupExist.save();
+    let updatedGroup = await groupExist.save();
+
+    if(ball === 6 && isWicketUpdated === true){
+      // let updatedPlayers = groupExist.updatedPlayers.map((player) => {
+      //   if (!player.hit) {
+      //     // If the player did not hit the ball, set the wicket to true
+      //     player.wicket -= 1;
+      //   }
+      //   return player;
+      // });
+      // await groupModel.updateOne(
+      //   { _id: groupId },
+      //   { $set: { updatedPlayers, isWicketUpdated: false  } }
+
+      // );
+      groupExist.updatedPlayers[index].wicket -= 1;
+
+       updatedGroup = await groupExist.save();
+     }
 
     return res.status(200).send({
       status: true,
