@@ -1096,7 +1096,6 @@ const updateTournament = async function (req, res) {
 };
 
 //__________________________________get groups per players and tableId ____________________________________________
-
 const getGroups = async function (req, res) {
   try {
     let tableId = req.query.tableId;
@@ -1118,32 +1117,45 @@ const getGroups = async function (req, res) {
     }
     let userName = userExist.userName;
 
-    const table = await groupModel.findOne({ tableId: tableId });
+    const table = await groupModel.find({ tableId: tableId });
     console.log(table);
 
-    if (!table) {
+    if (table.length === 0) {
       return res.status(404).send({
         status: false,
         message: " This table is not present ",
       });
     }
-    let groups = table.group;
+    let groups = table.map((items) => items.group );
+    console.log(groups,"groups>>>>>>>>>>>")
+    let user, groupId, users ;
+    for(let group = 0; group < groups.length; group++ ){
+      console.log(groups[group],"================================")
+      let findUser = groups[group].find((user) => user.userName === userName);
+      if(findUser != null){
+        user = findUser;
+        groupId = table[group]._id;
+        users = groups[group] ;
+        break;
+      }
+    }
 
-    const user = groups.find((user) => user.userName.includes(userName));
     if (!user) {
       return res.status(404).send({
         status: true,
-        message: "this user is not present in this group",
+        message: "this user is not present in any group",
       });
     }
 
-    groups = groups.map((items) => items.userName);
-    let myString = groups.join(" ");
+    console.log(user,">>>>>>>>>>>>>");
+    users = users.map((items) => items.userName);
+    let usersNameInStr = users.join(" ");
 
     return res.status(200).send({
       status: true,
       message: "Success",
-      data: myString,
+      groupId,
+      usersNameInStr
     });
   } catch (err) {
     return res.status(500).send({
@@ -1152,6 +1164,9 @@ const getGroups = async function (req, res) {
     });
   }
 };
+
+
+
 
 //________________________________get players with tournamentTableId____________________________________
 

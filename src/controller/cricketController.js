@@ -190,18 +190,7 @@ const updateCric = async function (req, res) {
     let updatedGroup = await groupExist.save();
 
     if (ball === 6 && isWicketUpdated === true) {
-      // let updatedPlayers = groupExist.updatedPlayers.map((player) => {
-      //   if (!player.hit) {
-      //     // If the player did not hit the ball, set the wicket to true
-      //     player.wicket -= 1;
-      //   }
-      //   return player;
-      // });
-      // await groupModel.updateOne(
-      //   { _id: groupId },
-      //   { $set: { updatedPlayers, isWicketUpdated: false  } }
-
-      // );
+      
       groupExist.updatedPlayers[index].wicket -= 1;
 
       updatedGroup = await groupExist.save();
