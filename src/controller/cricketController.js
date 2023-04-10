@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const cricketModel = require("../model/cricketModel");
 const groupModel = require("../model/groupModel");
+const { getPlayers } = require("./tournamentController");
 
 //_______________________get All data of cricket for leaderBoard
 
@@ -41,25 +42,25 @@ const getCricByGroupId = async function (req, res) {
         .status(404)
         .send({ status: false, message: "this groupId not found" });
     }
- let ball = cricket.ball
- let isWicketUpdated = cricket.isWicketUpdated
- if(ball === 6 && isWicketUpdated === false){
-  let updatedPlayers = cricket.updatedPlayers.map((player) => {
-    if (!player.hit) {
-      // If the player did not hit the ball, set the wicket to true
-      player.wicket += 1;
+    let ball = cricket.ball;
+    let isWicketUpdated = cricket.isWicketUpdated;
+    if (ball === 6 && isWicketUpdated === false) {
+      let updatedPlayers = cricket.updatedPlayers.map((player) => {
+        if (!player.hit) {
+          // If the player did not hit the ball, set the wicket to true
+          player.wicket += 1;
+        }
+        if (player.hit) {
+          // If the player did not hit the ball, set the wicket to true
+          player.hit = false;
+        }
+        return player;
+      });
+      await groupModel.updateOne(
+        { _id: groupId },
+        { $set: { updatedPlayers, isWicketUpdated: true } }
+      );
     }
-    if (player.hit) {
-      // If the player did not hit the ball, set the wicket to true
-      player.hit = false;
-    }
-    return player;
-  });
-  await groupModel.updateOne(
-    { _id: groupId },
-    { $set: { updatedPlayers, isWicketUpdated: true  } }
-  );
- }
     if (cricket.updatedPlayers.length !== 0) {
       let cricket1 = {
         _id: cricket._id,
@@ -188,7 +189,7 @@ const updateCric = async function (req, res) {
 
     let updatedGroup = await groupExist.save();
 
-    if(ball === 6 && isWicketUpdated === true){
+    if (ball === 6 && isWicketUpdated === true) {
       // let updatedPlayers = groupExist.updatedPlayers.map((player) => {
       //   if (!player.hit) {
       //     // If the player did not hit the ball, set the wicket to true
@@ -203,8 +204,8 @@ const updateCric = async function (req, res) {
       // );
       groupExist.updatedPlayers[index].wicket -= 1;
 
-       updatedGroup = await groupExist.save();
-     }
+      updatedGroup = await groupExist.save();
+    }
 
     return res.status(200).send({
       status: true,
@@ -219,8 +220,51 @@ const updateCric = async function (req, res) {
   }
 };
 
+//__________________________declare the winner_______________________________
+
+const winTheGame = async function (req, res) {
+  try {
+    const groupId = req.query.groupId;
+
+    /* lean() method on the groupModel.findById() query to return a plain JavaScript object instead of a Mongoose document.
+     This can improve performance by avoiding the overhead of Mongoose document instantiation.*/
+
+    const checkGroup = await groupModel.findById(groupId).lean();
+
+  if(!checkGroup){
+    return res.status(404).send({
+      status: false,
+      message: "this group is not present in DB",
+  
+    });
+
+  }
+    const players = checkGroup.updatedPlayers.sort((a, b) => b.run - a.run);
+    const winner = players[0];
+   //filter the players's run if these are equal
+    const equalRun = players.filter(a => a.run === winner.run);
+
+    // find the player with the lowest wickets among those with equal runs.
+    const winner2 = equalRun.reduce((a, b) => (b.wicket < a.wicket ? b : a));
+
+    const finalWinner = winner2.run > winner.run ? winner2 : winner;
+
+    return res.status(200).send({
+      status: true,
+      message: "Success",
+      data: { winner: finalWinner, players },
+    });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      error: err.message,
+    });
+  }
+};
+
 module.exports = {
   updateCric,
   getAllCric,
   getCricByGroupId,
+  winTheGame,
 };

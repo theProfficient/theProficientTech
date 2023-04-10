@@ -13,9 +13,9 @@ const Router = express.Router();
 
 Router.post("/register", userController.createUsers);
 
-Router.get("/profile", userController.getUser);
-
 Router.put("/updateUser", userController.updateUser);
+
+Router.get("/profile", userController.getUser);
 
 //_____________________ Cricket________________________
 
@@ -24,6 +24,8 @@ Router.put("/updateCricket", cricketController.updateCric);
 Router.get("/getAllCricketData", cricketController.getAllCric);
 
 Router.get("/getCricGrp", cricketController.getCricByGroupId);
+
+Router.get("/winner", cricketController.winTheGame);
 
 //__________________Hocky___________________
 
