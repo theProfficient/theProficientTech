@@ -20,6 +20,7 @@ const createUsers = async function (req, res) {
       status,
       balance,
       referralCode,
+      isBot,
     } = bodyData;
 
     if (Object.keys(bodyData).length == 0) {

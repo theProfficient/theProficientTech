@@ -44,7 +44,7 @@ const getCricByGroupId = async function (req, res) {
     }
     let ball = cricket.ball;
     let isWicketUpdated = cricket.isWicketUpdated;
-    if (ball === 6 && isWicketUpdated === false) {
+    if (ball === 0 && isWicketUpdated === false) {
       let updatedPlayers = cricket.updatedPlayers.map((player) => {
         if (!player.hit) {
           // If the player did not hit the ball, set the wicket to true
@@ -73,18 +73,10 @@ const getCricByGroupId = async function (req, res) {
         nextBallTime: cricket.nextBallTime,
         ballSpeed: cricket.ballSpeed,
       };
-      return res.status(200).send({
-        status: true,
-        message: "success",
-        data: cricket1,
-      });
+      return res.status(200).json(cricket1);
     }
 
-    return res.status(200).send({
-      status: true,
-      message: "success",
-      data: cricket,
-    });
+    return res.status(200).json(cricket);
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -150,32 +142,32 @@ const updateCric = async function (req, res) {
     let run = 0;
 
     switch (ballSpeed) {
-      case 1:
+      case 13:
         if (timeDiff >= 20) {
           run = 1;
         }
         break;
-      case 2:
+      case 14:
         if (timeDiff >= 18) {
           run = 2;
         }
         break;
-      case 3:
+      case 15:
         if (timeDiff >= 14) {
           run = 3;
         }
         break;
-      case 4:
+      case 16:
         if (timeDiff >= 10) {
           run = 4;
         }
         break;
-      case 5:
+      case 17:
         if (timeDiff >= 9) {
           run = 6;
         }
         break;
-      case 6:
+      case 18:
         if (timeDiff >= 8) {
           run = 6;
         }
@@ -189,8 +181,7 @@ const updateCric = async function (req, res) {
 
     let updatedGroup = await groupExist.save();
 
-    if (ball === 6 && isWicketUpdated === true) {
-      
+    if (ball === 0 && isWicketUpdated === true) {
       groupExist.updatedPlayers[index].wicket -= 1;
 
       updatedGroup = await groupExist.save();
@@ -220,18 +211,16 @@ const winTheGame = async function (req, res) {
 
     const checkGroup = await groupModel.findById(groupId).lean();
 
-  if(!checkGroup){
-    return res.status(404).send({
-      status: false,
-      message: "this group is not present in DB",
-  
-    });
-
-  }
+    if (!checkGroup) {
+      return res.status(404).send({
+        status: false,
+        message: "this group is not present in DB",
+      });
+    }
     const players = checkGroup.updatedPlayers.sort((a, b) => b.run - a.run);
     const winner = players[0];
-   //filter the players's run if these are equal
-    const equalRun = players.filter(a => a.run === winner.run);
+    //filter the players's run if these are equal
+    const equalRun = players.filter((a) => a.run === winner.run);
 
     // find the player with the lowest wickets among those with equal runs.
     const winner2 = equalRun.reduce((a, b) => (b.wicket < a.wicket ? b : a));

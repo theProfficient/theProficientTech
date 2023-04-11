@@ -13,7 +13,7 @@ const groupSchema = new mongoose.Schema(
     },
     updatedPlayers: [
       {
-        _id:false,
+        _id: false,
         UserId: String,
         userName: String,
         run: {
@@ -29,11 +29,15 @@ const groupSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
+        isBot: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     ball: {
       type: Number,
-      default: 0,
+      default: 6,
     },
     start: {
       type: Boolean,
@@ -45,15 +49,15 @@ const groupSchema = new mongoose.Schema(
     },
     nextBallTime: {
       type: Date,
-      default:  new Date( Date.now() + 1 * 4 * 1000 ).toISOString(),
+      default: new Date(Date.now() + 1 * 4 * 1000).toISOString(),
     },
     ballSpeed: {
       type: Number,
       default: 0,
     },
-    isWicketUpdated:{
-      type:Boolean,
-      default :false
+    isWicketUpdated: {
+      type: Boolean,
+      default: false,
     },
   },
   { strict: false }

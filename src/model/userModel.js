@@ -33,10 +33,14 @@ const userSchema = new mongoose.Schema(
       required: true,
       default: 100,
     },
-    realMoney:{
+    isBot: {
+      type: Boolean,
+      default: false,
+    },
+    realMoney: {
       type: Number,
       required: true,
-      default:0,
+      default: 0,
     },
     status: {
       type: Boolean,
