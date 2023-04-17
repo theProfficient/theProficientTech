@@ -187,11 +187,7 @@ const updateCric = async function (req, res) {
       updatedGroup = await groupExist.save();
     }
 
-    return res.status(200).send({
-      status: true,
-      message: "Success",
-      data: updatedGroup,
-    });
+    return res.status(200).json(updatedGroup);
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -227,11 +223,7 @@ const winTheGame = async function (req, res) {
 
     const finalWinner = winner2.run > winner.run ? winner2 : winner;
 
-    return res.status(200).send({
-      status: true,
-      message: "Success",
-      data: { winner: finalWinner, players },
-    });
+    return res.status(200).json({updatedPlayers:players});
   } catch (err) {
     return res.status(500).send({
       status: false,

@@ -13,7 +13,7 @@ app.options("*", cors());
 mongoose.set("strictQuery", false);
 mongoose
   .connect(
-    "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/gammingWebBased",
+    "mongodb+srv://theproficienttech333:gzYGYI5pD4oAUvim@cluster0.gp7jlnb.mongodb.net/game",
     {
       useNewUrlParser: true,
     }

@@ -21,6 +21,7 @@ let fakeUsers = [
   "realMoney": 0,
   "status": false,
   "history": [],
+  "strength":2,
   "_id": "6435051438477b3e973f1281",
   },{
     "UserId": "Rocky111",
