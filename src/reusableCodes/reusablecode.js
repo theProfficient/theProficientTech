@@ -79,7 +79,7 @@ async function startMatch(grpId, group) {
   }
 }
 
-setTimeout(startMatch, 10000);
+setTimeout(startMatch, 20000);
 
 async function updateBalls(grpId) {
   let min = 0;
@@ -99,7 +99,7 @@ async function updateBalls(grpId) {
       if (botPlayers.isBot === true) {
         const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
 
-        const randomIndex = Math.floor(Math.random() * possibleValues.length); //_____Generate a random index within the array length
+        const randomIndex = Math.floor(Math.random() * possibleValues.length-2); //_____Generate a random index within the array length
 
         const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
         botPlayers.run += randomValue;
@@ -111,7 +111,7 @@ async function updateBalls(grpId) {
       { $set: { updatedPlayers: updateRunForBot } }
     );
 
-    if (ballCount < 5) {
+    if (ballCount < 4) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {
         if (!player.hit && player.isBot === false) {
           // If the player did not hit the ball, set the wicket to true
