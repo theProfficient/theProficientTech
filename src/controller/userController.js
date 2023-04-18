@@ -42,6 +42,7 @@ const createUsers = async function (req, res) {
     // Generate a unique referral code for the new user
     const referral_Code = Math.random().toString(36).substring(2);
     bodyData.referralCode = referral_Code;
+
     if (referralCode) {
       // Find the referrer by their referral code
       const referrer = await userModel.findOne({ referralCode: referralCode });
@@ -51,7 +52,7 @@ const createUsers = async function (req, res) {
         referrer.credits += 10;
         await referrer.save();
       } else {
-        res.status(400).json({ error: "Invalid referral code" });
+        return res.status(400).json({ error: "Invalid referral code" });
       }
     }
 
@@ -70,6 +71,7 @@ const createUsers = async function (req, res) {
       SnakeTable,
       TicTable,
     });
+    
   } catch (error) {
     return res.status(500).send({
       status: false,
@@ -77,6 +79,7 @@ const createUsers = async function (req, res) {
     });
   }
 };
+
 
 // _______find by query params
 
