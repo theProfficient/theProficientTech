@@ -84,7 +84,7 @@ async function startMatch(grpId, group) {
   }
 }
 
-setTimeout(startMatch, 10000);
+setTimeout(startMatch, 20000);
 
 async function updateBalls(grpId) {
   let min = 0;

@@ -117,7 +117,6 @@ const createTournaments = async function (req, res) {
                 let group1 = createGrp.group;
                 console.log(createGrp);
                 startMatch(grpId1, group1);
-
               }
             }
           }
