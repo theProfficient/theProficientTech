@@ -3,7 +3,10 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const cricketSchema = new mongoose.Schema(
   {
-    userId: {
+    UserId: {
+      type: String,
+    },
+    userIdForRef: {
       type: ObjectId,
       ref: "User",
     },
