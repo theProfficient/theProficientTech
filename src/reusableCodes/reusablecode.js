@@ -50,7 +50,7 @@ const createGroup = async function (tableId) {
           let group = createGrp.group;
           console.log(createGrp);
           startMatch(grpId, group);
-          runUpdateBalls(grpId);
+          // runUpdateBalls(grpId);
         }
       }
     }
@@ -75,6 +75,7 @@ async function startMatch(grpId, group) {
       { new: true, setDefaultsOnInsert: true }
     );
     console.log("this is updated data >>>>>>>>>>", matchData);
+    runUpdateBalls(grpId);
   }
 }
 
