@@ -50,7 +50,9 @@ const createGroup = async function (tableId) {
           let group = createGrp.group;
           console.log(createGrp);
           startMatch(grpId, group);
-          runUpdateBalls(grpId);
+            // runUpdateBalls(grpId);
+          
+
         }
       }
     }
@@ -75,6 +77,10 @@ async function startMatch(grpId, group) {
       { new: true, setDefaultsOnInsert: true }
     );
     console.log("this is updated data >>>>>>>>>>", matchData);
+    setTimeout(function() {
+      runUpdateBalls(grpId);
+  }, 6000);
+  
   }
 }
 
@@ -94,21 +100,21 @@ async function updateBalls(grpId) {
     let ballCount = updateBall.ball;
     console.log(ballCount, "ballCount================");
 
-    let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
-      if (botPlayers.isBot === true) {
-        const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
+    // let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
+    //   if (botPlayers.isBot === true) {
+    //     const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
 
-        const randomIndex = Math.floor(Math.random() * possibleValues.length); //_____Generate a random index within the array length
+    //     const randomIndex = Math.floor(Math.random() * possibleValues.length-2); //_____Generate a random index within the array length
 
-        const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
-        botPlayers.run += randomValue;
-      }
-      return botPlayers;
-    });
-    await groupModel.updateOne(
-      { _id: grpId },
-      { $set: { updatedPlayers: updateRunForBot } }
-    );
+    //     const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
+    //     botPlayers.run += randomValue;
+    //   }
+    //   return botPlayers;
+    // });
+    // await groupModel.updateOne(
+    //   { _id: grpId },
+    //   { $set: { updatedPlayers: updateRunForBot } }
+    // );
 
     if (ballCount < 5) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {
@@ -123,6 +129,22 @@ async function updateBalls(grpId) {
         return player;
       });
       await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
+
+      let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
+        if (botPlayers.isBot === true) {
+          const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
+  
+          const randomIndex = Math.floor(Math.random() * possibleValues.length-2); //_____Generate a random index within the array length
+  
+          const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
+          botPlayers.run += randomValue;
+        }
+        return botPlayers;
+      });
+      await groupModel.updateOne(
+        { _id: grpId },
+        { $set: { updatedPlayers: updateRunForBot } }
+      );
     }
 
     if (ballCount <= min) {
@@ -132,8 +154,11 @@ async function updateBalls(grpId) {
   }
   return false;
 }
+// setTimeout(updateBalls, 60000)
 
-function runUpdateBalls(grpId) {
+ function runUpdateBalls(grpId) {
+  console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId)
+if(grpId != undefined){
   let continueRunning = true;
   const minSpeed = 13;
   const maxSpeed = 18;
@@ -162,6 +187,7 @@ function runUpdateBalls(grpId) {
     }
   }
   updateBallsRecursive();
+}
 }
 
 module.exports = { startMatch, runUpdateBalls, createGroup };
