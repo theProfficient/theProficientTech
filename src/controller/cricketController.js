@@ -85,56 +85,7 @@ const getCricByGroupId = async function (req, res) {
   }
 };
 
-//____________________________update table
-
-// const updateCric = async function (req, res) {
-//   try {
-//     let updateData = req.query;
-//     let UserId = req.query.UserId;
-//     let groupId = req.query.groupId;
-//     let currentTime = Date.now();
-//     // find the document and update the run for the specified user
-
-//     const groupExist = await groupModel
-//       .findOne({ _id: groupId })
-//       .select({ group: 0 });
-
-//     if (!groupExist) {
-//       console.error("No matching document found");
-//       return res.status(404).send({
-//         status: false,
-//         message: "No matching document found",
-//         data: null,
-//       });
-//     }
-//     let group = groupExist.updatedPlayers;
-//     const user = group.find((user) => user.UserId.includes(UserId));
-//     let storedBallTime = groupExist.currentBallTime;
-//     let ballSpeed = groupExist.ballSpeed;
-//     let isWicketUpdated = groupExist.isWicketUpdated;
-//     let ball = groupExist.ball;
-
-//     console.log(storedBallTime, "time of ball");
-//     if (!user) {
-//       return res.status(404).send({
-//         status: true,
-//         message: "this user is not present in this group",
-//       });
-//     }
-//     const index = groupExist.updatedPlayers.findIndex(
-//       (player) => player.UserId === UserId
-//     );
-
-//     if (index === -1) {
-//       console.error("User not found in the updatedPlayers array");
-//       return res.status(404).send({
-//         status: false,
-//         message: "User not found in the updatedPlayers array",
-//         data: null,
-//       });
-//     }
-
-//     //______________________check the time diff and calculate run per player
+//____________________________update table__________________________
 
 const updateCric = async function (req, res) {
   try {
@@ -235,11 +186,20 @@ const updateCric = async function (req, res) {
 
       updatedGroup = await groupExist.save()
     }
-let player = updatedGroup.updatedPlayers[index]
-
-  player = { player, CurrentRun:run };
-
-    return res.status(200).json(player);
+// let player = updatedGroup.updatedPlayers[index]
+let response = {
+  _id: updatedGroup._id,
+  createdTime: updatedGroup.createdTime,
+  tableId: updatedGroup.tableId,
+  updatedPlayers: updatedGroup.updatedPlayers,
+  ball: updatedGroup.ball,
+  start: updatedGroup.start,
+  currentBallTime: updatedGroup.currentBallTime,
+  nextBallTime: updatedGroup.nextBallTime,
+  ballSpeed: updatedGroup.ballSpeed,
+  CurrentRun:run
+}
+    return res.status(200).json(response);
   } catch (err) {
     return res.status(500).send
   }
