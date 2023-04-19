@@ -101,11 +101,14 @@ async function updateBalls(grpId) {
         if (!player.hit && player.isBot === false) {
           // If the player did not hit the ball, set the wicket to true
           player.wicket += 1;
+          player.isRunUpdated = false ;
         }
         if (player.hit) {
           // If the player did not hit the ball, set the wicket to true
           player.hit = false;
+          player.isRunUpdated = false ;
         }
+        
         return player;
       });
       await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });

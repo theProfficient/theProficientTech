@@ -114,6 +114,9 @@ const updateCric = async function (req, res) {
     let isWicketUpdated = groupExist.isWicketUpdated;
     let ball = groupExist.ball;
 
+
+    console.log(isRunUpdated,"isrunupdated>>>>>>>>>>>>>>>>>>")
+    
     console.log(storedBallTime, "time of ball");
     if (!user) {
       return res.status(404).send({
@@ -133,15 +136,16 @@ const updateCric = async function (req, res) {
         data: null,
       });
     }
-    
-    
+
     //______________________check the time diff and calculate run per player
+    let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
 
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
     console.log(timeDiff);
 
+    
     let run = 0;
-
+    if (isRunUpdated === false) {
     switch (ballSpeed) {
       case 13:
         if (timeDiff >= 20) {
@@ -176,38 +180,44 @@ const updateCric = async function (req, res) {
       default:
         console.log("you just missed the ball");
     }
-
-    groupExist.updatedPlayers[index].run += run;
-    groupExist.updatedPlayers[index].hit = true;
-
-    let updatedGroup = await groupExist.save();
-  
-    let wicket = groupExist.updatedPlayers[index].wicket
+  }
+    // groupExist.updatedPlayers[index].run += run;
     
-    if (ball === 0 && isWicketUpdated === true && wicket > 0) {
-      groupExist.updatedPlayers[index].wicket -= 1;
+    let updatedGroup ;
+    if (isRunUpdated === true) {
 
-      updatedGroup = await groupExist.save()
+      groupExist.updatedPlayers[index].run += run;
+      updatedGroup = await groupExist.save();
+      let wicket = groupExist.updatedPlayers[index].wicket;
+
+      if (ball === 0 && isWicketUpdated === true && wicket > 0) {
+        groupExist.updatedPlayers[index].wicket -= 1;
+
+        updatedGroup = await groupExist.save();
+      }
+    } else {
+      groupExist.updatedPlayers[index].hit = true;
+      groupExist.updatedPlayers[index].isRunUpdated = true;
+      updatedGroup = await groupExist.save();
     }
-// let player = updatedGroup.updatedPlayers[index]
-let response = {
-  _id: updatedGroup._id,
-  createdTime: updatedGroup.createdTime,
-  tableId: updatedGroup.tableId,
-  updatedPlayers: updatedGroup.updatedPlayers,
-  ball: updatedGroup.ball,
-  start: updatedGroup.start,
-  currentBallTime: updatedGroup.currentBallTime,
-  nextBallTime: updatedGroup.nextBallTime,
-  ballSpeed: updatedGroup.ballSpeed,
-  CurrentRun:run
-}
-
+    // let player = updatedGroup.updatedPlayers[index]
+    let response = {
+      _id: updatedGroup._id,
+      createdTime: updatedGroup.createdTime,
+      tableId: updatedGroup.tableId,
+      updatedPlayers: updatedGroup.updatedPlayers,
+      ball: updatedGroup.ball,
+      start: updatedGroup.start,
+      currentBallTime: updatedGroup.currentBallTime,
+      nextBallTime: updatedGroup.nextBallTime,
+      ballSpeed: updatedGroup.ballSpeed,
+      CurrentRun: run,
+    };
     return res.status(200).json(response);
   } catch (err) {
-    return res.status(500).send
+    return res.status(500).send;
   }
-}
+};
 
 //__________________________declare the winner_______________________________
 
@@ -236,7 +246,7 @@ const winTheGame = async function (req, res) {
 
     const finalWinner = winner2.run > winner.run ? winner2 : winner;
 
-    return res.status(200).json({updatedPlayers:players});
+    return res.status(200).json({ updatedPlayers: players });
   } catch (err) {
     return res.status(500).send({
       status: false,

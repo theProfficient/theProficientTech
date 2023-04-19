@@ -29,6 +29,10 @@ const groupSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
+        isRunUpdated: {
+          type: Boolean,
+          default: false,
+        },
         isBot: {
           type: Boolean,
           default: false,
