@@ -53,7 +53,7 @@ const groupSchema = new mongoose.Schema(
     },
     ballSpeed: {
       type: Number,
-      default: 0,
+      default: 13,
     },
     isWicketUpdated: {
       type: Boolean,
