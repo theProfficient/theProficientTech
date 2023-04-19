@@ -27,25 +27,28 @@ mongoose
   .catch((error) => {
     console.log("Not connected");
   });
-
-  //_________________________for local________________________
-
-  // mongoose
-  // .connect(
-  //   "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/nikita",
-  //   {
-  //     useNewUrlParser: true,
-  //   }
-  // )
-  // .then(() => {
-  //   console.log("MongoDB is connected for local");
-  // })
-  // .catch((error) => {
-  //   console.log("Not connected");
-  // });
-
-
 app.listen(process.env.PORT || 8000, function () {
   console.log("Express app running on port" + " " +(process.env.port || 8000));
 });
+
+  //_________________________for local________________________
+
+//   mongoose
+//   .connect(
+//     "mongodb+srv://nikita1:7CSKh9nBmgBm27YC@cluster0.suzof1p.mongodb.net/nikita",
+//     {
+//       useNewUrlParser: true,
+//     }
+//   )
+//   .then(() => {
+//     console.log("MongoDB is connected for local");
+//   })
+//   .catch((error) => {
+//     console.log("Not connected");
+//   });
+
+
+// app.listen(process.env.PORT || 3000, function () {
+//   console.log("Express app running on port" + " " +(process.env.port || 3000));
+// });
 
