@@ -46,14 +46,14 @@ const getCricByGroupId = async function (req, res) {
     let isWicketUpdated = cricket.isWicketUpdated;
     if (ball === 0 && isWicketUpdated === false) {
       let updatedPlayers = cricket.updatedPlayers.map((player) => {
-        if (!player.hit) {
+        if (!player.hit && !player.isBot) {
           // If the player did not hit the ball, set the wicket to true
           player.wicket += 1;
         }
-        if (player.hit) {
-          // If the player did not hit the ball, set the wicket to true
-          player.hit = false;
-        }
+        // if (player.hit) {
+        //   // If the player did not hit the ball, set the wicket to true
+        //   player.hit = false;
+        // }
         return player;
       });
       await groupModel.updateOne(

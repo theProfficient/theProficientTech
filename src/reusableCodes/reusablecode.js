@@ -50,9 +50,7 @@ const createGroup = async function (tableId) {
           let group = createGrp.group;
           console.log(createGrp);
           startMatch(grpId, group);
-            // runUpdateBalls(grpId);
-          
-
+          // runUpdateBalls(grpId);
         }
       }
     }
@@ -77,10 +75,9 @@ async function startMatch(grpId, group) {
       { new: true, setDefaultsOnInsert: true }
     );
     console.log("this is updated data >>>>>>>>>>", matchData);
-    setTimeout(function() {
+    setTimeout(function () {
       runUpdateBalls(grpId);
-  }, 6000);
-  
+    }, 6000);
   }
 }
 
@@ -99,23 +96,6 @@ async function updateBalls(grpId) {
     );
     let ballCount = updateBall.ball;
     console.log(ballCount, "ballCount================");
-
-    // let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
-    //   if (botPlayers.isBot === true) {
-    //     const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
-
-    //     const randomIndex = Math.floor(Math.random() * possibleValues.length-2); //_____Generate a random index within the array length
-
-    //     const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
-    //     botPlayers.run += randomValue;
-    //   }
-    //   return botPlayers;
-    // });
-    // await groupModel.updateOne(
-    //   { _id: grpId },
-    //   { $set: { updatedPlayers: updateRunForBot } }
-    // );
-
     if (ballCount < 5) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {
         if (!player.hit && player.isBot === false) {
@@ -132,12 +112,21 @@ async function updateBalls(grpId) {
 
       let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
         if (botPlayers.isBot === true) {
+
+          // Determine if the bot player should be out
+          if (botPlayers.run > 10 && Math.random() > 0.5) {
+            botPlayers.wicket += 1;
+            botPlayers.run += 0;
+          }else{
           const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
-  
-          const randomIndex = Math.floor(Math.random() * possibleValues.length-2); //_____Generate a random index within the array length
-  
+
+          const randomIndex = Math.floor(Math.random() * possibleValues.length); //_____Generate a random index within the array length
+
           const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
           botPlayers.run += randomValue;
+
+
+        }
         }
         return botPlayers;
       });
@@ -156,38 +145,38 @@ async function updateBalls(grpId) {
 }
 // setTimeout(updateBalls, 60000)
 
- function runUpdateBalls(grpId) {
-  console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId)
-if(grpId != undefined){
-  let continueRunning = true;
-  const minSpeed = 13;
-  const maxSpeed = 18;
+function runUpdateBalls(grpId) {
+  console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId);
+  if (grpId != undefined) {
+    let continueRunning = true;
+    const minSpeed = 13;
+    const maxSpeed = 18;
 
-  async function updateBallsRecursive() {
-    if (continueRunning) {
-      const isMaxCountReached = await updateBalls(grpId);
-      if (!isMaxCountReached) {
-        setTimeout(async () => {
-          //update nextBallTime, currentBallTime and  ballSpeed in every 4 seconds
-          let updateBall = await groupModel.findByIdAndUpdate(
-            { _id: grpId },
-            {
-              nextBallTime: new Date(Date.now() + 1 * 4 * 1000).toISOString(),
-              currentBallTime: Date.now(),
-              ballSpeed:
-                Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
-                minSpeed,
-            },
-            { new: true }
-          );
+    async function updateBallsRecursive() {
+      if (continueRunning) {
+        const isMaxCountReached = await updateBalls(grpId);
+        if (!isMaxCountReached) {
+          setTimeout(async () => {
+            //update nextBallTime, currentBallTime and  ballSpeed in every 4 seconds
+            let updateBall = await groupModel.findByIdAndUpdate(
+              { _id: grpId },
+              {
+                nextBallTime: new Date(Date.now() + 1 * 4 * 1000).toISOString(),
+                currentBallTime: Date.now(),
+                ballSpeed:
+                  Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
+                  minSpeed,
+              },
+              { new: true }
+            );
 
-          updateBallsRecursive();
-        }, 6000);
+            updateBallsRecursive();
+          }, 6000);
+        }
       }
     }
+    updateBallsRecursive();
   }
-  updateBallsRecursive();
-}
 }
 
 module.exports = { startMatch, runUpdateBalls, createGroup };
