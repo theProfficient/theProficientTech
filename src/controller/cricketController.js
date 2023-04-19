@@ -133,7 +133,8 @@ const updateCric = async function (req, res) {
         data: null,
       });
     }
-
+    
+    
     //______________________check the time diff and calculate run per player
 
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
@@ -180,8 +181,10 @@ const updateCric = async function (req, res) {
     groupExist.updatedPlayers[index].hit = true;
 
     let updatedGroup = await groupExist.save();
-
-    if (ball === 0 && isWicketUpdated === true) {
+  
+    let wicket = groupExist.updatedPlayers[index].wicket
+    
+    if (ball === 0 && isWicketUpdated === true && wicket > 0) {
       groupExist.updatedPlayers[index].wicket -= 1;
 
       updatedGroup = await groupExist.save()
@@ -199,6 +202,7 @@ let response = {
   ballSpeed: updatedGroup.ballSpeed,
   CurrentRun:run
 }
+
     return res.status(200).json(response);
   } catch (err) {
     return res.status(500).send
