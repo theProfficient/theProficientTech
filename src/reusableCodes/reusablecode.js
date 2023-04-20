@@ -137,7 +137,7 @@ async function updateBalls(grpId) {
           { _id: grpId },
           { $set: { updatedPlayers: updateRunForBot } }
         );
-      }, 4000);
+      }, 2000);
     
     }
 
