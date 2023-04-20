@@ -136,46 +136,76 @@ const updateCric = async function (req, res) {
 
     //______________________check the time diff and calculate run per player
     let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
-    console.log(isRunUpdated, "========================================");
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
-    console.log(timeDiff);
+    console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
+    console.log("ballSpeed++++++++++++++++++", ballSpeed);
 
     let run = 0;
 
     switch (ballSpeed) {
-      case 13:
+      case 11:
+      case 12:
         if (timeDiff >= 20) {
           run = 1;
-        }
-        break;
-      case 14:
-        if (timeDiff >= 18) {
+        } else if (timeDiff >= 18) {
           run = 2;
-        }
-        break;
-      case 15:
-        if (timeDiff >= 14) {
+        } else if (timeDiff >= 14) {
           run = 3;
-        }
-        break;
-      case 16:
-        if (timeDiff >= 10) {
+        } else if (timeDiff >= 10) {
           run = 4;
-        }
-        break;
-      case 17:
-        if (timeDiff >= 9) {
+        } else if (timeDiff >= 9) {
           run = 6;
         }
         break;
+
+      case 13:
+      case 14:
+        if (timeDiff >= 20) {
+          run = 1;
+        } else if (timeDiff >= 18) {
+          run = 2;
+        } else if (timeDiff >= 14) {
+          run = 3;
+        } else if (timeDiff >= 10) {
+          run = 4;
+        } else if (timeDiff >= 9) {
+          run = 6;
+        }
+        break;
+
+      case 15:
+      case 16:
+        if (timeDiff >= 20) {
+          run = 1;
+        } else if (timeDiff >= 18) {
+          run = 2;
+        } else if (timeDiff >= 14) {
+          run = 3;
+        } else if (timeDiff >= 10) {
+          run = 4;
+        } else if (timeDiff >= 9) {
+          run = 6;
+        }
+        break;
+      case 17:
       case 18:
-        if (timeDiff >= 8) {
+        if (timeDiff >= 20) {
+          run = 1;
+        } else if (timeDiff >= 18) {
+          run = 2;
+        } else if (timeDiff >= 14) {
+          run = 3;
+        } else if (timeDiff >= 10) {
+          run = 4;
+        } else if (timeDiff >= 9) {
           run = 6;
         }
         break;
       default:
         console.log("you just missed the ball");
     }
+
+    console.log("run>>>>>>>>>>>>", run);
 
     if (isRunUpdated === false) {
       groupExist.updatedPlayers[index].hit = true;

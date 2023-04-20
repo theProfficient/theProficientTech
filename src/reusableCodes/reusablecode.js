@@ -151,7 +151,7 @@ function runUpdateBalls(grpId) {
   console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId);
   if (grpId != undefined) {
     let continueRunning = true;
-    const minSpeed = 13;
+    const minSpeed = 11;
     const maxSpeed = 18;
 
     async function updateBallsRecursive() {
