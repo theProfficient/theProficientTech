@@ -202,6 +202,7 @@ const updateCric = async function (req, res) {
         }
         break;
       default:
+        run = 1 ;
         console.log("you just missed the ball");
     }
 
