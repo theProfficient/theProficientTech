@@ -140,7 +140,7 @@ const updateCric = async function (req, res) {
     console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
 
-    let run = 1;
+    let run = 0;
 
     switch (ballSpeed) {
       case 11:
@@ -208,7 +208,7 @@ const updateCric = async function (req, res) {
 
     console.log("run>>>>>>>>>>>>", run);
 
-    if (isRunUpdated === false) {
+    if (isRunUpdated === false && run > 0) {
       groupExist.updatedPlayers[index].hit = true;
       groupExist.updatedPlayers[index].isRunUpdated = true;
 
