@@ -140,7 +140,7 @@ const updateCric = async function (req, res) {
     console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
 
-    let run = 0;
+    let run = 1;
 
     switch (ballSpeed) {
       case 11:

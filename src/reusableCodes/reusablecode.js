@@ -96,6 +96,34 @@ async function updateBalls(grpId) {
     );
     let ballCount = updateBall.ball;
     console.log(ballCount, "ballCount================");
+
+    let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
+      if (botPlayers.isBot === true) {
+        // Determine if the bot player should be out
+        if (botPlayers.run > 10 && Math.random() > 0.5) {
+          botPlayers.wicket += 1;
+          botPlayers.run += 0;
+        } else {
+          const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
+
+          const randomIndex = Math.floor(
+            Math.random() * possibleValues.length
+          ); //_____Generate a random index within the array length
+
+          const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
+          botPlayers.run += randomValue;
+        }
+      }
+      return botPlayers;
+    });
+     setTimeout(async () => {
+      await groupModel.updateOne(
+        { _id: grpId },
+        { $set: { updatedPlayers: updateRunForBot } }
+      );
+     }, 3000);
+  
+
     if (ballCount < 5) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {
         if (!player.hit && player.isBot === false) {
@@ -112,32 +140,34 @@ async function updateBalls(grpId) {
         return player;
       });
       await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
+   
+  
+      // let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
+      //   if (botPlayers.isBot === true) {
+      //     // Determine if the bot player should be out
+      //     if (botPlayers.run > 10 && Math.random() > 0.5) {
+      //       botPlayers.wicket += 1;
+      //       botPlayers.run += 0;
+      //     } else {
+      //       const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
 
-      let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
-        if (botPlayers.isBot === true) {
-          // Determine if the bot player should be out
-          if (botPlayers.run > 10 && Math.random() > 0.5) {
-            botPlayers.wicket += 1;
-            botPlayers.run += 0;
-          } else {
-            const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
+      //       const randomIndex = Math.floor(
+      //         Math.random() * possibleValues.length
+      //       ); //_____Generate a random index within the array length
 
-            const randomIndex = Math.floor(
-              Math.random() * possibleValues.length
-            ); //_____Generate a random index within the array length
-
-            const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
-            botPlayers.run += randomValue;
-          }
-        }
-        return botPlayers;
-      });
-      setTimeout(async () => {
-        await groupModel.updateOne(
-          { _id: grpId },
-          { $set: { updatedPlayers: updateRunForBot } }
-        );
-      }, 2000);
+      //       const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
+      //       botPlayers.run += randomValue;
+      //     }
+      //   }
+      //   return botPlayers;
+      // });
+      // console.log(updateBall.currentBallTime,"===================================")
+      //  setTimeout(async () => {
+      //   await groupModel.updateOne(
+      //     { _id: grpId },
+      //     { $set: { updatedPlayers: updateRunForBot } }
+      //   );
+      //  }, 1000);
     
     }
 
