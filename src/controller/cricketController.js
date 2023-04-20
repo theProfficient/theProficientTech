@@ -114,9 +114,6 @@ const updateCric = async function (req, res) {
     let isWicketUpdated = groupExist.isWicketUpdated;
     let ball = groupExist.ball;
 
-
-    console.log(isRunUpdated,"isrunupdated>>>>>>>>>>>>>>>>>>")
-    
     console.log(storedBallTime, "time of ball");
     if (!user) {
       return res.status(404).send({
@@ -139,14 +136,13 @@ const updateCric = async function (req, res) {
 
     //______________________check the time diff and calculate run per player
     let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
-
+    console.log(isRunUpdated, "========================================");
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
     console.log(timeDiff);
 
-    
     let run = 0;
-    if (isRunUpdated === false) {
-    switch (ballSpeed) {
+
+    switch (ballSpeed && isRunUpdated === false) {
       case 13:
         if (timeDiff >= 20) {
           run = 1;
@@ -180,26 +176,24 @@ const updateCric = async function (req, res) {
       default:
         console.log("you just missed the ball");
     }
-  }
-    // groupExist.updatedPlayers[index].run += run;
-    
-    let updatedGroup ;
-    if (isRunUpdated === true) {
 
+    let updatedGroup;
+    if (isRunUpdated === true) {
       groupExist.updatedPlayers[index].run += run;
-      updatedGroup = await groupExist.save();
+
       let wicket = groupExist.updatedPlayers[index].wicket;
 
       if (ball === 0 && isWicketUpdated === true && wicket > 0) {
         groupExist.updatedPlayers[index].wicket -= 1;
-
-        updatedGroup = await groupExist.save();
       }
-    } else {
+      updatedGroup = await groupExist.save();
+    }
+    if (isRunUpdated === false) {
       groupExist.updatedPlayers[index].hit = true;
       groupExist.updatedPlayers[index].isRunUpdated = true;
       updatedGroup = await groupExist.save();
     }
+
     // let player = updatedGroup.updatedPlayers[index]
     let response = {
       _id: updatedGroup._id,
@@ -213,6 +207,7 @@ const updateCric = async function (req, res) {
       ballSpeed: updatedGroup.ballSpeed,
       CurrentRun: run,
     };
+
     return res.status(200).json(response);
   } catch (err) {
     return res.status(500).send;

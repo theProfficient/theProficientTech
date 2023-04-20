@@ -14,6 +14,7 @@ app.options("*", cors());
 mongoose.set("strictQuery", false);
 
 //____________________for development____________________________________
+
 mongoose
   .connect(
     "mongodb+srv://theproficienttech333:gzYGYI5pD4oAUvim@cluster0.gp7jlnb.mongodb.net/game",
