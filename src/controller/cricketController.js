@@ -109,8 +109,7 @@ const updateCric = async function (req, res) {
     }
     let group = groupExist.updatedPlayers;
     const user = group.find((user) => user.UserId.includes(UserId));
-
-    if (!user) {
+        if (!user) {
       return res.status(404).send({
         status: true,
         message: "this user is not present in this group",
@@ -140,125 +139,61 @@ const updateCric = async function (req, res) {
     let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
     let updatedRun = groupExist.updatedPlayers[index].run
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
+    
+    console.log("isRunUpdated>>>>>>>>>>>>>>",isRunUpdated);
     console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
     console.log("updatedRun>>>>>>>>>>>>>>>>>>",updatedRun)
 
-    let currentRun = 0;
-
-    switch (ballSpeed) {
-      case 11:
-      case 12:
-        if (timeDiff >= 20) {
-          currentRun = 1;
-        } else if (timeDiff >= 18) {
-          currentRun = 2;
-        } else if (timeDiff >= 14) {
-          currentRun = 3;
-        } else if (timeDiff >= 10) {
-          currentRun = 4;
-        } else if (timeDiff >= 9) {
-          currentRun = 6;
-        }
-        break;
-
-      case 13:
-      case 14:
-        if (timeDiff >= 20) {
-          currentRun = 1;
-        } else if (timeDiff >= 18) {
-          currentRun = 2;
-        } else if (timeDiff >= 14) {
-          currentRun = 3;
-        } else if (timeDiff >= 10) {
-          currentRun = 4;
-        } else if (timeDiff >= 9) {
-          currentRun = 6;
-        }
-        break;
-
-      case 15:
-      case 16:
-        if (timeDiff >= 20) {
-          currentRun = 1;
-        } else if (timeDiff >= 18) {
-          currentRun = 2;
-        } else if (timeDiff >= 14) {
-          currentRun = 3;
-        } else if (timeDiff >= 10) {
-          currentRun = 4;
-        } else if (timeDiff >= 9) {
-          currentRun = 6;
-        }
-        break;
-      case 17:
-      case 18:
-        if (timeDiff >= 20) {
-          currentRun = 1;
-        } else if (timeDiff >= 18) {
-          currentRun = 2;
-        } else if (timeDiff >= 14) {
-          currentRun = 3;
-        } else if (timeDiff >= 10) {
-          currentRun = 4;
-        } else if (timeDiff >= 9) {
-          currentRun = 6;
-        }
-        break;
-      default:
-        console.log("you just missed the ball");
-    }
-
-    // switch (ballSpeed) {
-    //   case 13:
-    //     if (timeDiff >= 20) {
-    //       run = 1;
-    //     }
-    //     break;
-    //   case 14:
-    //     if (timeDiff >= 18) {
-    //       run = 2;
-    //     }
-    //     break;
-    //   case 15:
-    //     if (timeDiff >= 14) {
-    //       run = 3;
-    //     }
-    //     break;
-    //   case 16:
-    //     if (timeDiff >= 10) {
-    //       run = 4;
-    //     }
-    //     break;
-    //   case 17:
-    //     if (timeDiff >= 9) {
-    //       run = 6;
-    //     }
-    //     break;
-    //   case 18:
-    //     if (timeDiff >= 8) {
-    //       run = 6;
-    //     }
-    //     break;
-    //   default:
-    //     console.log("you just missed the ball");
-    // }
 
 
+    if (isRunUpdated === false ) {
+      let currentRun = 0;
 
-    console.log("run>>>>>>>>>>>>", currentRun);
+      switch (ballSpeed) {
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+          if (timeDiff >= 20) {
+            currentRun = 1;
+          } else if (timeDiff >= 18) {
+            currentRun = 2;
+          } else if (timeDiff >= 14) {
+            currentRun = 3;
+          } else if (timeDiff >= 10) {
+            currentRun = 4;
+          } else if (timeDiff >= 9) {
+            currentRun = 6;
+          } else {
+            console.log("You just missed the ball");
+          }
+          break;
+  
+        default:
+          console.log("Invalid ball speed");
+          return res.status(404).send({
+            status: false,
+            message: "Invalid ball speed",
+            data: null,
+          });
+      }
+  
+  
+      console.log("run>>>>>>>>>>>>", currentRun);
 
-    if (isRunUpdated === false && currentRun > 0) {
       groupExist.updatedPlayers[index].hit = true;
       groupExist.updatedPlayers[index].isRunUpdated = true;
-      
       updatedRun = updatedRun + currentRun
-      console.log(updatedRun,"///////////////////////////////////////////")
 
       groupExist.updatedPlayers[index].run = updatedRun;
 
-      let wicket = groupExist.updatedPlayers[index].wicket;
       let updatedGroupFstHit = await groupExist.save();
+      let wicket = groupExist.updatedPlayers[index].wicket;
 
       if (ball === 0 && isWicketUpdated === true && wicket > 0) {
         groupExist.updatedPlayers[index].wicket -= 1;
@@ -301,6 +236,9 @@ const updateCric = async function (req, res) {
     return res.status(500).send;
   }
 };
+
+
+
 
 //__________________________declare the winner_______________________________
 
