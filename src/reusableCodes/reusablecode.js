@@ -122,7 +122,7 @@ async function updateBalls(grpId) {
         { _id: grpId },
         { $set: { updatedPlayers: updateRunForBot } }
       );
-    }, 1500);
+    }, 3000);
     
     if (ballCount < 5) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {

@@ -140,87 +140,125 @@ const updateCric = async function (req, res) {
     console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
 
-    let run = 0;
+    let currentRun = 0;
 
     switch (ballSpeed) {
       case 11:
       case 12:
         if (timeDiff >= 20) {
-          run = 1;
+          currentRun = 1;
         } else if (timeDiff >= 18) {
-          run = 2;
+          currentRun = 2;
         } else if (timeDiff >= 14) {
-          run = 3;
+          currentRun = 3;
         } else if (timeDiff >= 10) {
-          run = 4;
+          currentRun = 4;
         } else if (timeDiff >= 9) {
-          run = 6;
+          currentRun = 6;
         }
         break;
 
       case 13:
       case 14:
         if (timeDiff >= 20) {
-          run = 1;
+          currentRun = 1;
         } else if (timeDiff >= 18) {
-          run = 2;
+          currentRun = 2;
         } else if (timeDiff >= 14) {
-          run = 3;
+          currentRun = 3;
         } else if (timeDiff >= 10) {
-          run = 4;
+          currentRun = 4;
         } else if (timeDiff >= 9) {
-          run = 6;
+          currentRun = 6;
         }
         break;
 
       case 15:
       case 16:
         if (timeDiff >= 20) {
-          run = 1;
+          currentRun = 1;
         } else if (timeDiff >= 18) {
-          run = 2;
+          currentRun = 2;
         } else if (timeDiff >= 14) {
-          run = 3;
+          currentRun = 3;
         } else if (timeDiff >= 10) {
-          run = 4;
+          currentRun = 4;
         } else if (timeDiff >= 9) {
-          run = 6;
+          currentRun = 6;
         }
         break;
       case 17:
       case 18:
         if (timeDiff >= 20) {
-          run = 1;
+          currentRun = 1;
         } else if (timeDiff >= 18) {
-          run = 2;
+          currentRun = 2;
         } else if (timeDiff >= 14) {
-          run = 3;
+          currentRun = 3;
         } else if (timeDiff >= 10) {
-          run = 4;
+          currentRun = 4;
         } else if (timeDiff >= 9) {
-          run = 6;
+          currentRun = 6;
         }
         break;
       default:
-        run = 1 ;
         console.log("you just missed the ball");
     }
 
-    console.log("run>>>>>>>>>>>>", run);
+    // switch (ballSpeed) {
+    //   case 13:
+    //     if (timeDiff >= 20) {
+    //       run = 1;
+    //     }
+    //     break;
+    //   case 14:
+    //     if (timeDiff >= 18) {
+    //       run = 2;
+    //     }
+    //     break;
+    //   case 15:
+    //     if (timeDiff >= 14) {
+    //       run = 3;
+    //     }
+    //     break;
+    //   case 16:
+    //     if (timeDiff >= 10) {
+    //       run = 4;
+    //     }
+    //     break;
+    //   case 17:
+    //     if (timeDiff >= 9) {
+    //       run = 6;
+    //     }
+    //     break;
+    //   case 18:
+    //     if (timeDiff >= 8) {
+    //       run = 6;
+    //     }
+    //     break;
+    //   default:
+    //     console.log("you just missed the ball");
+    // }
 
-    if (isRunUpdated === false && run > 0) {
+
+
+    console.log("run>>>>>>>>>>>>", currentRun);
+
+    if (isRunUpdated === false && currentRun > 0) {
       groupExist.updatedPlayers[index].hit = true;
       groupExist.updatedPlayers[index].isRunUpdated = true;
 
-      groupExist.updatedPlayers[index].run += run;
+      groupExist.updatedPlayers[index].run += currentRun;
 
       let wicket = groupExist.updatedPlayers[index].wicket;
+      let updatedGroupFstHit = await groupExist.save();
 
       if (ball === 0 && isWicketUpdated === true && wicket > 0) {
         groupExist.updatedPlayers[index].wicket -= 1;
+        updatedGroupFstHit = await groupExist.save();
       }
 
-      let updatedGroupFstHit = await groupExist.save();
+
 
       let responseForFstHit = {
         _id: updatedGroupFstHit._id,
@@ -232,7 +270,7 @@ const updateCric = async function (req, res) {
         currentBallTime: updatedGroupFstHit.currentBallTime,
         nextBallTime: updatedGroupFstHit.nextBallTime,
         ballSpeed: updatedGroupFstHit.ballSpeed,
-        CurrentRun: run,
+        CurrentRun: currentRun,
       };
       //send the response when hit the api 1st time
       return res.status(200).json(responseForFstHit);
