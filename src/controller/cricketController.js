@@ -109,18 +109,20 @@ const updateCric = async function (req, res) {
     }
     let group = groupExist.updatedPlayers;
     const user = group.find((user) => user.UserId.includes(UserId));
-    let storedBallTime = groupExist.currentBallTime;
-    let ballSpeed = groupExist.ballSpeed;
-    let isWicketUpdated = groupExist.isWicketUpdated;
-    let ball = groupExist.ball;
 
-    console.log(storedBallTime, "time of ball");
     if (!user) {
       return res.status(404).send({
         status: true,
         message: "this user is not present in this group",
       });
     }
+    let storedBallTime = groupExist.currentBallTime;
+    let ballSpeed = groupExist.ballSpeed;
+    let isWicketUpdated = groupExist.isWicketUpdated;
+    let ball = groupExist.ball;
+
+    console.log(storedBallTime, "time of ball");
+
     const index = groupExist.updatedPlayers.findIndex(
       (player) => player.UserId === UserId
     );
@@ -136,9 +138,11 @@ const updateCric = async function (req, res) {
 
     //______________________check the time diff and calculate run per player
     let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
+    let updatedRun = groupExist.updatedPlayers[index].run
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
     console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
+    console.log("updatedRun>>>>>>>>>>>>>>>>>>",updatedRun)
 
     let currentRun = 0;
 
@@ -247,8 +251,11 @@ const updateCric = async function (req, res) {
     if (isRunUpdated === false && currentRun > 0) {
       groupExist.updatedPlayers[index].hit = true;
       groupExist.updatedPlayers[index].isRunUpdated = true;
+      
+      updatedRun = updatedRun + currentRun
+      console.log(updatedRun,"///////////////////////////////////////////")
 
-      groupExist.updatedPlayers[index].run += currentRun;
+      groupExist.updatedPlayers[index].run = updatedRun;
 
       let wicket = groupExist.updatedPlayers[index].wicket;
       let updatedGroupFstHit = await groupExist.save();
