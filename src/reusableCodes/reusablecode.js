@@ -122,7 +122,7 @@ async function updateBalls(grpId) {
         { _id: grpId },
         { $set: { updatedPlayers: updateRunForBot } }
       );
-    }, 3000);
+    }, 2000);
     
     if (ballCount < 5) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {
@@ -206,7 +206,7 @@ function runUpdateBalls(grpId) {
             );
 
             updateBallsRecursive();
-          }, 6000);
+          }, 4000);
         }
       }
     }
