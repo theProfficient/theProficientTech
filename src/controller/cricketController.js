@@ -47,7 +47,11 @@ const getCricByGroupId = async function (req, res) {
     console.log("time before run update>>>>>>>>>>>", new Date().getSeconds());
     setTimeout(async () => {
       const updatedPlayers = cricket.updatedPlayers.map((player) => {
-        if (player.isBot && !player.hit) {
+        if (!player.isBot && !player.hit) {
+          // Update real user run with saved run value
+          player.run = player.run;
+        }
+        else if (player.isBot && !player.hit) {
           // Determine if the bot player should be out
           if (player.run > 1 && Math.random() > 0.5) {
             player.wicket += 1;
@@ -65,6 +69,8 @@ const getCricByGroupId = async function (req, res) {
             player.hit = true;
           }
         }
+        
+    
         return player;
       });
     
@@ -183,7 +189,7 @@ const updateCric = async function (req, res) {
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
     console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
-    if (isRunUpdated === false && ballCount != 0) {
+    if (isRunUpdated === false && ballCount > 0) {
       let currentRun = 0;
 
       switch (ballSpeed) {
