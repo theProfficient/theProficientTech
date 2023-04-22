@@ -81,10 +81,15 @@ const getCricByGroupId = async function (req, res) {
     let ball = cricket.ball;
     let isWicketUpdated = cricket.isWicketUpdated;
     if (ball === 0 && isWicketUpdated === false) {
+      const minSpeed = 11;
+      const maxSpeed = 18;
+     let updateSpeed= Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) + minSpeed
+
       let updatedPlayers = cricket.updatedPlayers.map((player) => {
         if (!player.hit && !player.isBot) {
           // If the player did not hit the ball, set the wicket to true
           player.wicket += 1;
+
         }
         // if (player.hit) {
         //   // If the player did not hit the ball, set the wicket to true
@@ -94,7 +99,7 @@ const getCricByGroupId = async function (req, res) {
       });
       await groupModel.updateOne(
         { _id: groupId },
-        { $set: { updatedPlayers, isWicketUpdated: true } }
+        { $set: { updatedPlayers, isWicketUpdated: true , ballSpeed:updateSpeed} }
       );
     }
     if (cricket.updatedPlayers.length !== 0) {
