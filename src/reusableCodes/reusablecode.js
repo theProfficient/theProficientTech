@@ -124,7 +124,7 @@ async function updateBalls(grpId) {
     //   );
     // }, 4000);
     
-    if (ballCount < 5) {
+    if (ballCount < 6  && ballCount > 0) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {
         if (!player.hit && player.isBot === false) {
           // If the player did not hit the ball, set the wicket to true
