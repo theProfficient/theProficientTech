@@ -191,7 +191,7 @@ const updateCric = async function (req, res) {
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
     console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
-    if (isRunUpdated === false) {
+    // if (isRunUpdated === false) {
       let currentRun = 0;
 
       switch (ballSpeed) {
@@ -311,22 +311,22 @@ const updateCric = async function (req, res) {
       //send the response when hit the api 1st time
       return res.status(200).json(responseForFstHit);
 
-    }
-    if (isRunUpdated === true) {
-    let response = {
-      _id: groupExist._id,
-      createdTime: groupExist.createdTime,
-      tableId: groupExist.tableId,
-      updatedPlayers: groupExist.updatedPlayers,
-      ball: groupExist.ball,
-      start: groupExist.start,
-      currentBallTime: groupExist.currentBallTime,
-      nextBallTime: groupExist.nextBallTime,
-      ballSpeed: groupExist.ballSpeed,
-    };
+    // }
+  //   if (isRunUpdated === true) {
+  //   let response = {
+  //     _id: groupExist._id,
+  //     createdTime: groupExist.createdTime,
+  //     tableId: groupExist.tableId,
+  //     updatedPlayers: groupExist.updatedPlayers,
+  //     ball: groupExist.ball,
+  //     start: groupExist.start,
+  //     currentBallTime: groupExist.currentBallTime,
+  //     nextBallTime: groupExist.nextBallTime,
+  //     ballSpeed: groupExist.ballSpeed,
+  //   };
 
-    return res.status(200).json(response);
-  }
+  //   return res.status(200).json(response);
+  // }
     // }
   } catch (err) {
     return res.status(500).send;

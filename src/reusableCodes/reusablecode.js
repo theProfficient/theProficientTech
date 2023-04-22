@@ -67,6 +67,7 @@ async function startMatch(grpId, group) {
       run: 0,
       hit: false,
       wicket: 0,
+      isRunUpdated:name.isRunUpdated
     }));
     console.log("result", result);
     const matchData = await groupModel.findOneAndUpdate(
