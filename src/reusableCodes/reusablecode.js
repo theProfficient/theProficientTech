@@ -205,6 +205,7 @@ function runUpdateBalls(grpId) {
                 ballSpeed:
                   Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
                   minSpeed,
+                  isUpdate:false
               },
               { new: true }
             );

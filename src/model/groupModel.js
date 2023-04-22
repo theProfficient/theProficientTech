@@ -63,6 +63,10 @@ const groupSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isUpdate: {
+      type: Boolean,
+      default: false,
+    },
   },
   { strict: false }
 );

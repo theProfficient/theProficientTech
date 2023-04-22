@@ -46,6 +46,7 @@ const getCricByGroupId = async function (req, res) {
     console.log("before run update>>>>>>>>>>>", cricket.updatedPlayers);
     console.log("time before run update>>>>>>>>>>>", new Date().getSeconds());
     setTimeout(async () => {
+      if(!cricket.isUpdate){
       const updatedPlayers = cricket.updatedPlayers.map((player) => {
         if (!player.isBot && !player.hit) {
           // Update real user run with saved run value
@@ -76,12 +77,13 @@ const getCricByGroupId = async function (req, res) {
     
       const updatedRunForBotPlayers = await groupModel.findOneAndUpdate(
         { _id: groupId },
-        { $set: { updatedPlayers } },
+        { $set: { updatedPlayers ,isUpdate:true} },
         { new: true }
       );
         
       console.log("after run update>>>>>>>>>>>", updatedRunForBotPlayers.updatedPlayers);
       console.log("time after run update>>>>>>>>>>>", new Date().getSeconds());
+      }
     }, 2000);
     
     let ball = cricket.ball;
@@ -189,7 +191,7 @@ const updateCric = async function (req, res) {
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
     console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
-    if (isRunUpdated === false && ballCount > 0) {
+    if (isRunUpdated === false) {
       let currentRun = 0;
 
       switch (ballSpeed) {
