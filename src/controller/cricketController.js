@@ -45,46 +45,46 @@ const getCricByGroupId = async function (req, res) {
     }
     console.log("before run update>>>>>>>>>>>", cricket.updatedPlayers);
     console.log("time before run update>>>>>>>>>>>", new Date().getSeconds());
-    setTimeout(async () => {
-      if(!cricket.isUpdate){
-      const updatedPlayers = cricket.updatedPlayers.map((player) => {
-        if (!player.isBot && !player.hit) {
-          // Update real user run with saved run value
-          player.run = player.run;
-        }
-        else if (player.isBot && !player.hit) {
-          // Determine if the bot player should be out
-          if (player.run > 1 && Math.random() > 0.5) {
-            player.wicket += 1;
-            player.run = 0;
-            player.hit = true;
-          } else {
-            const possibleValues = [1, 2, 3, 4, 6];
+    // setTimeout(async () => {
+    //   if(!cricket.isUpdate){
+    //   const updatedPlayers = cricket.updatedPlayers.map((player) => {
+    //     if (!player.isBot && !player.hit) {
+    //       // Update real user run with saved run value
+    //       player.run = player.run;
+    //     }
+    //     else if (player.isBot && !player.hit) {
+    //       // Determine if the bot player should be out
+    //       if (player.run > 1 && Math.random() > 0.5) {
+    //         player.wicket += 1;
+    //         player.run = 0;
+    //         player.hit = true;
+    //       } else {
+    //         const possibleValues = [1, 2, 3, 4, 6];
     
-            const randomIndex = Math.floor(
-              Math.random() * possibleValues.length
-            );
+    //         const randomIndex = Math.floor(
+    //           Math.random() * possibleValues.length
+    //         );
     
-            const randomValue = possibleValues[randomIndex];
-            player.run += randomValue;
-            player.hit = true;
-          }
-        }
+    //         const randomValue = possibleValues[randomIndex];
+    //         player.run += randomValue;
+    //         player.hit = true;
+    //       }
+    //     }
         
     
-        return player;
-      });
+    //     return player;
+    //   });
     
-      const updatedRunForBotPlayers = await groupModel.findOneAndUpdate(
-        { _id: groupId },
-        { $set: { updatedPlayers ,isUpdate:true} },
-        { new: true }
-      );
+    //   const updatedRunForBotPlayers = await groupModel.findOneAndUpdate(
+    //     { _id: groupId },
+    //     { $set: { updatedPlayers ,isUpdate:true} },
+    //     { new: true }
+    //   );
         
-      console.log("after run update>>>>>>>>>>>", updatedRunForBotPlayers.updatedPlayers);
-      console.log("time after run update>>>>>>>>>>>", new Date().getSeconds());
-      }
-    }, 2000);
+    //   console.log("after run update>>>>>>>>>>>", updatedRunForBotPlayers.updatedPlayers);
+    //   console.log("time after run update>>>>>>>>>>>", new Date().getSeconds());
+    //   }
+    // }, 2000);
     
     let ball = cricket.ball;
     let isWicketUpdated = cricket.isWicketUpdated;

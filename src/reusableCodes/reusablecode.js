@@ -98,30 +98,30 @@ async function updateBalls(grpId) {
     console.log(ballCount, "ballCount================");
 
     // setTimeout(async () => {
-    //   const updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
-    //     if (botPlayers.isBot === true) {
-    //       // Determine if the bot player should be out
-    //       if (botPlayers.run > 10 && Math.random() > 0.5) {
-    //         botPlayers.wicket += 1;
-    //         botPlayers.run += 0;
-    //       } else {
-    //         const possibleValues = [1, 2, 3, 4, 6];
+      const updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
+        if (botPlayers.isBot === true) {
+          // Determine if the bot player should be out
+          if (botPlayers.run > 10 && Math.random() > 0.5) {
+            botPlayers.wicket += 1;
+            botPlayers.run += 0;
+          } else {
+            const possibleValues = [1, 2, 3, 4, 6];
     
-    //         const randomIndex = Math.floor(
-    //           Math.random() * possibleValues.length
-    //         );
+            const randomIndex = Math.floor(
+              Math.random() * possibleValues.length
+            );
     
-    //         const randomValue = possibleValues[randomIndex];
-    //         botPlayers.run += randomValue;
-    //       }
-    //     }
-    //     return botPlayers;
-    //   });
+            const randomValue = possibleValues[randomIndex];
+            botPlayers.run += randomValue;
+          }
+        }
+        return botPlayers;
+      });
     
-    //   await groupModel.updateOne(
-    //     { _id: grpId },
-    //     { $set: { updatedPlayers: updateRunForBot } }
-    //   );
+      await groupModel.updateOne(
+        { _id: grpId },
+        { $set: { updatedPlayers: updateRunForBot } }
+      );
     // }, 4000);
     
     if (ballCount < 6 ) {
