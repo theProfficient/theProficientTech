@@ -46,38 +46,38 @@ const getCricByGroupId = async function (req, res) {
     console.log("before run update>>>>>>>>>>>", cricket.updatedPlayers);
     console.log("time before run update>>>>>>>>>>>", new Date().getSeconds());
     setTimeout(async () => {
-      const updateRunForBot = cricket.updatedPlayers.map((botPlayers) => {
-        if (botPlayers.isBot === true && !botPlayers.hit) {
+      const updatedPlayers = cricket.updatedPlayers.map((player) => {
+        if (player.isBot && !player.hit) {
           // Determine if the bot player should be out
-          if (botPlayers.run > 1 && Math.random() > 0.5) {
-            botPlayers.wicket += 1;
-            botPlayers.run += 0;
-            botPlayers.hit = true;
+          if (player.run > 1 && Math.random() > 0.5) {
+            player.wicket += 1;
+            player.run = 0;
+            player.hit = true;
           } else {
             const possibleValues = [1, 2, 3, 4, 6];
-
+    
             const randomIndex = Math.floor(
               Math.random() * possibleValues.length
             );
-
+    
             const randomValue = possibleValues[randomIndex];
-            botPlayers.run += randomValue;
-            botPlayers.hit = true;
+            player.run += randomValue;
+            player.hit = true;
           }
         }
-        return botPlayers;
+        return player;
       });
-
+    
       const updatedRunForBotPlayers = await groupModel.findOneAndUpdate(
         { _id: groupId },
-        { $set: { updatedPlayers: updateRunForBot} },
-        { new: true } // Return the updated document instead of the original document
+        { $set: { updatedPlayers } },
+        { new: true }
       );
-    
+        
       console.log("after run update>>>>>>>>>>>", updatedRunForBotPlayers.updatedPlayers);
       console.log("time after run update>>>>>>>>>>>", new Date().getSeconds());
     }, 2000);
-
+    
     let ball = cricket.ball;
     let isWicketUpdated = cricket.isWicketUpdated;
     if (ball === 0 && isWicketUpdated === false) {
@@ -175,6 +175,7 @@ const updateCric = async function (req, res) {
     //______________________check the time diff and calculate run per player
     let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
     let updatedRun = groupExist.updatedPlayers[index].run;
+    let ballCount = groupExist.ball
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
 
     console.log("isRunUpdated>>>>>>>>>>>>>>", isRunUpdated);
@@ -182,7 +183,7 @@ const updateCric = async function (req, res) {
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
     console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
-    if (isRunUpdated === false) {
+    if (isRunUpdated === false && ballCount != 0) {
       let currentRun = 0;
 
       switch (ballSpeed) {
@@ -193,11 +194,11 @@ const updateCric = async function (req, res) {
           } else if (timeDiff >= 18) {
             currentRun = 2;
           } else if (timeDiff >= 14) {
-            currentRun = 3;
+            currentRun = 6;
           } else if (timeDiff >= 10) {
             currentRun = 1;
           } else if (timeDiff >= 1) {
-            currentRun = 6;
+            currentRun = 3;
           } else {
             console.log("You just missed the ball");
           }
@@ -223,13 +224,13 @@ const updateCric = async function (req, res) {
           if (timeDiff >= 20) {
             currentRun = 6;
           } else if (timeDiff >= 18) {
-            currentRun = 4;
+            currentRun = 1;
           } else if (timeDiff >= 14) {
             currentRun = 3;
           } else if (timeDiff >= 10) {
             currentRun = 2;
           } else if (timeDiff >= 1) {
-            currentRun = 1;
+            currentRun = 4;
           } else {
             console.log("You just missed the ball");
           }
@@ -237,7 +238,7 @@ const updateCric = async function (req, res) {
         case 17:
         case 18:
           if (timeDiff >= 20) {
-            currentRun = 1;
+            currentRun = 6;
           } else if (timeDiff >= 18) {
             currentRun = 2;
           } else if (timeDiff >= 14) {
@@ -245,7 +246,7 @@ const updateCric = async function (req, res) {
           } else if (timeDiff >= 10) {
             currentRun = 4;
           } else if (timeDiff >= 1) {
-            currentRun = 6;
+            currentRun = 1;
           } else {
             console.log("You just missed the ball");
           }
