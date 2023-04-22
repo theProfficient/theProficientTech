@@ -97,8 +97,8 @@ async function updateBalls(grpId) {
     );
     let ballCount = updateBall.ball;
     console.log(ballCount, "ballCount================");
-
-    // setTimeout(async () => {
+    if (ballCount > 0 ) {
+    //  setTimeout(async () => {
       const updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
         if (botPlayers.isBot === true) {
           // Determine if the bot player should be out
@@ -123,9 +123,10 @@ async function updateBalls(grpId) {
         { _id: grpId },
         { $set: { updatedPlayers: updateRunForBot } }
       );
-    // }, 4000);
+    //  }, 2000);
+    }
     
-    if (ballCount < 6 ) {
+    if (ballCount < 6 && ballCount > 0 ) {
       let updatedPlayers = updateBall.updatedPlayers.map((player) => {
         if (!player.hit && player.isBot === false) {
           // If the player did not hit the ball, set the wicket to true
