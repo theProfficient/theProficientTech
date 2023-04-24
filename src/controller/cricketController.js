@@ -43,69 +43,7 @@ const getCricByGroupId = async function (req, res) {
         .status(404)
         .send({ status: false, message: "this groupId not found" });
     }
-    console.log("before run update>>>>>>>>>>>", cricket.updatedPlayers);
-    console.log("time before run update>>>>>>>>>>>", new Date().getSeconds());
-    // setTimeout(async () => {
-    //   if(!cricket.isUpdate){
-    //   const updatedPlayers = cricket.updatedPlayers.map((player) => {
-    //     if (!player.isBot && !player.hit) {
-    //       // Update real user run with saved run value
-    //       player.run = player.run;
-    //     }
-    //     else if (player.isBot && !player.hit) {
-    //       // Determine if the bot player should be out
-    //       if (player.run > 1 && Math.random() > 0.5) {
-    //         player.wicket += 1;
-    //         player.run = 0;
-    //         player.hit = true;
-    //       } else {
-    //         const possibleValues = [1, 2, 3, 4, 6];
-    
-    //         const randomIndex = Math.floor(
-    //           Math.random() * possibleValues.length
-    //         );
-    
-    //         const randomValue = possibleValues[randomIndex];
-    //         player.run += randomValue;
-    //         player.hit = true;
-    //       }
-    //     }
-        
-    
-    //     return player;
-    //   });
-    
-    //   const updatedRunForBotPlayers = await groupModel.findOneAndUpdate(
-    //     { _id: groupId },
-    //     { $set: { updatedPlayers ,isUpdate:true} },
-    //     { new: true }
-    //   );
-        
-    //   console.log("after run update>>>>>>>>>>>", updatedRunForBotPlayers.updatedPlayers);
-    //   console.log("time after run update>>>>>>>>>>>", new Date().getSeconds());
-    //   }
-    // }, 2000);
-    
-    let ball = cricket.ball;
-    let isWicketUpdated = cricket.isWicketUpdated;
-    if (ball === 0 && isWicketUpdated === false) {
-      let updatedPlayers = cricket.updatedPlayers.map((player) => {
-        if (!player.hit && !player.isBot) {
-          // If the player did not hit the ball, set the wicket to true
-          player.wicket += 1;
-          
-        }
-        // if (player.hit) {
-        //   // If the player did not hit the ball, set the wicket to true
-        //   player.hit = false;
-        // }
-        return player;
-      });
-      await groupModel.updateOne(
-        { _id: groupId },
-        { $set: { updatedPlayers, isWicketUpdated: true } }
-      );
-    }
+
     if (cricket.updatedPlayers.length !== 0) {
       let cricket1 = {
         _id: cricket._id,
@@ -162,8 +100,8 @@ const updateCric = async function (req, res) {
     }
     let storedBallTime = groupExist.currentBallTime;
     let ballSpeed = groupExist.ballSpeed;
-    let isWicketUpdated = groupExist.isWicketUpdated;
-    let ball = groupExist.ball;
+    // let isWicketUpdated = groupExist.isWicketUpdated;
+    // let ball = groupExist.ball;
 
     console.log(storedBallTime, "time of ball");
 
@@ -191,7 +129,7 @@ const updateCric = async function (req, res) {
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
     console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
-    // if (isRunUpdated === false) {
+     if (isRunUpdated === false) {
       let currentRun = 0;
 
       switch (ballSpeed) {
@@ -286,12 +224,13 @@ const updateCric = async function (req, res) {
          updatedPlayers: { $elemMatch: { UserId: UserId } } },
         { $set: { "updatedPlayers.$": playersUpdate } },
         { new: true })
-      let wicket = groupExist.updatedPlayers[index].wicket;
 
-      if (ball === 0 && isWicketUpdated === true && wicket > 0) {
-        groupExist.updatedPlayers[index].wicket -= 1;
-        updatedGroupFstHit = await groupExist.save();
-      }
+      //let wicket = groupExist.updatedPlayers[index].wicket;
+
+      // if (ball === 0 && isWicketUpdated === true && wicket > 0) {
+      //   groupExist.updatedPlayers[index].wicket -= 1;
+      //   updatedGroupFstHit = await groupExist.save();
+      // }
 
       let responseForFstHit = {
         _id: updatedGroupFstHit._id,
@@ -311,22 +250,22 @@ const updateCric = async function (req, res) {
       //send the response when hit the api 1st time
       return res.status(200).json(responseForFstHit);
 
-    // }
-  //   if (isRunUpdated === true) {
-  //   let response = {
-  //     _id: groupExist._id,
-  //     createdTime: groupExist.createdTime,
-  //     tableId: groupExist.tableId,
-  //     updatedPlayers: groupExist.updatedPlayers,
-  //     ball: groupExist.ball,
-  //     start: groupExist.start,
-  //     currentBallTime: groupExist.currentBallTime,
-  //     nextBallTime: groupExist.nextBallTime,
-  //     ballSpeed: groupExist.ballSpeed,
-  //   };
+    }
+    if (isRunUpdated === true) {
+    let response = {
+      _id: groupExist._id,
+      createdTime: groupExist.createdTime,
+      tableId: groupExist.tableId,
+      updatedPlayers: groupExist.updatedPlayers,
+      ball: groupExist.ball,
+      start: groupExist.start,
+      currentBallTime: groupExist.currentBallTime,
+      nextBallTime: groupExist.nextBallTime,
+      ballSpeed: groupExist.ballSpeed,
+    };
 
-  //   return res.status(200).json(response);
-  // }
+    return res.status(200).json(response);
+  }
     // }
   } catch (err) {
     return res.status(500).send;

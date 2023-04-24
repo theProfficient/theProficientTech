@@ -88,13 +88,41 @@ async function updateBalls(grpId) {
   let min = 0;
 
   if (grpId != undefined) {
-    let updateBall = await groupModel.findByIdAndUpdate(
+
+    let updateWicket = await groupModel.findByIdAndUpdate(
+      { _id: grpId });
+      let ballCountForWicket = updateWicket.ball;
+      if(ballCountForWicket < 7){
+          let updatedPlayers = updateWicket.updatedPlayers.map((player) => {
+            if (!player.hit && player.isBot === false) {
+              // If the player did not hit the ball, set the wicket to true
+              player.wicket += 1;
+              player.isRunUpdated = false ;
+            }
+            if (player.hit) {
+              // If the player did not hit the ball, set the wicket to true
+              player.hit = false;
+              player.isRunUpdated = false ;
+            }
+    
+            if (player.isBot === false) {
+              player.hit = false;
+            }
+            
+            return player;
+          });
+          await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
+        }
+       console.log("before deduct the ballCount>>>>>>>>>>",updateWicket)
+
+      let updateBall = await groupModel.findByIdAndUpdate(
       { _id: grpId },
       {
         $inc: { ball: -1 },
       },
       { new: true }
     );
+    console.log("after deduct the ballCount>>>>>>>>>>",updateBall)
     let ballCount = updateBall.ball;
     console.log(ballCount, "ballCount================");
     if (ballCount > 0 ) {
@@ -126,56 +154,56 @@ async function updateBalls(grpId) {
     //  }, 2000);
     }
     
-    if (ballCount < 6 && ballCount > 0 ) {
-      let updatedPlayers = updateBall.updatedPlayers.map((player) => {
-        if (!player.hit && player.isBot === false) {
-          // If the player did not hit the ball, set the wicket to true
-          player.wicket += 1;
-          player.isRunUpdated = false ;
-        }
-        if (player.hit) {
-          // If the player did not hit the ball, set the wicket to true
-          player.hit = false;
-          player.isRunUpdated = false ;
-        }
+    // if (ballCount < 6 && ballCount > 0 ) {
+    //   let updatedPlayers = updateBall.updatedPlayers.map((player) => {
+    //     if (!player.hit && player.isBot === false) {
+    //       // If the player did not hit the ball, set the wicket to true
+    //       player.wicket += 1;
+    //       player.isRunUpdated = false ;
+    //     }
+    //     if (player.hit) {
+    //       // If the player did not hit the ball, set the wicket to true
+    //       player.hit = false;
+    //       player.isRunUpdated = false ;
+    //     }
 
-        if (player.isBot === false) {
-          player.hit = false;
-        }
+    //     if (player.isBot === false) {
+    //       player.hit = false;
+    //     }
         
-        return player;
-      });
-      await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
+    //     return player;
+    //   });
+    //   await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
    
   
-      // let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
-      //   if (botPlayers.isBot === true) {
-      //     // Determine if the bot player should be out
-      //     if (botPlayers.run > 10 && Math.random() > 0.5) {
-      //       botPlayers.wicket += 1;
-      //       botPlayers.run += 0;
-      //     } else {
-      //       const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
+    //   // let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
+    //   //   if (botPlayers.isBot === true) {
+    //   //     // Determine if the bot player should be out
+    //   //     if (botPlayers.run > 10 && Math.random() > 0.5) {
+    //   //       botPlayers.wicket += 1;
+    //   //       botPlayers.run += 0;
+    //   //     } else {
+    //   //       const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
 
-      //       const randomIndex = Math.floor(
-      //         Math.random() * possibleValues.length
-      //       ); //_____Generate a random index within the array length
+    //   //       const randomIndex = Math.floor(
+    //   //         Math.random() * possibleValues.length
+    //   //       ); //_____Generate a random index within the array length
 
-      //       const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
-      //       botPlayers.run += randomValue;
-      //     }
-      //   }
-      //   return botPlayers;
-      // });
-      // console.log(updateBall.currentBallTime,"===================================")
-      //  setTimeout(async () => {
-      //   await groupModel.updateOne(
-      //     { _id: grpId },
-      //     { $set: { updatedPlayers: updateRunForBot } }
-      //   );
-      //  }, 1000);
+    //   //       const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
+    //   //       botPlayers.run += randomValue;
+    //   //     }
+    //   //   }
+    //   //   return botPlayers;
+    //   // });
+    //   // console.log(updateBall.currentBallTime,"===================================")
+    //   //  setTimeout(async () => {
+    //   //   await groupModel.updateOne(
+    //   //     { _id: grpId },
+    //   //     { $set: { updatedPlayers: updateRunForBot } }
+    //   //   );
+    //   //  }, 1000);
     
-    }
+    // }
 
     if (ballCount <= min) {
       console.log("Reached minimum ball count!");
