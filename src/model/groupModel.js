@@ -29,6 +29,10 @@ const groupSchema = new mongoose.Schema(
           type: Boolean,
           default: false,
         },
+        prize: {
+          type: Number,
+          default: 0,
+        },
         isRunUpdated: {
           type: Boolean,
           default: false,

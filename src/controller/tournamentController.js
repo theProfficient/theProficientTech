@@ -88,7 +88,9 @@ const createTournaments = async function (req, res) {
                   isBot: user.isBot,
                 };
               });
-              // import dummyusers and add as per need to complete groups
+
+              //___________import dummyusers and add as per need to complete groups
+
               let dummyUsers = fakeUsers.fakeUsers;
               dummyUsers = dummyUsers.map((user) => {
                 return {
@@ -141,7 +143,7 @@ const createTournaments = async function (req, res) {
     setInterval(createTournament1, 60000);
     createTournament1();
 
-    //   //_______________________create table2 with setinterval an end time________________
+    //_______________________create table2 with setinterval an end time________________
     let tableId2;
 
     async function createTournament2() {
@@ -230,7 +232,7 @@ const getAllTables = async function (req, res) {
     let UserId = req.query.UserId;
     let currentTime = new Date();
 
-    //______only fetch that table which timing is running
+    //______________only fetch that table which timing is running
 
     const data = await tournamentModel
       .find({ endTime: { $gt: new Date() } })
@@ -535,4 +537,4 @@ module.exports = {
   getAllTables,
   getGroups,
   getPlayers,
-}
+};

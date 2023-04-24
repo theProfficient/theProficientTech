@@ -23,7 +23,8 @@ const createGroup = async function (tableId) {
             isBot: user.isBot,
           };
         });
-        // import dummyusers and add as per need to complete groups
+        //________________________________import dummyusers and add as per need to complete groups
+
         let dummyUsers = fakeUsers.fakeUsers;
         dummyUsers = dummyUsers.map((user) => {
           return {
@@ -67,7 +68,8 @@ async function startMatch(grpId, group) {
       run: 0,
       hit: false,
       wicket: 0,
-      isRunUpdated:name.isRunUpdated
+      prize: 0,
+      isRunUpdated: name.isRunUpdated,
     }));
     console.log("result", result);
     const matchData = await groupModel.findOneAndUpdate(
@@ -88,123 +90,66 @@ async function updateBalls(grpId) {
   let min = 0;
 
   if (grpId != undefined) {
+    let updateWicket = await groupModel.findByIdAndUpdate({ _id: grpId });
+    let ballCountForWicket = updateWicket.ball;
 
-    let updateWicket = await groupModel.findByIdAndUpdate(
-      { _id: grpId });
-      let ballCountForWicket = updateWicket.ball;
-      if(ballCountForWicket < 7){
-          let updatedPlayers = updateWicket.updatedPlayers.map((player) => {
-            if (!player.hit && player.isBot === false) {
-              // If the player did not hit the ball, set the wicket to true
-              player.wicket += 1;
-              player.isRunUpdated = false ;
-            }
-            if (player.hit) {
-              // If the player did not hit the ball, set the wicket to true
-              player.hit = false;
-              player.isRunUpdated = false ;
-            }
-    
-            if (player.isBot === false) {
-              player.hit = false;
-            }
-            
-            return player;
-          });
-          await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
+    if (ballCountForWicket < 7) {
+      let updatedPlayers = updateWicket.updatedPlayers.map((player) => {
+
+        if (!player.hit && player.isBot === false) {
+          //___________If the player did not hit the ball, set the wicket to true
+          player.wicket += 1;
+          player.isRunUpdated = false;
         }
-       console.log("before deduct the ballCount>>>>>>>>>>",updateWicket)
+        if (player.hit) {
+          //______________If the player did not hit the ball, set the wicket to true
+          player.hit = false;
+          player.isRunUpdated = false;
+        }
+        return player;
+      });
 
-      let updateBall = await groupModel.findByIdAndUpdate(
+      await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
+    }
+    let updateBall = await groupModel.findByIdAndUpdate(
       { _id: grpId },
       {
         $inc: { ball: -1 },
       },
       { new: true }
     );
-    console.log("after deduct the ballCount>>>>>>>>>>",updateBall)
+
     let ballCount = updateBall.ball;
+
     console.log(ballCount, "ballCount================");
-    if (ballCount > 0 ) {
-    //  setTimeout(async () => {
+
+    if (ballCount > 0) {
       const updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
         if (botPlayers.isBot === true) {
-          // Determine if the bot player should be out
-          if (botPlayers.run > 10 && Math.random() > 0.5) {
+          //___________Determine if the bot player should be out
+
+          if (botPlayers.run > 1 && Math.random() > 0.5) {
             botPlayers.wicket += 1;
             botPlayers.run += 0;
           } else {
             const possibleValues = [1, 2, 3, 4, 6];
-    
+
             const randomIndex = Math.floor(
               Math.random() * possibleValues.length
             );
-    
+
             const randomValue = possibleValues[randomIndex];
             botPlayers.run += randomValue;
           }
         }
         return botPlayers;
       });
-    
+
       await groupModel.updateOne(
         { _id: grpId },
         { $set: { updatedPlayers: updateRunForBot } }
       );
-    //  }, 2000);
     }
-    
-    // if (ballCount < 6 && ballCount > 0 ) {
-    //   let updatedPlayers = updateBall.updatedPlayers.map((player) => {
-    //     if (!player.hit && player.isBot === false) {
-    //       // If the player did not hit the ball, set the wicket to true
-    //       player.wicket += 1;
-    //       player.isRunUpdated = false ;
-    //     }
-    //     if (player.hit) {
-    //       // If the player did not hit the ball, set the wicket to true
-    //       player.hit = false;
-    //       player.isRunUpdated = false ;
-    //     }
-
-    //     if (player.isBot === false) {
-    //       player.hit = false;
-    //     }
-        
-    //     return player;
-    //   });
-    //   await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
-   
-  
-    //   // let updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
-    //   //   if (botPlayers.isBot === true) {
-    //   //     // Determine if the bot player should be out
-    //   //     if (botPlayers.run > 10 && Math.random() > 0.5) {
-    //   //       botPlayers.wicket += 1;
-    //   //       botPlayers.run += 0;
-    //   //     } else {
-    //   //       const possibleValues = [1, 2, 3, 4, 6]; //________________If the player is bot then update their run
-
-    //   //       const randomIndex = Math.floor(
-    //   //         Math.random() * possibleValues.length
-    //   //       ); //_____Generate a random index within the array length
-
-    //   //       const randomValue = possibleValues[randomIndex]; //_________Use the random index to get a random value from the array
-    //   //       botPlayers.run += randomValue;
-    //   //     }
-    //   //   }
-    //   //   return botPlayers;
-    //   // });
-    //   // console.log(updateBall.currentBallTime,"===================================")
-    //   //  setTimeout(async () => {
-    //   //   await groupModel.updateOne(
-    //   //     { _id: grpId },
-    //   //     { $set: { updatedPlayers: updateRunForBot } }
-    //   //   );
-    //   //  }, 1000);
-    
-    // }
-
     if (ballCount <= min) {
       console.log("Reached minimum ball count!");
       return true;
@@ -212,7 +157,6 @@ async function updateBalls(grpId) {
   }
   return false;
 }
-// setTimeout(updateBalls, 60000)
 
 function runUpdateBalls(grpId) {
   console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId);
@@ -226,7 +170,7 @@ function runUpdateBalls(grpId) {
         const isMaxCountReached = await updateBalls(grpId);
         if (!isMaxCountReached) {
           setTimeout(async () => {
-            //update nextBallTime, currentBallTime and  ballSpeed in every 4 seconds
+            //________________update nextBallTime, currentBallTime and  ballSpeed in every 4 seconds
             let updateBall = await groupModel.findByIdAndUpdate(
               { _id: grpId },
               {
@@ -235,7 +179,7 @@ function runUpdateBalls(grpId) {
                 ballSpeed:
                   Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
                   minSpeed,
-                  isUpdate:false
+                isUpdate: false,
               },
               { new: true }
             );

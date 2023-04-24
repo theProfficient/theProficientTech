@@ -4,6 +4,8 @@ const cricketModel = require("../model/cricketModel");
 const groupModel = require("../model/groupModel");
 const { getPlayers } = require("./tournamentController");
 const { log } = require("console");
+const tournamentModel = require("../model/tournamentModel");
+const { xorBy } = require("lodash");
 
 //_______________________get All data of cricket for leaderBoard
 
@@ -31,7 +33,7 @@ const getAllCric = async function (req, res) {
   }
 };
 
-// _____________get cricket group by id data
+// _______________________get cricket group by id data
 
 const getCricByGroupId = async function (req, res) {
   try {
@@ -76,8 +78,8 @@ const updateCric = async function (req, res) {
     let UserId = req.query.UserId;
     let groupId = req.query.groupId;
     let currentTime = Date.now();
-    // find the document and update the run for the specified user
 
+    //____________find the document and update the run for the specified user
     const groupExist = await groupModel
       .findOne({ _id: groupId })
       .select({ group: 0 });
@@ -100,9 +102,6 @@ const updateCric = async function (req, res) {
     }
     let storedBallTime = groupExist.currentBallTime;
     let ballSpeed = groupExist.ballSpeed;
-    // let isWicketUpdated = groupExist.isWicketUpdated;
-    // let ball = groupExist.ball;
-
     console.log(storedBallTime, "time of ball");
 
     const index = groupExist.updatedPlayers.findIndex(
@@ -119,9 +118,10 @@ const updateCric = async function (req, res) {
     }
 
     //______________________check the time diff and calculate run per player
+
     let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
     let updatedRun = groupExist.updatedPlayers[index].run;
-    let ballCount = groupExist.ball
+    let ballCount = groupExist.ball;
     let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
 
     console.log("isRunUpdated>>>>>>>>>>>>>>", isRunUpdated);
@@ -129,7 +129,7 @@ const updateCric = async function (req, res) {
     console.log("ballSpeed++++++++++++++++++", ballSpeed);
     console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
-     if (isRunUpdated === false) {
+    if (isRunUpdated === false) {
       let currentRun = 0;
 
       switch (ballSpeed) {
@@ -208,22 +208,20 @@ const updateCric = async function (req, res) {
       }
 
       console.log("run>>>>>>>>>>>>", currentRun);
-    let playersUpdate = groupExist.updatedPlayers.find((players)=>players.UserId === UserId)
-      // groupExist.updatedPlayers[index].hit = true;
-      // groupExist.updatedPlayers[index].isRunUpdated = true;
-      // updatedRun = updatedRun + currentRun;
-
-      // groupExist.updatedPlayers[index].run = updatedRun;
+      let playersUpdate = groupExist.updatedPlayers.find(
+        (players) => players.UserId === UserId
+      );
 
       updatedRun = updatedRun + currentRun;
       playersUpdate.hit = true;
       playersUpdate.isRunUpdated = true;
       playersUpdate.run = updatedRun;
 
-      let updatedGroupFstHit = await groupModel.findOneAndUpdate({ _id: groupId,
-         updatedPlayers: { $elemMatch: { UserId: UserId } } },
+      let updatedGroupFstHit = await groupModel.findOneAndUpdate(
+        { _id: groupId, updatedPlayers: { $elemMatch: { UserId: UserId } } },
         { $set: { "updatedPlayers.$": playersUpdate } },
-        { new: true })
+        { new: true }
+      );
 
       //let wicket = groupExist.updatedPlayers[index].wicket;
 
@@ -245,27 +243,30 @@ const updateCric = async function (req, res) {
         CurrentRun: currentRun,
       };
 
-      console.log("updatedRunwhen hit >>>>>>>>>>>>>>>>>>", updatedGroupFstHit.updatedPlayers[0].run);
+      console.log(
+        "updatedRunwhen hit >>>>>>>>>>>>>>>>>>",
+        updatedGroupFstHit.updatedPlayers[0].run
+      );
 
-      //send the response when hit the api 1st time
+      //___________________send the response when hit the api 1st time
+
       return res.status(200).json(responseForFstHit);
-
     }
     if (isRunUpdated === true) {
-    let response = {
-      _id: groupExist._id,
-      createdTime: groupExist.createdTime,
-      tableId: groupExist.tableId,
-      updatedPlayers: groupExist.updatedPlayers,
-      ball: groupExist.ball,
-      start: groupExist.start,
-      currentBallTime: groupExist.currentBallTime,
-      nextBallTime: groupExist.nextBallTime,
-      ballSpeed: groupExist.ballSpeed,
-    };
+      let response = {
+        _id: groupExist._id,
+        createdTime: groupExist.createdTime,
+        tableId: groupExist.tableId,
+        updatedPlayers: groupExist.updatedPlayers,
+        ball: groupExist.ball,
+        start: groupExist.start,
+        currentBallTime: groupExist.currentBallTime,
+        nextBallTime: groupExist.nextBallTime,
+        ballSpeed: groupExist.ballSpeed,
+      };
 
-    return res.status(200).json(response);
-  }
+      return res.status(200).json(response);
+    }
     // }
   } catch (err) {
     return res.status(500).send;
@@ -289,17 +290,57 @@ const winTheGame = async function (req, res) {
         message: "this group is not present in DB",
       });
     }
-    const players = checkGroup.updatedPlayers.sort((a, b) => b.run - a.run);
+
+    let tableId = checkGroup.tableId;
+
+    const checkTable = await tournamentModel.findById(tableId).lean();
+    if (!checkTable) {
+      return res.status(404).send({
+        status: false,
+        message: "this table is not present in DB",
+      });
+    }
+
+    // const players = checkGroup.updatedPlayers.sort((a, b) => b.run - a.run);
+    // console.log(players, "players>>>>>>>>>>>>>>>>");
+    
+    const players = checkGroup.updatedPlayers.sort((a, b) => {
+      if (b.run !== a.run) {
+          return b.run - a.run; // sort by runs in descending order
+      } else {
+          return a.wicket - b.wicket; // sort by wickets in ascending order for players with the same runs
+      }
+  });
+  
+  console.log(players, "players>>>>>>>>>>>>>>>>");
+  
     const winner = players[0];
-    //filter the players's run if these are equal
+    //___________filter the players's run if these are equal
     const equalRun = players.filter((a) => a.run === winner.run);
 
-    // find the player with the lowest wickets among those with equal runs.
+    //__________find the player with the lowest wickets among those with equal runs.
     const winner2 = equalRun.reduce((a, b) => (b.wicket < a.wicket ? b : a));
 
     const finalWinner = winner2.run > winner.run ? winner2 : winner;
+    //console.log(finalWinner);
 
-    return res.status(200).json({ updatedPlayers: players });
+    //_________________winner prize as per prize amount
+
+    const prizes = checkTable.prizeAmount;
+    players[0].prize = prizes * 0.35;
+    players[1].prize = prizes * 0.25;
+    players[2].prize = prizes * 0.15;
+    players[3].prize = prizes * 0.05;
+
+    const result = await groupModel.findByIdAndUpdate(
+      { _id: groupId },
+      { $set: { updatedPlayers: players } },
+      { new: true }
+    );
+
+    //console.log(result);
+
+    return res.status(200).json({ updatedPlayers: result.updatedPlayers });
   } catch (err) {
     return res.status(500).send({
       status: false,
