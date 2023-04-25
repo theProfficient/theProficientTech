@@ -122,7 +122,7 @@ const updateCric = async function (req, res) {
     let isRunUpdated = groupExist.updatedPlayers[index].isRunUpdated;
     let updatedRun = groupExist.updatedPlayers[index].run;
     let ballCount = groupExist.ball;
-    let timeDiff = Math.floor((currentTime - storedBallTime) / 100);
+    let timeDiff = Math.abs(Math.floor((currentTime - storedBallTime) / 1000));
 
     console.log("isRunUpdated>>>>>>>>>>>>>>", isRunUpdated);
     console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
@@ -199,12 +199,8 @@ const updateCric = async function (req, res) {
           break;
 
         default:
+          currentRun = 1
           console.log("Invalid ball speed");
-          return res.status(404).send({
-            status: false,
-            message: "Invalid ball speed",
-            data: null,
-          });
       }
 
       console.log("run>>>>>>>>>>>>", currentRun);
