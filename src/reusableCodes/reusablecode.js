@@ -50,7 +50,10 @@ const createGroup = async function (tableId) {
           let grpId = createGrp._id;
           let group = createGrp.group;
           console.log(createGrp);
-          startMatch(grpId, group);
+          // setTimeout(function () {
+            startMatch(grpId, group);
+          // }, 120000);
+          
           // runUpdateBalls(grpId);
         }
       }
@@ -78,13 +81,16 @@ async function startMatch(grpId, group) {
       { new: true, setDefaultsOnInsert: true }
     );
     console.log("this is updated data >>>>>>>>>>", matchData);
-    setTimeout(function () {
+    // setTimeout(function () {
       runUpdateBalls(grpId);
-    }, 1000);
+    // }, 4000);
   }
 }
 
-setTimeout(startMatch, 20000);
+// setTimeout(() => {
+//   startMatch(grpId, group);
+// }, 120000);
+
 
 async function updateBalls(grpId) {
   let min = 0;
@@ -122,6 +128,7 @@ async function updateBalls(grpId) {
     let ballCount = updateBall.ball;
 
     console.log(ballCount, "ballCount================");
+    console.log(updateBall.nextBallTime, "nextBallTime================");
 
     if (ballCount > 0) {
       const updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
@@ -174,7 +181,7 @@ function runUpdateBalls(grpId) {
             let updateBall = await groupModel.findByIdAndUpdate(
               { _id: grpId },
               {
-                nextBallTime: new Date(Date.now() + 1 * 4 * 1000).toISOString(),
+                nextBallTime: (Date.now() + 1 * 4 * 1000),
                 currentBallTime: Date.now(),
                 ballSpeed:
                   Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
