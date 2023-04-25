@@ -46,6 +46,55 @@ const getCricByGroupId = async function (req, res) {
         .send({ status: false, message: "this groupId not found" });
     }
 
+     let tableId = cricket.tableId;
+
+     const checkTable = await tournamentModel.findById(tableId).lean();
+     if (!checkTable) {
+       return res.status(404).send({
+         status: false,
+         message: "this table is not present in DB",
+       });
+     }
+     let ballCount = cricket.ball
+     if(ballCount === 0){
+    let players = cricket.updatedPlayers.sort((a,b) => {
+      if(b.run !== a.run){
+        return b.run - a.run; //__sort by runs in descending order
+      }else{
+        return a.wicket - b.wicket; //___sort by wickets in ascending order for players with the same runs
+      }
+     })
+     console.log(players,"declareWinners_______________");
+
+    //_________________winner prize as per prize amount
+      
+    const prizes = checkTable.prizeAmount;
+    players[0].prize = prizes * 0.35;
+    players[1].prize = prizes * 0.25;
+    players[2].prize = prizes * 0.15;
+    players[3].prize = prizes * 0.05;
+
+    const result = await groupModel.findByIdAndUpdate(
+      {_id:groupId},
+      {$set:{updatedPlayers:players}},
+      {new:true}
+    )
+
+    let resForWinners = {
+      _id: result._id,
+      createdTime: result.createdTime,
+      tableId: result.tableId,
+      updatedPlayers: result.updatedPlayers,
+      ball: result.ball,
+      start: result.start,
+      currentBallTime: result.currentBallTime,
+      nextBallTime: result.nextBallTime,
+      ballSpeed: result.ballSpeed,
+    };
+    
+    return res.status(200).json(resForWinners);
+  }
+    
     if (cricket.updatedPlayers.length !== 0) {
       let cricket1 = {
         _id: cricket._id,
@@ -59,8 +108,8 @@ const getCricByGroupId = async function (req, res) {
         ballSpeed: cricket.ballSpeed,
       };
       return res.status(200).json(cricket1);
+      
     }
-
     return res.status(200).json(cricket);
   } catch (err) {
     return res.status(500).send({
@@ -69,6 +118,8 @@ const getCricByGroupId = async function (req, res) {
     });
   }
 };
+
+
 
 //____________________________update table__________________________
 
@@ -130,7 +181,7 @@ const updateCric = async function (req, res) {
     console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
     if (isRunUpdated === false) {
-      let currentRun = 0;
+      let currentRun = 1;
 
       switch (ballSpeed) {
         case 11:

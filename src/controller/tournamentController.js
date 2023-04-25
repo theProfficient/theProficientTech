@@ -60,7 +60,13 @@ const createTournaments = async function (req, res) {
       maxTime: 15,
     };
 
-    let tournamentTable1;
+    let tournamentTable1I;
+    let tournamentTable1II;
+    let tournamentTable1III;
+    let tournamentTable1IV;
+    let tournamentTable1V;
+    let tournamentTable1VI;
+    let tournamentTable1VII;
     let tournamentTable2;
     let tournamentTable3;
     let tournamentTable4;
@@ -68,80 +74,213 @@ const createTournaments = async function (req, res) {
 
     //_______________________create table1 with setinterval an end time___________
 
-    let tableId1;
+    // let tableId1;
 
-    async function createTournament1() {
-      if (tableId1 != undefined) {
-        for (let ids = 0; ids < tableId1.length; ids++) {
-          let tableIdForT = tableId1[ids];
-          let table = await tournamentModel.findOne({ _id: tableIdForT });
+    // async function createTournament1() {
+    //   if (tableId1 != undefined) {
+    //     for (let ids = 0; ids < tableId1.length; ids++) {
+    //       let tableIdForT = tableId1[ids];
+    //       let table = await tournamentModel.findOne({ _id: tableIdForT });
 
-          if (table != undefined || table != null) {
-            let players = table.players;
-            let users = table.Users;
+    //       if (table != undefined || table != null) {
+    //         let players = table.players;
+    //         let users = table.Users;
 
-            if (users.length !== 0) {
-              users = users.map((user) => {
-                return {
-                  UserId: user.UserId,
-                  userName: user.userName,
-                  isBot: user.isBot,
-                };
-              });
+    //         if (users.length !== 0) {
+    //           users = users.map((user) => {
+    //             return {
+    //               UserId: user.UserId,
+    //               userName: user.userName,
+    //               isBot: user.isBot,
+    //             };
+    //           });
 
-              //___________import dummyusers and add as per need to complete groups
+    //           //___________import dummyusers and add as per need to complete groups
 
-              let dummyUsers = fakeUsers.fakeUsers;
-              dummyUsers = dummyUsers.map((user) => {
-                return {
-                  UserId: user.UserId,
-                  userName: user.userName,
-                  isBot: user.isBot,
-                };
-              });
+    //           let dummyUsers = fakeUsers.fakeUsers;
+    //           dummyUsers = dummyUsers.map((user) => {
+    //             return {
+    //               UserId: user.UserId,
+    //               userName: user.userName,
+    //               isBot: user.isBot,
+    //             };
+    //           });
 
-              const groups = _.chunk(players, 5);
+    //           const groups = _.chunk(players, 5);
 
-              let completePlayers = [
-                ...users,
-                ...dummyUsers.slice(0, 5 - (users.length % 5)),
-              ];
+    //           let completePlayers = [
+    //             ...users,
+    //             ...dummyUsers.slice(0, 5 - (users.length % 5)),
+    //           ];
 
-              let completeGroups = _.chunk(completePlayers, 5);
-              console.log(completeGroups);
+    //           let completeGroups = _.chunk(completePlayers, 5);
+    //           console.log(completeGroups);
 
-              for (let i = 0; i < completeGroups.length; i++) {
-                let createGrp = await groupModel.create({
-                  group: completeGroups[i],
-                  tableId: tableIdForT,
-                });
-                let grpId1 = createGrp._id;
-                let group1 = createGrp.group;
-                console.log(createGrp);
-                startMatch(grpId1, group1);
-              }
-            }
-          }
-        }
+    //           for (let i = 0; i < completeGroups.length; i++) {
+    //             let createGrp = await groupModel.create({
+    //               group: completeGroups[i],
+    //               tableId: tableIdForT,
+    //             });
+    //             let grpId1 = createGrp._id;
+    //             let group1 = createGrp.group;
+    //             console.log(createGrp);
+    //             startMatch(grpId1, group1);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+
+    //   endTime = Date.now() + 1 * 60 * 1000;
+    //   data1.endTime = req.query.endTime = endTime;
+    //   tournamentTable1 = await tournamentModel.insertMany([
+    //     data1,
+    //     data1,
+    //     data1,
+    //     data1,
+    //   ]);
+
+    //   tableId1 = tournamentTable1.map((items) => items._id);
+    //   console.log(tableId1);
+
+    //   console.log(tournamentTable1);
+    // }
+
+    // setInterval(createTournament1, 60000);
+    // createTournament1();
+    //__________________________________TABLE 1
+
+    let tableId1I;
+    async function createTournament1I() {
+      if (tableId1I != undefined) {
+        createGroup(tableId1I);
       }
 
       endTime = Date.now() + 1 * 60 * 1000;
       data1.endTime = req.query.endTime = endTime;
-      tournamentTable1 = await tournamentModel.insertMany([
-        data1,
-        data1,
-        data1,
-        data1,
-      ]);
 
-      tableId1 = tournamentTable1.map((items) => items._id);
-      console.log(tableId1);
-
-      console.log(tournamentTable1);
+      tournamentTable1I = await tournamentModel.create(data1);
+      tableId1I= tournamentTable1I._id;
+      console.log(tournamentTable1I);
     }
 
-    setInterval(createTournament1, 60000);
-    createTournament1();
+    setInterval(createTournament1I, 60000);
+    createTournament1I();
+
+//________________________________________TABLE 2
+
+    let tableId1II;
+    async function createTournament1II() {
+      if (tableId1II != undefined) {
+        createGroup(tableId1II);
+      }
+
+      endTime = Date.now() + 1 * 75 * 1000;
+      data1.endTime = req.query.endTime = endTime;
+
+      tournamentTable1II = await tournamentModel.create(data1);
+      tableId1II= tournamentTable1II._id;
+      console.log(tournamentTable1II);
+    }
+
+    setInterval(createTournament1II, 75000);
+    createTournament1II();
+
+  //____________________________________TABLE 3
+
+  let tableId1III;
+    async function createTournament1III() {
+      if (tableId1III != undefined) {
+        createGroup(tableId1III);
+      }
+
+      endTime = Date.now() + 1 * 95 * 1000;
+      data1.endTime = req.query.endTime = endTime;
+
+      tournamentTable1III = await tournamentModel.create(data1);
+      tableId1III= tournamentTable1III._id;
+      console.log(tournamentTable1III);
+    }
+
+    setInterval(createTournament1III, 95000);
+    createTournament1III();
+
+    //___________________________TABLE 4
+
+    let tableId1IV;
+    async function createTournament1IV() {
+      if (tableId1IV != undefined) {
+        createGroup(tableId1IV);
+      }
+
+      endTime = Date.now() + 1 * 120 * 1000;
+      data1.endTime = req.query.endTime = endTime;
+
+      tournamentTable1IV = await tournamentModel.create(data1);
+      tableId1IV= tournamentTable1IV._id;
+      console.log(tournamentTable1IV);
+    }
+
+    setInterval(createTournament1IV, 120000);
+    createTournament1IV();
+
+   //___________________________________TABLE 5
+
+   let tableId1V;
+   async function createTournament1V() {
+     if (tableId1V != undefined) {
+       createGroup(tableId1V);
+     }
+
+     endTime = Date.now() + 1 * 150 * 1000;
+     data1.endTime = req.query.endTime = endTime;
+
+     tournamentTable1V = await tournamentModel.create(data1);
+     tableId1V= tournamentTable1V._id;
+     console.log(tournamentTable1V);
+   }
+
+   setInterval(createTournament1V, 150000);
+   createTournament1V();
+
+
+    //____________________________________TABLE 6
+
+    let tableId1VI;
+    async function createTournament1VI() {
+      if (tableId1VI != undefined) {
+        createGroup(tableId1VI);
+      }
+
+      endTime = Date.now() + 1 * 185 * 1000;
+      data1.endTime = req.query.endTime = endTime;
+
+      tournamentTable1VI = await tournamentModel.create(data1);
+      tableId1VI= tournamentTable1VI._id;
+      console.log(tournamentTable1VI);
+    }
+
+    setInterval(createTournament1VI, 185000);
+    createTournament1VI();
+
+    //____________________________________TABLE 7
+
+    let tableId1VII;
+    async function createTournament1VII() {
+      if (tableId1VII != undefined) {
+        createGroup(tableId1VII);
+      }
+
+      endTime = Date.now() + 1 * 225 * 1000;
+      data1.endTime = req.query.endTime = endTime;
+
+      tournamentTable1VII = await tournamentModel.create(data1);
+      tableId1VII= tournamentTable1VII._id;
+      console.log(tournamentTable1VII);
+    }
+
+    setInterval(createTournament1VII, 225000);
+    createTournament1VII();
 
     //_______________________create table2 with setinterval an end time________________
     let tableId2;
@@ -215,7 +354,7 @@ const createTournaments = async function (req, res) {
     return res.status(201).send({
       status: true,
       message: "Success",
-      data: tournamentTable1,
+      data: tournamentTable1I,
     });
   } catch (error) {
     return res.status(500).send({
@@ -537,4 +676,4 @@ module.exports = {
   getAllTables,
   getGroups,
   getPlayers,
-};
+};                         
