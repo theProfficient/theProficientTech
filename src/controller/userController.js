@@ -16,9 +16,8 @@ const createUsers = async function (req, res) {
       userName,
       email,
       phone,
-      credits,
       status,
-      balance,
+      credits,
       referralCode,
       isBot,
     } = bodyData;
