@@ -27,9 +27,10 @@ const createUsers = async function (req, res) {
       return res.status(400).send({
         status: false,
         message:
-          "Body should  be not Empty please enter some data to create user",
+          "Body should  not be Empty please enter some data to create user",
       });
     }
+    console.log("bodyData>>>>>>>>>>>>>>>",bodyData)
 
     let checkUserId = await userModel.findOne({ UserId: UserId });
     if (checkUserId) {
