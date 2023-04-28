@@ -1,3 +1,4 @@
+const schedule = require("node-schedule");
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const tournamentModel = require("../model/tournamentModel");
@@ -150,7 +151,25 @@ const createTournaments = async function (req, res) {
     // createTournament1();
     //__________________________________TABLE 1
 
+    // let tableId1I;
+    // async function createTournament1I() {
+    //   if (tableId1I != undefined) {
+    //     createGroup(tableId1I);
+    //   }
+
+    //   endTime = Date.now() + 1 * 60 * 1000;
+    //   data1.endTime = req.query.endTime = endTime;
+
+    //   tournamentTable1I = await tournamentModel.create(data1);
+    //   tableId1I= tournamentTable1I._id;
+    //   console.log(tournamentTable1I);
+    // }
+
+    // setInterval(createTournament1I, 60000);
+    // createTournament1I();
+
     let tableId1I;
+
     async function createTournament1I() {
       if (tableId1I != undefined) {
         createGroup(tableId1I);
@@ -160,14 +179,14 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1I = await tournamentModel.create(data1);
-      tableId1I= tournamentTable1I._id;
+      tableId1I = tournamentTable1I._id;
       console.log(tournamentTable1I);
     }
 
-    setInterval(createTournament1I, 60000);
+    schedule.scheduleJob("* * * * *", createTournament1I);
     createTournament1I();
 
-//________________________________________TABLE 2
+    //________________________________________TABLE 2
 
     let tableId1II;
     async function createTournament1II() {
@@ -179,16 +198,15 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1II = await tournamentModel.create(data1);
-      tableId1II= tournamentTable1II._id;
+      tableId1II = tournamentTable1II._id;
       console.log(tournamentTable1II);
     }
 
-    setInterval(createTournament1II, 75000);
+    schedule.scheduleJob("*/75 * * * * *", createTournament1II);
     createTournament1II();
+    //____________________________________TABLE 3
 
-  //____________________________________TABLE 3
-
-  let tableId1III;
+    let tableId1III;
     async function createTournament1III() {
       if (tableId1III != undefined) {
         createGroup(tableId1III);
@@ -198,13 +216,12 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1III = await tournamentModel.create(data1);
-      tableId1III= tournamentTable1III._id;
+      tableId1III = tournamentTable1III._id;
       console.log(tournamentTable1III);
     }
 
-    setInterval(createTournament1III, 95000);
+    schedule.scheduleJob("*/95 * * * * *", createTournament1III);
     createTournament1III();
-
     //___________________________TABLE 4
 
     let tableId1IV;
@@ -217,32 +234,29 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1IV = await tournamentModel.create(data1);
-      tableId1IV= tournamentTable1IV._id;
+      tableId1IV = tournamentTable1IV._id;
       console.log(tournamentTable1IV);
     }
 
-    setInterval(createTournament1IV, 120000);
+    schedule.scheduleJob("*/2 * * * *", createTournament1IV);
     createTournament1IV();
+    //___________________________________TABLE 5
 
-   //___________________________________TABLE 5
+    let tableId1V;
+    async function createTournament1V() {
+      if (tableId1V != undefined) {
+        createGroup(tableId1V);
+      }
 
-   let tableId1V;
-   async function createTournament1V() {
-     if (tableId1V != undefined) {
-       createGroup(tableId1V);
-     }
+      endTime = Date.now() + 1 * 150 * 1000;
+      data1.endTime = req.query.endTime = endTime;
 
-     endTime = Date.now() + 1 * 150 * 1000;
-     data1.endTime = req.query.endTime = endTime;
-
-     tournamentTable1V = await tournamentModel.create(data1);
-     tableId1V= tournamentTable1V._id;
-     console.log(tournamentTable1V);
-   }
-
-   setInterval(createTournament1V, 150000);
-   createTournament1V();
-
+      tournamentTable1V = await tournamentModel.create(data1);
+      tableId1V = tournamentTable1V._id;
+      console.log(tournamentTable1V);
+    }
+    schedule.scheduleJob("*/2.5 * * * *", createTournament1V);
+    createTournament1V();
 
     //____________________________________TABLE 6
 
@@ -256,11 +270,11 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1VI = await tournamentModel.create(data1);
-      tableId1VI= tournamentTable1VI._id;
+      tableId1VI = tournamentTable1VI._id;
       console.log(tournamentTable1VI);
     }
 
-    setInterval(createTournament1VI, 185000);
+    schedule.scheduleJob("*/3 * * * *", createTournament1VI);
     createTournament1VI();
 
     //____________________________________TABLE 7
@@ -275,11 +289,11 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1VII = await tournamentModel.create(data1);
-      tableId1VII= tournamentTable1VII._id;
+      tableId1VII = tournamentTable1VII._id;
       console.log(tournamentTable1VII);
     }
 
-    setInterval(createTournament1VII, 225000);
+    schedule.scheduleJob("*/3.75 * * * *", createTournament1VII);
     createTournament1VII();
 
     //_______________________create table2 with setinterval an end time________________
@@ -298,7 +312,7 @@ const createTournaments = async function (req, res) {
       console.log(tournamentTable2);
     }
 
-    setInterval(createTournament2, 240000);
+    schedule.scheduleJob("*/4 * * * *", createTournament2);
     createTournament2();
 
     //_______________________create table3 with setinterval an end time________________
@@ -315,8 +329,7 @@ const createTournaments = async function (req, res) {
       tableId3 = tournamentTable3._id;
       console.log(tournamentTable3);
     }
-
-    setInterval(createTournament3, 300000);
+    schedule.scheduleJob("*/5 * * * *", createTournament3);
     createTournament3();
 
     //  // _______________________create table4 with setinterval an end time________________
@@ -332,7 +345,7 @@ const createTournaments = async function (req, res) {
       tableId4 = tournamentTable4._id;
       console.log(tournamentTable4);
     }
-    setInterval(createTournament4, 600000);
+    schedule.scheduleJob("*/10 * * * *", createTournament4);
     createTournament4();
 
     //   //_______________________create table5 with setinterval an end time________________
@@ -348,7 +361,7 @@ const createTournaments = async function (req, res) {
       tableId5 = tournamentTable5._id;
       console.log(tournamentTable5);
     }
-    setInterval(createTournament5, 900000);
+    schedule.scheduleJob("*/15 * * * *", createTournament5);
     createTournament5();
 
     return res.status(201).send({
@@ -676,4 +689,4 @@ module.exports = {
   getAllTables,
   getGroups,
   getPlayers,
-};                         
+};
