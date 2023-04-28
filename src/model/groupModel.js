@@ -45,7 +45,7 @@ const groupSchema = new mongoose.Schema(
     ],
     ball: {
       type: Number,
-      default: 7,
+      default: 6,
     },
     start: {
       type: Boolean,
