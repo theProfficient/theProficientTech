@@ -192,7 +192,7 @@ function runUpdateBalls(grpId) {
             );
 
             updateBallsRecursive();
-          }, 4000);
+          }, 7000);
         }
       }
     }
