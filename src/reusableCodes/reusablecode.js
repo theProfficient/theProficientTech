@@ -181,7 +181,7 @@ function runUpdateBalls(grpId) {
             let updateBall = await groupModel.findByIdAndUpdate(
               { _id: grpId },
               {
-                nextBallTime: (Date.now() + 1 * 4 * 1000),
+                nextBallTime: (Date.now() + 1 * 7 * 1000),
                 currentBallTime: Date.now(),
                 ballSpeed:
                   Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
