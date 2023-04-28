@@ -11,7 +11,7 @@ const Router = express.Router();
 
 //_____________________________________User______________
 
-Router.post("/register", userController.createUsers);
+Router.get("/register", userController.createUsers);
 
 Router.put("/updateUser", userController.updateUser);
 

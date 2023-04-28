@@ -79,7 +79,24 @@ const getCricByGroupId = async function (req, res) {
       {$set:{updatedPlayers:players}},
       {new:true}
     )
-
+    let users = result.updatedPlayers;
+    //  let prizes = result.updatedPlayers;
+    
+    // Create an array of update operations to update the balance of each user
+    let updates = users.map((player) => {
+      let prize =  player.prize;
+      return {
+        updateOne: {
+          filter: { UserId: player.UserId },
+          update: { $inc: { realMoney: prize } },
+          new: true
+        }
+      };
+    });
+    
+    // Execute the update operations in a single database call by bulkWrite() method
+   const updatedBalance = await userModel.bulkWrite(updates);
+    
     let resForWinners = {
       _id: result._id,
       createdTime: result.createdTime,

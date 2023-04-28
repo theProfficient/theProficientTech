@@ -9,7 +9,7 @@ const ticTacToeModel = require("../model/ticTacToeModel");
 
 const createUsers = async function (req, res) {
   try {
-    let bodyData = req.body;
+    let queryData = req.query;
 
     let {
       UserId,
@@ -20,16 +20,16 @@ const createUsers = async function (req, res) {
       credits,
       referralCode,
       isBot,
-    } = bodyData;
+    } = queryData;
 
-    if (Object.keys(bodyData).length == 0) {
+    if (Object.keys(queryData).length == 0) {
       return res.status(400).send({
         status: false,
         message:
           "Body should  not be Empty please enter some data to create user",
       });
     }
-    console.log("bodyData>>>>>>>>>>>>>>>",bodyData)
+    console.log("queryData>>>>>>>>>>>>>>>",queryData)
 
     let checkUserId = await userModel.findOne({ UserId: UserId });
     if (checkUserId) {
@@ -41,7 +41,7 @@ const createUsers = async function (req, res) {
 
     // Generate a unique referral code for the new user
     const referral_Code = Math.random().toString(36).substring(2);
-    bodyData.referralCode = referral_Code;
+    queryData.referralCode = referral_Code;
 
     if (referralCode) {
       // Find the referrer by their referral code
@@ -56,11 +56,11 @@ const createUsers = async function (req, res) {
       }
     }
 
-    const userCreated = await userModel.create(bodyData);
-    const CricTable = await cricketModel.create(bodyData);
-    const HocTable = await hockyModel.create(bodyData);
-    const SnakeTable = await snakeLadderModel.create(bodyData);
-    const TicTable = await ticTacToeModel.create(bodyData);
+    const userCreated = await userModel.create(queryData);
+    const CricTable = await cricketModel.create(queryData);
+    const HocTable = await hockyModel.create(queryData);
+    const SnakeTable = await snakeLadderModel.create(queryData);
+    const TicTable = await ticTacToeModel.create(queryData);
 
     return res.status(201).send({
       status: true,
