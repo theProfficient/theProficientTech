@@ -1,5 +1,4 @@
 require("dotenv").config();
-const cors = require("cors");
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -7,9 +6,6 @@ const route = require("./route/routes");
 
 app.use(express.json());
 app.use("/", route);
-
-app.use(cors());
-app.options("*", cors());
 
 mongoose.set("strictQuery", false);
 
