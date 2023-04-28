@@ -81,9 +81,9 @@ async function startMatch(grpId, group) {
       { new: true, setDefaultsOnInsert: true }
     );
     console.log("this is updated data >>>>>>>>>>", matchData);
-    // setTimeout(function () {
+     setTimeout(function () {
       runUpdateBalls(grpId);
-    // }, 4000);
+     }, 7000);
   }
 }
 
@@ -93,13 +93,13 @@ async function startMatch(grpId, group) {
 
 
 async function updateBalls(grpId) {
-  let min = 0;
+  let min = -1;
 
   if (grpId != undefined) {
     let updateWicket = await groupModel.findByIdAndUpdate({ _id: grpId });
     let ballCountForWicket = updateWicket.ball;
 
-    if (ballCountForWicket < 7) {
+    if (ballCountForWicket < 6) {
       let updatedPlayers = updateWicket.updatedPlayers.map((player) => {
 
         if (!player.hit && player.isBot === false) {
