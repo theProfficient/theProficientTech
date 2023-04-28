@@ -57,7 +57,7 @@ const groupSchema = new mongoose.Schema(
     },
     nextBallTime: {
       type: Date,
-      default: Date.now() + 1 * 4 * 1000
+      default: Date.now() + 1 * 7 * 1000
     },
     ballSpeed: {
       type: Number,
