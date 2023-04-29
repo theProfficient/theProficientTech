@@ -12,7 +12,7 @@ const { xorBy } = require("lodash");
 const getAllCric = async function (req, res) {
   try {
     let data = req.query;
-
+   
     const cricketData = await cricketModel.find(data).sort({ cricWins: -1 });
 
     if (data.length == 0) {
@@ -38,7 +38,7 @@ const getAllCric = async function (req, res) {
 const getCricByGroupId = async function (req, res) {
   try {
     let groupId = req.query.groupId;
-
+ let  currentBallTime = Date.now();
     let cricket = await groupModel.findById({ _id: groupId });
     if (!cricket) {
       return res
@@ -104,7 +104,7 @@ const getCricByGroupId = async function (req, res) {
       updatedPlayers: result.updatedPlayers,
       ball: result.ball,
       start: result.start,
-      currentBallTime: result.currentBallTime,
+      currentBallTime: currentBallTime,
       nextBallTime: result.nextBallTime,
       ballSpeed: result.ballSpeed,
     };
@@ -120,7 +120,7 @@ const getCricByGroupId = async function (req, res) {
         updatedPlayers: cricket.updatedPlayers,
         ball: cricket.ball,
         start: cricket.start,
-        currentBallTime: cricket.currentBallTime,
+        currentBallTime: currentBallTime,
         nextBallTime: cricket.nextBallTime,
         ballSpeed: cricket.ballSpeed,
       };
@@ -301,7 +301,7 @@ const updateCric = async function (req, res) {
         updatedPlayers: updatedGroupFstHit.updatedPlayers,
         ball: updatedGroupFstHit.ball,
         start: updatedGroupFstHit.start,
-        currentBallTime: updatedGroupFstHit.currentBallTime,
+        currentBallTime: currentTime,
         nextBallTime: updatedGroupFstHit.nextBallTime,
         ballSpeed: updatedGroupFstHit.ballSpeed,
         CurrentRun: currentRun,
@@ -324,7 +324,7 @@ const updateCric = async function (req, res) {
         updatedPlayers: groupExist.updatedPlayers,
         ball: groupExist.ball,
         start: groupExist.start,
-        currentBallTime: groupExist.currentBallTime,
+        currentBallTime: currentTime,
         nextBallTime: groupExist.nextBallTime,
         ballSpeed: groupExist.ballSpeed,
       };

@@ -93,7 +93,9 @@ async function startMatch(grpId, group) {
 
 
 async function updateBalls(grpId) {
-  let min = -1;
+  let min = 0;
+  const minSpeed = 11;
+  const maxSpeed = 18;
 
   if (grpId != undefined) {
     let updateWicket = await groupModel.findByIdAndUpdate({ _id: grpId });
@@ -121,6 +123,11 @@ async function updateBalls(grpId) {
       { _id: grpId },
       {
         $inc: { ball: -1 },
+        nextBallTime: (Date.now() + 1 * 7 * 1000),
+        currentBallTime: Date.now(),
+        ballSpeed:
+       Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
+                  minSpeed,
       },
       { new: true }
     );
@@ -128,6 +135,7 @@ async function updateBalls(grpId) {
     let ballCount = updateBall.ball;
 
     console.log(ballCount, "ballCount================");
+    console.log(updateBall,"currentTime===============================")
     console.log(updateBall.nextBallTime, "nextBallTime================");
 
     if (ballCount > 0) {
@@ -169,8 +177,8 @@ function runUpdateBalls(grpId) {
   console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId);
   if (grpId != undefined) {
     let continueRunning = true;
-    const minSpeed = 11;
-    const maxSpeed = 18;
+    // const minSpeed = 11;
+    // const maxSpeed = 18;
 
     async function updateBallsRecursive() {
       if (continueRunning) {
@@ -181,11 +189,11 @@ function runUpdateBalls(grpId) {
             let updateBall = await groupModel.findByIdAndUpdate(
               { _id: grpId },
               {
-                nextBallTime: (Date.now() + 1 * 7 * 1000),
-                currentBallTime: Date.now(),
-                ballSpeed:
-                  Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
-                  minSpeed,
+                // nextBallTime: (Date.now() + 1 * 7 * 1000),
+                // currentBallTime: Date.now(),
+                // ballSpeed:
+                //   Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
+                //   minSpeed,
                 isUpdate: false,
               },
               { new: true }
