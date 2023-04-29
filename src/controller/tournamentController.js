@@ -1,4 +1,3 @@
-const cron = require('node-cron');
 const mongoose = require("mongoose");
 const userModel = require("../model/userModel");
 const tournamentModel = require("../model/tournamentModel");
@@ -151,47 +150,41 @@ const createTournaments = async function (req, res) {
     // createTournament1();
     //__________________________________TABLE 1
 
-
     let tableId1I;
-    
     async function createTournament1I() {
       if (tableId1I != undefined) {
         createGroup(tableId1I);
       }
-    
+
       endTime = Date.now() + 1 * 60 * 1000;
       data1.endTime = req.query.endTime = endTime;
-    
+
       tournamentTable1I = await tournamentModel.create(data1);
       tableId1I= tournamentTable1I._id;
       console.log(tournamentTable1I);
     }
-    
-    // Run createTournament1I function every minute
-    cron.schedule('* * * * *', createTournament1I);
+
+    setInterval(createTournament1I, 60000);
     createTournament1I();
-    
 
 //________________________________________TABLE 2
 
-let tableId1II;
+    let tableId1II;
+    async function createTournament1II() {
+      if (tableId1II != undefined) {
+        createGroup(tableId1II);
+      }
 
-async function createTournament1II() {
-  if (tableId1II != undefined) {
-    createGroup(tableId1II);
-  }
+      endTime = Date.now() + 1 * 75 * 1000;
+      data1.endTime = req.query.endTime = endTime;
 
-  endTime = Date.now() + 1 * 75 * 1000;
-  data1.endTime = req.query.endTime = endTime;
+      tournamentTable1II = await tournamentModel.create(data1);
+      tableId1II= tournamentTable1II._id;
+      console.log(tournamentTable1II);
+    }
 
-  tournamentTable1II = await tournamentModel.create(data1);
-  tableId1II = tournamentTable1II._id;
-  console.log(tournamentTable1II);
-}
-
-// Schedule the task to run every 75 seconds
-cron.schedule('*/75 * * * * *', createTournament1II);
-createTournament1II();
+    setInterval(createTournament1II, 75000);
+    createTournament1II();
 
   //____________________________________TABLE 3
 
@@ -209,7 +202,7 @@ createTournament1II();
       console.log(tournamentTable1III);
     }
 
-    cron.schedule('*/95 * * * * *', createTournament1III);
+    setInterval(createTournament1III, 95000);
     createTournament1III();
 
     //___________________________TABLE 4
@@ -228,9 +221,8 @@ createTournament1II();
       console.log(tournamentTable1IV);
     }
 
-    cron.schedule('*/2 * * * *', createTournament1IV); // Run every 2 minutes
+    setInterval(createTournament1IV, 120000);
     createTournament1IV();
-    
 
    //___________________________________TABLE 5
 
@@ -248,7 +240,7 @@ createTournament1II();
      console.log(tournamentTable1V);
    }
 
-   cron.schedule('*/2.5 * * * *', createTournament1V); // Run every 2  minutes 30 SEC
+   setInterval(createTournament1V, 150000);
    createTournament1V();
 
 
@@ -259,19 +251,18 @@ createTournament1II();
       if (tableId1VI != undefined) {
         createGroup(tableId1VI);
       }
-    
+
       endTime = Date.now() + 1 * 185 * 1000;
       data1.endTime = req.query.endTime = endTime;
-    
+
       tournamentTable1VI = await tournamentModel.create(data1);
-      tableId1VI = tournamentTable1VI._id;
+      tableId1VI= tournamentTable1VI._id;
       console.log(tournamentTable1VI);
     }
-    
-    // Run createTournament1VI every 3 minutes
-    cron.schedule('*/185 * * * * *', createTournament1VI);
+
+    setInterval(createTournament1VI, 185000);
     createTournament1VI();
-    
+
     //____________________________________TABLE 7
 
     let tableId1VII;
@@ -288,7 +279,7 @@ createTournament1II();
       console.log(tournamentTable1VII);
     }
 
-    cron.schedule('*/225 * * * * *', createTournament1VII);
+    setInterval(createTournament1VII, 225000);
     createTournament1VII();
 
     //_______________________create table2 with setinterval an end time________________
@@ -307,8 +298,7 @@ createTournament1II();
       console.log(tournamentTable2);
     }
 
-    // setInterval(createTournament2, 240000);
-    cron.schedule('*/4 * * * *', createTournament2);
+    setInterval(createTournament2, 240000);
     createTournament2();
 
     //_______________________create table3 with setinterval an end time________________
@@ -326,8 +316,7 @@ createTournament1II();
       console.log(tournamentTable3);
     }
 
-    // setInterval(createTournament3, 300000);
-    cron.schedule('*/5 * * * *', createTournament3);
+    setInterval(createTournament3, 300000);
     createTournament3();
 
     //  // _______________________create table4 with setinterval an end time________________
@@ -343,8 +332,7 @@ createTournament1II();
       tableId4 = tournamentTable4._id;
       console.log(tournamentTable4);
     }
-    // setInterval(createTournament4, 600000);
-    cron.schedule('*/10 * * * *', createTournament4);
+    setInterval(createTournament4, 600000);
     createTournament4();
 
     //   //_______________________create table5 with setinterval an end time________________
@@ -360,8 +348,7 @@ createTournament1II();
       tableId5 = tournamentTable5._id;
       console.log(tournamentTable5);
     }
-    //setInterval(createTournament5, 900000);
-    cron.schedule('*/15 * * * *', createTournament5);
+    setInterval(createTournament5, 900000);
     createTournament5();
 
     return res.status(201).send({
