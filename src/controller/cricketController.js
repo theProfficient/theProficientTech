@@ -38,7 +38,7 @@ const getAllCric = async function (req, res) {
 const getCricByGroupId = async function (req, res) {
   try {
     let groupId = req.query.groupId;
- let  currentBallTime = Date.now();
+ let  currentBallTime = new Date();
     let cricket = await groupModel.findById({ _id: groupId });
     if (!cricket) {
       return res
@@ -301,7 +301,7 @@ const updateCric = async function (req, res) {
         updatedPlayers: updatedGroupFstHit.updatedPlayers,
         ball: updatedGroupFstHit.ball,
         start: updatedGroupFstHit.start,
-        currentBallTime: currentTime,
+        currentBallTime: new Date(),
         nextBallTime: updatedGroupFstHit.nextBallTime,
         ballSpeed: updatedGroupFstHit.ballSpeed,
         CurrentRun: currentRun,
@@ -324,11 +324,11 @@ const updateCric = async function (req, res) {
         updatedPlayers: groupExist.updatedPlayers,
         ball: groupExist.ball,
         start: groupExist.start,
-        currentBallTime: currentTime,
+        currentBallTime: new Date(),
         nextBallTime: groupExist.nextBallTime,
         ballSpeed: groupExist.ballSpeed,
       };
-
+console.log(response.currentBallTime,"to check the time format of new Date()++++++++++++++++")
       return res.status(200).json(response);
     }
     // }
