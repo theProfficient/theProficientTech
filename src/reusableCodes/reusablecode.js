@@ -119,6 +119,8 @@ async function updateBalls(grpId) {
 
       await groupModel.updateOne({ _id: grpId }, { $set: { updatedPlayers } });
     }
+    if (ballCountForWicket > 0) {
+
     let updateBall = await groupModel.findByIdAndUpdate(
       { _id: grpId },
       {
@@ -128,6 +130,7 @@ async function updateBalls(grpId) {
         ballSpeed:
        Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
                   minSpeed,
+        isUpdate: false,
       },
       { new: true }
     );
@@ -138,7 +141,7 @@ async function updateBalls(grpId) {
     console.log(updateBall,"currentTime===============================")
     console.log(updateBall.nextBallTime, "nextBallTime================");
 
-    if (ballCount > 0) {
+    
       const updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
         if (botPlayers.isBot === true) {
           //___________Determine if the bot player should be out
@@ -165,7 +168,7 @@ async function updateBalls(grpId) {
         { $set: { updatedPlayers: updateRunForBot } }
       );
     }
-    if (ballCount <= min) {
+    if (ballCountForWicket <= min) {
       console.log("Reached minimum ball count!");
       return true;
     }
@@ -186,18 +189,18 @@ function runUpdateBalls(grpId) {
         if (!isMaxCountReached) {
           setTimeout(async () => {
             //________________update nextBallTime, currentBallTime and  ballSpeed in every 4 seconds
-            let updateBall = await groupModel.findByIdAndUpdate(
-              { _id: grpId },
-              {
-                // nextBallTime: (Date.now() + 1 * 7 * 1000),
-                // currentBallTime: Date.now(),
-                // ballSpeed:
-                //   Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
-                //   minSpeed,
-                isUpdate: false,
-              },
-              { new: true }
-            );
+            // let updateBall = await groupModel.findByIdAndUpdate(
+            //   { _id: grpId },
+            //   {
+            //     // nextBallTime: (Date.now() + 1 * 7 * 1000),
+            //     // currentBallTime: Date.now(),
+            //     // ballSpeed:
+            //     //   Math.floor(Math.random() * (maxSpeed - minSpeed + 1)) +
+            //     //   minSpeed,
+            //     isUpdate: false,
+            //   },
+            //   { new: true }
+            // );
 
             updateBallsRecursive();
           }, 7000);
