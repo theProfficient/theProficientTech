@@ -12,7 +12,7 @@ const { xorBy } = require("lodash");
 const getAllCric = async function (req, res) {
   try {
     let data = req.query;
-   
+
     const cricketData = await cricketModel.find(data).sort({ cricWins: -1 });
 
     if (data.length == 0) {
@@ -38,7 +38,7 @@ const getAllCric = async function (req, res) {
 const getCricByGroupId = async function (req, res) {
   try {
     let groupId = req.query.groupId;
- //let  currentBallTime = new Date();
+
     let cricket = await groupModel.findById({ _id: groupId });
     if (!cricket) {
       return res
@@ -108,8 +108,6 @@ const getCricByGroupId = async function (req, res) {
       nextBallTime: result.nextBallTime,
       ballSpeed: result.ballSpeed,
     };
-    console.log("currentBallTime for resForWinners==================",resForWinners.currentBallTime)
-      console.log("nextBallTime for resForWinners==================",resForWinners.nextBallTime);
     
     return res.status(200).json(resForWinners);
   }
@@ -126,9 +124,6 @@ const getCricByGroupId = async function (req, res) {
         nextBallTime: cricket.nextBallTime,
         ballSpeed: cricket.ballSpeed,
       };
-
-      console.log("currentBallTime==================",cricket1.currentBallTime)
-      console.log("nextBallTime==================",cricket1.nextBallTime);
       return res.status(200).json(cricket1);
       
     }
@@ -333,7 +328,7 @@ const updateCric = async function (req, res) {
         nextBallTime: groupExist.nextBallTime,
         ballSpeed: groupExist.ballSpeed,
       };
-console.log(response.currentBallTime,"to check the time format of new Date()++++++++++++++++")
+
       return res.status(200).json(response);
     }
     // }
@@ -342,7 +337,7 @@ console.log(response.currentBallTime,"to check the time format of new Date()++++
   }
 };
 
-//__________________________declare the winner_______________________________
+//__________________________declare the winner_______________________________(not used in this project)
 
 const winTheGame = async function (req, res) {
   try {
