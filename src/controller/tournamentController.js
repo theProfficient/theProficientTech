@@ -160,14 +160,14 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1I = await tournamentModel.create(data1);
-      tableId1I= tournamentTable1I._id;
+      tableId1I = tournamentTable1I._id;
       console.log(tournamentTable1I);
     }
 
     setInterval(createTournament1I, 60000);
     createTournament1I();
 
-//________________________________________TABLE 2
+    //________________________________________TABLE 2
 
     let tableId1II;
     async function createTournament1II() {
@@ -179,16 +179,16 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1II = await tournamentModel.create(data1);
-      tableId1II= tournamentTable1II._id;
+      tableId1II = tournamentTable1II._id;
       console.log(tournamentTable1II);
     }
 
     setInterval(createTournament1II, 75000);
     createTournament1II();
 
-  //____________________________________TABLE 3
+    //____________________________________TABLE 3
 
-  let tableId1III;
+    let tableId1III;
     async function createTournament1III() {
       if (tableId1III != undefined) {
         createGroup(tableId1III);
@@ -198,7 +198,7 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1III = await tournamentModel.create(data1);
-      tableId1III= tournamentTable1III._id;
+      tableId1III = tournamentTable1III._id;
       console.log(tournamentTable1III);
     }
 
@@ -217,32 +217,31 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1IV = await tournamentModel.create(data1);
-      tableId1IV= tournamentTable1IV._id;
+      tableId1IV = tournamentTable1IV._id;
       console.log(tournamentTable1IV);
     }
 
     setInterval(createTournament1IV, 120000);
     createTournament1IV();
 
-   //___________________________________TABLE 5
+    //___________________________________TABLE 5
 
-   let tableId1V;
-   async function createTournament1V() {
-     if (tableId1V != undefined) {
-       createGroup(tableId1V);
-     }
+    let tableId1V;
+    async function createTournament1V() {
+      if (tableId1V != undefined) {
+        createGroup(tableId1V);
+      }
 
-     endTime = Date.now() + 1 * 150 * 1000;
-     data1.endTime = req.query.endTime = endTime;
+      endTime = Date.now() + 1 * 150 * 1000;
+      data1.endTime = req.query.endTime = endTime;
 
-     tournamentTable1V = await tournamentModel.create(data1);
-     tableId1V= tournamentTable1V._id;
-     console.log(tournamentTable1V);
-   }
+      tournamentTable1V = await tournamentModel.create(data1);
+      tableId1V = tournamentTable1V._id;
+      console.log(tournamentTable1V);
+    }
 
-   setInterval(createTournament1V, 150000);
-   createTournament1V();
-
+    setInterval(createTournament1V, 150000);
+    createTournament1V();
 
     //____________________________________TABLE 6
 
@@ -256,7 +255,7 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1VI = await tournamentModel.create(data1);
-      tableId1VI= tournamentTable1VI._id;
+      tableId1VI = tournamentTable1VI._id;
       console.log(tournamentTable1VI);
     }
 
@@ -275,7 +274,7 @@ const createTournaments = async function (req, res) {
       data1.endTime = req.query.endTime = endTime;
 
       tournamentTable1VII = await tournamentModel.create(data1);
-      tableId1VII= tournamentTable1VII._id;
+      tableId1VII = tournamentTable1VII._id;
       console.log(tournamentTable1VII);
     }
 
@@ -484,8 +483,9 @@ const updateTournament = async function (req, res) {
       });
     }
     let ExistPlayers = existTable.players;
+    let entryFee = existTable.entryFee;
 
-    let maxPlayes = 20;
+    let maxPlayes = 100;
 
     if (ExistPlayers < maxPlayes) {
       status = "in_progress";
@@ -512,6 +512,14 @@ const updateTournament = async function (req, res) {
     }
     let userName = userExist.userName;
     let isBot = userExist.isBot;
+    let credits = userExist.credits
+
+    if(credits < entryFee){
+      return res.status(404).send({
+        status: false,
+        message: " insufficient balance to play",
+      });
+    }
 
     //_______update table with userId and tableId (if user joined perticular table players incereses by 1 automatically)
 
@@ -548,16 +556,20 @@ const updateTournament = async function (req, res) {
         { new: true }
       )
       .select({ players: 1, _id: 0 });
-
     //_______store user's tournament history in user profile
-
     let time = existTable.createdAt;
     let userHistory = await userModel.findOneAndUpdate(
       { UserId: UserId },
-      { $push: { history: { tableId: tableId, time: time } } },
+      {
+        $push: { history: { tableId: tableId, time: time } },
+        $inc: {
+          credits: -entryFee,
+        },
+      },
       { new: true }
     );
-
+   console.log("users data after deduct the credit >>>>>>>>>>>>>",userHistory)
+   
     return res.status(200).send({
       status: true,
       message: "Success",
@@ -676,4 +688,4 @@ module.exports = {
   getAllTables,
   getGroups,
   getPlayers,
-};                         
+};
