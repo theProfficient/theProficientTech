@@ -32,13 +32,25 @@ const createUsers = async function (req, res) {
     console.log("queryData>>>>>>>>>>>>>>>",queryData)
 
     let checkUserId = await userModel.findOne({ UserId: UserId });
-    if (checkUserId) {
+    if (checkUserId.UserId === UserId) {
       return res.status(400).send({
         status: false,
         message: "UserId is already exist ",
       });
     }
 
+    if (checkUserId.email === email) {
+      return res.status(400).send({
+        status: false,
+        message: "this email is already exist ",
+      });
+    }
+    if (checkUserId.phone === phone ) {
+      return res.status(400).send({
+        status: false,
+        message: "this phone number is is already exist ",
+      });
+    }
     // Generate a unique referral code for the new user
     const referral_Code = Math.random().toString(36).substring(2);
     queryData.referralCode = referral_Code;
