@@ -29,7 +29,7 @@ const createUsers = async function (req, res) {
           "Body should  not be Empty please enter some data to create user",
       });
     }
-    console.log("queryData>>>>>>>>>>>>>>>", queryData);
+    console.log("queryData>>>>>>>>>>>>>>>",queryData)
 
     let checkUserId = await userModel.findOne({ UserId: UserId });
     if (checkUserId) {
@@ -38,10 +38,6 @@ const createUsers = async function (req, res) {
         message: "UserId is already exist ",
       });
     }
-
-    // Convert UserId and userName to binary representation
-    const userIdBuffer = Buffer.from(UserId, "utf8");
-    const userNameBuffer = Buffer.from(userName, "utf8");
 
     // Generate a unique referral code for the new user
     const referral_Code = Math.random().toString(36).substring(2);
@@ -60,33 +56,11 @@ const createUsers = async function (req, res) {
       }
     }
 
-    // const userCreated = await userModel.create(queryData);
-    // Create the new user document with the binary UserId and userName fields
-    const userCreated = await userModel.create({
-      ...queryData,
-      UserId: userIdBuffer,
-      userName: userNameBuffer,
-    });
-    const CricTable = await cricketModel.create({
-      ...queryData,
-      UserId: userIdBuffer,
-      userName: userNameBuffer,
-    });
-    const HocTable = await hockyModel.create({
-      ...queryData,
-      UserId: userIdBuffer,
-      userName: userNameBuffer,
-    });
-    const SnakeTable = await snakeLadderModel.create({
-      ...queryData,
-      UserId: userIdBuffer,
-      userName: userNameBuffer,
-    });;
-    const TicTable = await ticTacToeModel.create({
-      ...queryData,
-      UserId: userIdBuffer,
-      userName: userNameBuffer,
-    });
+    const userCreated = await userModel.create(queryData);
+    const CricTable = await cricketModel.create(queryData);
+    const HocTable = await hockyModel.create(queryData);
+    const SnakeTable = await snakeLadderModel.create(queryData);
+    const TicTable = await ticTacToeModel.create(queryData);
 
     return res.status(201).send({
       status: true,
@@ -97,6 +71,7 @@ const createUsers = async function (req, res) {
       SnakeTable,
       TicTable,
     });
+    
   } catch (error) {
     return res.status(500).send({
       status: false,
@@ -104,6 +79,7 @@ const createUsers = async function (req, res) {
     });
   }
 };
+
 
 // _______find by query params
 
