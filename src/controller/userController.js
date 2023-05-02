@@ -43,20 +43,16 @@ const createUsers = async function (req, res) {
     //   .populate("ticTacToe"
     // );
     
-      const CricTable = await cricketModel.findOne({ UserId: UserId });
-      const HocTable = await hockyModel.findOne({ UserId: UserId });
-      const SnakeTable = await snakeLadderModel.findOne({ UserId: UserId });
-      const TicTable = await ticTacToeModel.findOne({ UserId: UserId });
+      // const CricTable = await cricketModel.findOne({ UserId: UserId });
+      // const HocTable = await hockyModel.findOne({ UserId: UserId });
+      // const SnakeTable = await snakeLadderModel.findOne({ UserId: UserId });
+      // const TicTable = await ticTacToeModel.findOne({ UserId: UserId });
 
       console.log("userData>>>>>>>>>>>>>>>",checkUserId)
-      return res.status(400).send({
-        status: false,
+      return res.status(200).send({
+        status: true,
         message: "UserId already exists",
         data: checkUserId,
-        CricTable,
-        HocTable,
-        SnakeTable,
-        TicTable,
       });
 
     }
@@ -123,7 +119,7 @@ const getUser = async function (req, res) {
 
     return res.status(200).send({
       status: true,
-      message: "Success",
+      message: "user already exist",
       data: getNewUser,
       cricket,
       hocky,
