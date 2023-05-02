@@ -5,7 +5,6 @@ const snakeSchema = new mongoose.Schema(
   {
     UserId: {
       type: String,
-      ref: 'User'
     },
     snakeMatch: {
       type: Number,
