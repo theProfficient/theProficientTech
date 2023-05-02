@@ -32,24 +32,33 @@ const createUsers = async function (req, res) {
     console.log("queryData>>>>>>>>>>>>>>>",queryData)
 
     let checkUserId = await userModel.findOne({ UserId: UserId });
-    if (checkUserId.UserId === UserId) {
-      return res.status(400).send({
-        status: false,
-        message: "UserId is already exist ",
-      });
-    }
+    console.log("checkUserId>>>>>>>>>>>>>>>",checkUserId)
+    if (checkUserId != null && checkUserId != undefined) {
 
-    if (checkUserId.email === email) {
+    //   const userData = await userModel
+    //   .findOne({ UserId: UserId })
+    //   .populate("cricket")
+    //   .populate("hocky")
+    //   .populate("snakeLadder")
+    //   .populate("ticTacToe"
+    // );
+    
+      const CricTable = await cricketModel.findOne({ UserId: UserId });
+      const HocTable = await hockyModel.findOne({ UserId: UserId });
+      const SnakeTable = await snakeLadderModel.findOne({ UserId: UserId });
+      const TicTable = await ticTacToeModel.findOne({ UserId: UserId });
+
+      console.log("userData>>>>>>>>>>>>>>>",checkUserId)
       return res.status(400).send({
         status: false,
-        message: "this email is already exist ",
+        message: "UserId already exists",
+        data: checkUserId,
+        CricTable,
+        HocTable,
+        SnakeTable,
+        TicTable,
       });
-    }
-    if (checkUserId.phone === phone ) {
-      return res.status(400).send({
-        status: false,
-        message: "this phone number is is already exist ",
-      });
+
     }
     // Generate a unique referral code for the new user
     const referral_Code = Math.random().toString(36).substring(2);

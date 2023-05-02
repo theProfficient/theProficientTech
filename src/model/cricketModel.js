@@ -5,6 +5,7 @@ const cricketSchema = new mongoose.Schema(
   {
     UserId: {
       type: String,
+      ref: 'User' 
     },
     userIdForRef: {
       type: ObjectId,

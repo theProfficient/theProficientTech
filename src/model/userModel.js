@@ -4,10 +4,8 @@ const userSchema = new mongoose.Schema(
     UserId: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
-
     userName: {
       type: String,
       trim: true,
@@ -15,13 +13,10 @@ const userSchema = new mongoose.Schema(
 
     email: {
       type: String,
-      unique: true,
       trim: true,
     },
-
     phone: {
       type: String,
-      unique: true,
       trim: true,
     },
     referralCode: {
@@ -44,6 +39,23 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     history: [],
+    cricketData: {
+      type: String,
+      ref: 'cricket'
+    },
+    hockeyData: {
+      type: String,
+      ref: 'hocky'
+    },
+    snakeLadderData: {
+      type: String,
+      ref: 'snakeLadder'
+    },
+    ticTacToeData: {
+      type: String,
+      ref: 'ticTacToe'
+    }
+
   },
   { timestamps: true }
 );
