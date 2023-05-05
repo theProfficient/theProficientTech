@@ -41,7 +41,12 @@ const tournamentSchema = new mongoose.Schema(
     endTime: {
       type: Date,
     },
+    isMatchOver: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   { timestamps: true }
 );
 module.exports = mongoose.model("tournament", tournamentSchema);

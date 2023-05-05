@@ -390,15 +390,20 @@ const getAllTables = async function (req, res) {
     let userData = await tournamentModel.aggregate([
       {
         $match: {
+          isMatchOver: false,  // add this condition to match only active tournaments
           Users: {
             $elemMatch: {
               UserId: UserId,
             },
           },
-        },
+        }, 
       },
     ]);
-
+    // let userData = await tournamentModel.find(
+    //   { isMatchOver: false }
+    // );
+    
+console.log("check match is finished or not >>>>>>>>>>>",userData)
     if (userData.length > 0) {
       let tableId = userData.map((items) => items._id);
       console.log(tableId, "------------");
@@ -415,6 +420,8 @@ const getAllTables = async function (req, res) {
             tableId: status.tableId,
             start: status.start,
           });
+        }else{ // push data if group is not created
+          matchStatus.push({ tableId: tableId[id], start: false });
         }
       }
       if (matchStatus.length !== 0) {
@@ -430,20 +437,20 @@ const getAllTables = async function (req, res) {
       }
       //___________return data if group is not created
 
-      let start = false;
-      let match = [];
-      for (let i = 0; i < tableId.length; i++) {
-        match.push({ tableId: tableId[i], start: start });
-      }
+      // let start = false;
+      // let match = [];
+      // for (let i = 0; i < tableId.length; i++) {
+      //   match.push({ tableId: tableId[i], start: start });
+      // }
 
-      return res.status(200).send({
-        status: true,
-        message: "Success",
-        matchStatus: match,
-        joined: true,
-        currentTime: currentTime,
-        data: data,
-      });
+      // return res.status(200).send({
+      //   status: true,
+      //   message: "Success",
+      //   matchStatus: match,
+      //   joined: true,
+      //   currentTime: currentTime,
+      //   data: data,
+      // });
     }
 
     return res.status(200).send({
@@ -498,9 +505,6 @@ const updateTournament = async function (req, res) {
       return res.status(400).send({ status: false, message: " Full " });
     }
 
-    let users = existTable.Users;
-    let storedUser = users.filter((userIds) => userIds.UserId === UserId);
-    console.log(storedUser);
 
     //________________________________find user,s Name _____________________________________
 
@@ -511,9 +515,7 @@ const updateTournament = async function (req, res) {
         message: " user not found",
       });
     }
-    let userName = userExist.userName;
-    let isBot = userExist.isBot;
-    let credits = userExist.credits
+    const { userName, isBot, credits } = userExist;
     
     if(credits < entryFee){
       return res.status(404).send({
@@ -521,12 +523,26 @@ const updateTournament = async function (req, res) {
         message: " insufficient balance to play",
       });
     }
+
     //_______update table with userId and tableId (if user joined perticular table players incereses by 1 automatically)
 
-    if (storedUser.length !== 0) {
-      for (let i = 0; i < storedUser.length; i++) {
-        let time = storedUser[i].endTime;
-        console.log(time, "time___________");
+    let userData = await tournamentModel.aggregate([
+      {
+        $match: {
+          Users: {
+            $elemMatch: {
+              UserId: UserId,
+            },
+          },
+        },
+      },
+    ]);
+
+    if (userData.length !== 0) {
+      for (let i = 0; i < userData.length; i++) {
+        let time = userData[i].endTime;
+        console.log(time.getMinutes(), "time___________");
+        console.log(existTable.endTime.getMinutes(), "time which he want to join___________");
         if (Math.abs(time.getMinutes() - existTable.endTime.getMinutes()) < 5) {
           return res.status(400).send({
             status: false,
@@ -535,6 +551,12 @@ const updateTournament = async function (req, res) {
         }
       }
     }
+//deduct the entryFee from the users credit when user want to join the table
+
+// let userName = userExist.userName;
+// let isBot = userExist.isBot;
+// let credits = userExist.credits
+
 
     const tableUpdate = await tournamentModel
       .findByIdAndUpdate(
@@ -570,7 +592,7 @@ const updateTournament = async function (req, res) {
       },
       { new: true }
     );
-    console.log("users data after deduct the credit >>>>>>>>>>>>>",userHistory)
+    // console.log("users data after deduct the credit >>>>>>>>>>>>>",userHistory)
     return res.status(200).send({
       status: true,
       message: "Success",
