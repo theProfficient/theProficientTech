@@ -390,7 +390,6 @@ const getAllTables = async function (req, res) {
     let userData = await tournamentModel.aggregate([
       {
         $match: {
-          isMatchOver: false,  // add this condition to match only active tournaments
           Users: {
             $elemMatch: {
               UserId: UserId,
@@ -412,10 +411,13 @@ const getAllTables = async function (req, res) {
       for (let id = 0; id < tableId.length; id++) {
         let status = await groupModel.findOne({ tableId: tableId[id] });
         if (status) {
+          if(status.isMatchOver === false){
           matchStatus.push({
             tableId: status.tableId,
             start: status.start,
+          
           });
+        }
         }else{ // push data if group is not created
           matchStatus.push({ tableId: tableId[id], start: false });
         }

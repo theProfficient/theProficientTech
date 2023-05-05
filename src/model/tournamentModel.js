@@ -41,10 +41,6 @@ const tournamentSchema = new mongoose.Schema(
     endTime: {
       type: Date,
     },
-    isMatchOver: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   { timestamps: true }

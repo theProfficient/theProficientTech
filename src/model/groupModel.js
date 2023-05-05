@@ -71,6 +71,10 @@ const groupSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isMatchOver: {
+      type: Boolean,
+      default: false,
+    },
   },
   { strict: false }
 );

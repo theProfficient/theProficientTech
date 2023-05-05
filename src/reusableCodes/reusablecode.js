@@ -98,7 +98,6 @@ async function updateBalls(grpId) {
   if (grpId != undefined) {
     let updateWicket = await groupModel.findByIdAndUpdate({ _id: grpId });
     let ballCountForWicket = updateWicket.ball;
-    let tableIdForMatch = updateWicket.tableId
 
     if (ballCountForWicket < 6) {
       let updatedPlayers = updateWicket.updatedPlayers.map((player) => {
@@ -165,8 +164,8 @@ async function updateBalls(grpId) {
       );
     }
     if (ballCountForWicket <= min) {
-      let endTheMatch = await tournamentModel.findByIdAndUpdate(
-        { _id: tableIdForMatch },
+      let endTheMatch = await groupModel.findByIdAndUpdate(
+        { _id: grpId },
         {
           isMatchOver: true,
         },
