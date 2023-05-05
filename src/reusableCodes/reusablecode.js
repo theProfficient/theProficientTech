@@ -98,6 +98,7 @@ async function updateBalls(grpId) {
   if (grpId != undefined) {
     let updateWicket = await groupModel.findByIdAndUpdate({ _id: grpId });
     let ballCountForWicket = updateWicket.ball;
+    let tableIdForMatch = updateWicket.tableId
 
     if (ballCountForWicket < 6) {
       let updatedPlayers = updateWicket.updatedPlayers.map((player) => {
@@ -133,6 +134,7 @@ async function updateBalls(grpId) {
 
       let ballCount = updateBall.ball;
 
+      
       console.log(ballCount, "ballCount================");
       console.log(updateBall.nextBallTime, "nextBallTime================");
 
@@ -163,8 +165,8 @@ async function updateBalls(grpId) {
       );
     }
     if (ballCountForWicket <= min) {
-      let endTheMatch = await groupModel.findByIdAndUpdate(
-        { _id: grpId },
+      let endTheMatch = await tournamentModel.findByIdAndUpdate(
+        { _id: tableIdForMatch },
         {
           isMatchOver: true,
         },

@@ -399,11 +399,7 @@ const getAllTables = async function (req, res) {
         }, 
       },
     ]);
-    // let userData = await tournamentModel.find(
-    //   { isMatchOver: false }
-    // );
-    
-console.log("check match is finished or not >>>>>>>>>>>",userData)
+   
     if (userData.length > 0) {
       let tableId = userData.map((items) => items._id);
       console.log(tableId, "------------");
