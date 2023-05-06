@@ -536,19 +536,19 @@ const updateTournament = async function (req, res) {
       },
     ]);
 
-    if (userData.length !== 0) {
-      for (let i = 0; i < userData.length; i++) {
-        let time = userData[i].endTime;
-        console.log(time.getMinutes(), "time___________");
-        console.log(existTable.endTime.getMinutes(), "time which he want to join___________");
-        if (Math.abs(time.getMinutes() - existTable.endTime.getMinutes()) < 5) {
-          return res.status(400).send({
-            status: false,
-            message: " You can not join",
-          });
-        }
-      }
-    }
+    // if (userData.length !== 0) {
+    //   for (let i = 0; i < userData.length; i++) {
+    //     let time = userData[i].endTime;
+    //     console.log(time.getMinutes(), "time___________");
+    //     console.log(existTable.endTime.getMinutes(), "time which he want to join___________");
+    //     if (Math.abs(time.getMinutes() - existTable.endTime.getMinutes()) < 5) {
+    //       return res.status(400).send({
+    //         status: false,
+    //         message: " You can not join",
+    //       });
+    //     }
+    //   }
+    // }
 //deduct the entryFee from the users credit when user want to join the table
 
 // let userName = userExist.userName;
