@@ -79,7 +79,7 @@ const getCricByGroupId = async function (req, res) {
         return a.wicket - b.wicket; // Sort by wickets in ascending order for players with the same runs
       }
     });
-     console.log(players,"declareWinners_______________");
+    //  console.log(players,"declareWinners_______________");
 
     //_________________winner prize as per prize amount
       
@@ -172,7 +172,7 @@ const updateCric = async function (req, res) {
       .select({ group: 0 });
 
     if (!groupExist) {
-      console.error("No matching document found");
+      // console.error("No matching document found");
       return res.status(404).send({
         status: false,
         message: "No matching document found",
@@ -189,14 +189,14 @@ const updateCric = async function (req, res) {
     }
     let storedBallTime = groupExist.currentBallTime;
     let ballSpeed = groupExist.ballSpeed;
-    console.log(storedBallTime, "time of ball");
+    // console.log(storedBallTime, "time of ball");
 
     const index = groupExist.updatedPlayers.findIndex(
       (player) => player.UserId === UserId
     );
 
     if (index === -1) {
-      console.error("User not found in the updatedPlayers array");
+      // console.error("User not found in the updatedPlayers array");
       return res.status(404).send({
         status: false,
         message: "User not found in the updatedPlayers array",
@@ -211,12 +211,12 @@ const updateCric = async function (req, res) {
     let ballCount = groupExist.ball;
     let timeDiff = Math.abs(Math.floor((currentTime - storedBallTime) / 1000));
 
-    console.log("isRunUpdated>>>>>>>>>>>>>>", isRunUpdated);
-    console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
-    console.log("ballSpeed++++++++++++++++++", ballSpeed);
-    console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
+    // console.log("isRunUpdated>>>>>>>>>>>>>>", isRunUpdated);
+    // console.log("timeDiff>>>>>>>>>>>>>>>>>>>", timeDiff);
+    // console.log("ballSpeed++++++++++++++++++", ballSpeed);
+    // console.log("updatedRun>>>>>>>>>>>>>>>>>>", updatedRun);
 
-    if (isRunUpdated === false) {
+
       let currentRun = 1;
 
       switch (ballSpeed) {
@@ -233,7 +233,7 @@ const updateCric = async function (req, res) {
           } else if (timeDiff >= 1) {
             currentRun = 3;
           } else {
-            console.log("You just missed the ball");
+            // console.log("You just missed the ball");
           }
           break;
         case 13:
@@ -249,7 +249,7 @@ const updateCric = async function (req, res) {
           } else if (timeDiff >= 1) {
             currentRun = 2;
           } else {
-            console.log("You just missed the ball");
+            // console.log("You just missed the ball");
           }
           break;
         case 15:
@@ -265,7 +265,7 @@ const updateCric = async function (req, res) {
           } else if (timeDiff >= 1) {
             currentRun = 4;
           } else {
-            console.log("You just missed the ball");
+            // console.log("You just missed the ball");
           }
           break;
         case 17:
@@ -281,31 +281,33 @@ const updateCric = async function (req, res) {
           } else if (timeDiff >= 1) {
             currentRun = 1;
           } else {
-            console.log("You just missed the ball");
+            // console.log("You just missed the ball");
           }
           break;
 
         default:
           currentRun = 1
-          console.log("Invalid ball speed");
+          // console.log("Invalid ball speed");
       }
 
-      console.log("run>>>>>>>>>>>>", currentRun);
+      // console.log("run>>>>>>>>>>>>", currentRun);
       let playersUpdate = groupExist.updatedPlayers.find(
         (players) => players.UserId === UserId
       );
 
-      updatedRun = updatedRun + currentRun;
-      playersUpdate.hit = true;
-      playersUpdate.isRunUpdated = true;
-      playersUpdate.run = updatedRun;
 
-      let updatedGroupFstHit = await groupModel.findOneAndUpdate(
+      let updatedGroupFstHit;
+      if (isRunUpdated === false) {
+        updatedRun = updatedRun + currentRun;
+        playersUpdate.hit = true;
+        playersUpdate.isRunUpdated = true;
+        playersUpdate.run = updatedRun;
+         updatedGroupFstHit = await groupModel.findOneAndUpdate(
         { _id: groupId, updatedPlayers: { $elemMatch: { UserId: UserId } } },
         { $set: { "updatedPlayers.$": playersUpdate } },
         { new: true }
       );
-
+         }
       //let wicket = groupExist.updatedPlayers[index].wicket;
 
       // if (ball === 0 && isWicketUpdated === true && wicket > 0) {
@@ -326,30 +328,30 @@ const updateCric = async function (req, res) {
         CurrentRun: currentRun,
       };
 
-      console.log(
-        "updatedRunwhen hit >>>>>>>>>>>>>>>>>>",
-        updatedGroupFstHit.updatedPlayers[0].run
-      );
+      // console.log(
+      //   "updatedRunwhen hit >>>>>>>>>>>>>>>>>>",
+      //   updatedGroupFstHit.updatedPlayers[0].run
+      // );
 
-      //___________________send the response when hit the api 1st time
+      // //___________________send the response when hit the api 1st time
 
       return res.status(200).json(responseForFstHit);
-    }
-    if (isRunUpdated === true) {
-      let response = {
-        _id: groupExist._id,
-        createdTime: groupExist.createdTime,
-        tableId: groupExist.tableId,
-        updatedPlayers: groupExist.updatedPlayers,
-        ball: groupExist.ball,
-        start: groupExist.start,
-        currentBallTime: new Date(),
-        nextBallTime: groupExist.nextBallTime,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-        ballSpeed: groupExist.ballSpeed,
-      };
+    // }
+    // if (isRunUpdated === true) {
+    //   let response = {
+    //     _id: groupExist._id,
+    //     createdTime: groupExist.createdTime,
+    //     tableId: groupExist.tableId,
+    //     updatedPlayers: groupExist.updatedPlayers,
+    //     ball: groupExist.ball,
+    //     start: groupExist.start,
+    //     currentBallTime: new Date(),
+    //     nextBallTime: groupExist.nextBallTime,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+    //     ballSpeed: groupExist.ballSpeed,
+    //   };
 
-      return res.status(200).json(response);
-    }
+    //   return res.status(200).json(response);
+    //  }
     // }
   } catch (err) {
     return res.status(500).send;
@@ -395,7 +397,7 @@ const winTheGame = async function (req, res) {
       }
   });
   
-  console.log(players, "players>>>>>>>>>>>>>>>>");
+  // console.log(players, "players>>>>>>>>>>>>>>>>");
   
     const winner = players[0];
     //___________filter the players's run if these are equal

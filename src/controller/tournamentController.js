@@ -161,7 +161,7 @@ const createTournaments = async function (req, res) {
 
       tournamentTable1I = await tournamentModel.create(data1);
       tableId1I= tournamentTable1I._id;
-      console.log(tournamentTable1I);
+      // console.log(tournamentTable1I);
     }
 
     setInterval(createTournament1I, 60000);
@@ -180,7 +180,7 @@ const createTournaments = async function (req, res) {
 
       tournamentTable1II = await tournamentModel.create(data1);
       tableId1II= tournamentTable1II._id;
-      console.log(tournamentTable1II);
+      // console.log(tournamentTable1II);
     }
 
     setInterval(createTournament1II, 75000);
@@ -199,7 +199,7 @@ const createTournaments = async function (req, res) {
 
       tournamentTable1III = await tournamentModel.create(data1);
       tableId1III= tournamentTable1III._id;
-      console.log(tournamentTable1III);
+      // console.log(tournamentTable1III);
     }
 
     setInterval(createTournament1III, 95000);
@@ -218,7 +218,7 @@ const createTournaments = async function (req, res) {
 
       tournamentTable1IV = await tournamentModel.create(data1);
       tableId1IV= tournamentTable1IV._id;
-      console.log(tournamentTable1IV);
+      // console.log(tournamentTable1IV);
     }
 
     setInterval(createTournament1IV, 120000);
@@ -237,7 +237,7 @@ const createTournaments = async function (req, res) {
 
      tournamentTable1V = await tournamentModel.create(data1);
      tableId1V= tournamentTable1V._id;
-     console.log(tournamentTable1V);
+    //  console.log(tournamentTable1V);
    }
 
    setInterval(createTournament1V, 150000);
@@ -257,7 +257,7 @@ const createTournaments = async function (req, res) {
 
       tournamentTable1VI = await tournamentModel.create(data1);
       tableId1VI= tournamentTable1VI._id;
-      console.log(tournamentTable1VI);
+      // console.log(tournamentTable1VI);
     }
 
     setInterval(createTournament1VI, 185000);
@@ -276,7 +276,7 @@ const createTournaments = async function (req, res) {
 
       tournamentTable1VII = await tournamentModel.create(data1);
       tableId1VII= tournamentTable1VII._id;
-      console.log(tournamentTable1VII);
+      // console.log(tournamentTable1VII);
     }
 
     setInterval(createTournament1VII, 225000);
@@ -295,7 +295,7 @@ const createTournaments = async function (req, res) {
 
       tournamentTable2 = await tournamentModel.create(data2);
       tableId2 = tournamentTable2._id;
-      console.log(tournamentTable2);
+      // console.log(tournamentTable2);
     }
 
     setInterval(createTournament2, 240000);
@@ -313,7 +313,7 @@ const createTournaments = async function (req, res) {
       data3.endTime = req.query.endTime = endTime;
       tournamentTable3 = await tournamentModel.create(data3);
       tableId3 = tournamentTable3._id;
-      console.log(tournamentTable3);
+      // console.log(tournamentTable3);
     }
 
     setInterval(createTournament3, 300000);
@@ -330,7 +330,7 @@ const createTournaments = async function (req, res) {
       data4.endTime = req.query.endTime = endTime;
       tournamentTable4 = await tournamentModel.create(data4);
       tableId4 = tournamentTable4._id;
-      console.log(tournamentTable4);
+      // console.log(tournamentTable4);
     }
     setInterval(createTournament4, 600000);
     createTournament4();
@@ -346,7 +346,7 @@ const createTournaments = async function (req, res) {
       data5.endTime = req.query.endTime = endTime;
       tournamentTable5 = await tournamentModel.create(data5);
       tableId5 = tournamentTable5._id;
-      console.log(tournamentTable5);
+      // console.log(tournamentTable5);
     }
     setInterval(createTournament5, 900000);
     createTournament5();
@@ -401,7 +401,7 @@ const getAllTables = async function (req, res) {
    
     if (userData.length > 0) {
       let tableId = userData.map((items) => items._id);
-      console.log(tableId, "------------");
+      // console.log(tableId, "------------");
       let endTime = userData.map((items) => items.endTime);
 
       //______________________________check the match is started or not
@@ -628,7 +628,7 @@ const getGroups = async function (req, res) {
     let userName = userExist.userName;
 
     const table = await groupModel.find({ tableId: tableId });
-    console.log(table);
+    // console.log(table);
 
     if (table.length === 0) {
       return res.status(404).send({
@@ -637,10 +637,10 @@ const getGroups = async function (req, res) {
       });
     }
     let groups = table.map((items) => items.group);
-    console.log(groups, "groups>>>>>>>>>>>");
+    // console.log(groups, "groups>>>>>>>>>>>");
     let user, groupId, users;
     for (let group = 0; group < groups.length; group++) {
-      console.log(groups[group], "================================");
+      // console.log(groups[group], "================================");
       let findUser = groups[group].find((user) => user.userName === userName);
       if (findUser != null) {
         user = findUser;
@@ -657,7 +657,7 @@ const getGroups = async function (req, res) {
       });
     }
 
-    console.log(user, ">>>>>>>>>>>>>");
+    // console.log(user, ">>>>>>>>>>>>>");
     users = users.map((items) => items.userName);
     let usersNameInStr = users.join(" ");
 

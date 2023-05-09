@@ -49,7 +49,7 @@ const createGroup = async function (tableId) {
           });
           let grpId = createGrp._id;
           let group = createGrp.group;
-          console.log(createGrp);
+          // console.log(createGrp);
           // setTimeout(function () {
           startMatch(grpId, group);
           // }, 120000);
@@ -61,8 +61,8 @@ const createGroup = async function (tableId) {
   }
 };
 async function startMatch(grpId, group) {
-  console.log("grpid>>>>>>>>>>>", grpId);
-  console.log("groups>>>>>>>>>>>>>>>>>", group);
+  // console.log("grpid>>>>>>>>>>>", grpId);
+  // console.log("groups>>>>>>>>>>>>>>>>>", group);
   if (grpId !== undefined) {
     const result = group.map((name) => ({
       UserId: name.UserId,
@@ -74,13 +74,13 @@ async function startMatch(grpId, group) {
       prize: 0,
       isRunUpdated: name.isRunUpdated,
     }));
-    console.log("result", result);
+    // console.log("result", result);
     const matchData = await groupModel.findOneAndUpdate(
       { _id: grpId },
       { updatedPlayers: result, $set: { start: true } },
       { new: true, setDefaultsOnInsert: true }
     );
-    console.log("this is updated data >>>>>>>>>>", matchData);
+    // console.log("this is updated data >>>>>>>>>>", matchData);
     setTimeout(function () {
       runUpdateBalls(grpId);
     }, 7000);
@@ -132,9 +132,9 @@ async function updateBalls(grpId) {
       );
 
       let ballCount = updateBall.ball;
-
-      console.log(ballCount, "ballCount================");
-      console.log(updateBall.nextBallTime, "nextBallTime================");
+      // console.log(new Date(), "currentBallTime================");
+      console.log(ballCount, "++++ballCount================");
+      // console.log(updateBall.nextBallTime, "nextBallTime================");
 
       const updateRunForBot = updateBall.updatedPlayers.map((botPlayers) => {
         if (botPlayers.isBot === true) {
@@ -178,7 +178,7 @@ async function updateBalls(grpId) {
 }
 
 function runUpdateBalls(grpId) {
-  console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId);
+  // console.log("call the runUpdateBalls function >>>>>>>>>>>", grpId);
   if (grpId != undefined) {
     let continueRunning = true;
 
