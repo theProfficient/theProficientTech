@@ -527,6 +527,7 @@ const updateTournament = async function (req, res) {
     let userData = await tournamentModel.aggregate([
       {
         $match: {
+          isMatchOverForTable:false,
           Users: {
             $elemMatch: {
               UserId: UserId,
@@ -594,7 +595,7 @@ const updateTournament = async function (req, res) {
     return res.status(200).send({
       status: true,
       message: "Success",
-      data: tableUpdate,
+      data: {players:tableUpdate,  balance: userHistory.credits}
     });
   } catch (err) {
     return res.status(500).send({
