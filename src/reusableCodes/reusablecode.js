@@ -99,7 +99,7 @@ async function updateBalls(grpId) {
     let updateWicket = await groupModel.findByIdAndUpdate({ _id: grpId });
     let ballCountForWicket = updateWicket.ball;
 
-    if (ballCountForWicket < 6 && ballCountForWicket > 0) {
+    if (ballCountForWicket < 6 ) {
       let updatedPlayers = updateWicket.updatedPlayers.map((player) => {
         if (!player.hit && player.isBot === false) {
           //___________If the player did not hit the ball, set the wicket to true
