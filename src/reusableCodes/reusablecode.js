@@ -106,7 +106,7 @@ async function updateBalls(grpId) {
           player.wicket += 1;
           player.isRunUpdated = false;
         }
-        if (player.hit) {
+        if (player.hit && ballCountForWicket > 1) {
           //______________If the player did not hit the ball, set the wicket to true
           player.hit = false;
           player.isRunUpdated = false;
