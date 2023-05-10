@@ -96,7 +96,7 @@ async function updateBalls(grpId) {
   const minSpeed = 11;
   const maxSpeed = 18;
   if (grpId != undefined) {
-    let updateWicket = await groupModel.findByIdAndUpdate({ _id: grpId });
+    let updateWicket = await groupModel.findById({ _id: grpId });
     let ballCountForWicket = updateWicket.ball;
 
     if (ballCountForWicket < 6 && ballCountForWicket > 0) {
