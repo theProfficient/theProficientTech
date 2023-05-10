@@ -57,27 +57,27 @@ const getCricByGroupId = async function (req, res) {
      }
      let ballCount = cricket.ball
      if(ballCount === 0 && cricket.isWicketUpdated === false){
-    let players = cricket.updatedPlayers.sort((a,b) => {
-      if(b.run !== a.run){
-        return b.run - a.run; //__sort by runs in descending order
-      }else{
-        return a.wicket - b.wicket; //___sort by wickets in ascending order for players with the same runs
-      }
-     })
-    
-    // let players = cricket.updatedPlayers.map((player) => {
-    //   if (!player.hit && player.isBot === false ) {
-    //     player.wicket += 1; // If the player did not hit the ball, set the wicket to true
+    // let players = cricket.updatedPlayers.sort((a,b) => {
+    //   if(b.run !== a.run){
+    //     return b.run - a.run; //__sort by runs in descending order
+    //   }else{
+    //     return a.wicket - b.wicket; //___sort by wickets in ascending order for players with the same runs
+    //   }
+    //  })
+   
+    let players = cricket.updatedPlayers.map((player) => {
+      if (!player.hit && player.isBot === false ) {
+        player.wicket += 1; // If the player did not hit the ball, set the wicket to true
 
-    //   }
-    //   return player;
-    // }).sort((a, b) => {
-    //   if (b.run !== a.run) {
-    //     return b.run - a.run; // Sort by runs in descending order
-    //   } else {
-    //     return a.wicket - b.wicket; // Sort by wickets in ascending order for players with the same runs
-    //   }
-    // });
+      }
+      return player;
+    }).sort((a, b) => {
+      if (b.run !== a.run) {
+        return b.run - a.run; // Sort by runs in descending order
+      } else {
+        return a.wicket - b.wicket; // Sort by wickets in ascending order for players with the same runs
+      }
+    });
     //  console.log(players,"declareWinners_______________");
 
     //_________________winner prize as per prize amount
