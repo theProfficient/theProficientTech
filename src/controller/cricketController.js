@@ -113,7 +113,7 @@ const getCricByGroupId = async function (req, res) {
    const updatedBalance = await userModel.bulkWrite(updates);
 
    //_________________update table
-   let updateTable = await tournamentModel.findByIdAndUpdate({_id:tableId},{isMatchOverForTable:true},{new:true});
+  //  let updateTable = await tournamentModel.findByIdAndUpdate({_id:tableId},{isMatchOverForTable:true},{new:true});
     
     let resForWinners = {
       _id: result._id,
